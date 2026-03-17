@@ -146,10 +146,34 @@ export default function Home() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "送信に失敗しました");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "送信に失敗しました。しばらく経ってからお試しください。"
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -545,11 +569,17 @@ export default function Home() {
                   className="w-full mt-1 px-4 py-3 border rounded-lg text-sm"
                 />
               </div>
+              {submitError && (
+                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">
+                  {submitError}
+                </div>
+              )}
               <button
                 type="submit"
-                className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition"
+                disabled={submitting}
+                className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                無料デモを申し込む
+                {submitting ? "送信中..." : "無料デモを申し込む"}
               </button>
               <p className="text-xs text-gray-400 text-center">
                 送信後、1営業日以内にご連絡いたします
