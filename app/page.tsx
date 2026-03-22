@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const FEATURES = [
   {
@@ -89,49 +89,28 @@ const FEATURES = [
   },
 ];
 
-const PLANS = [
-  {
-    name: "梅（ライト）",
-    price: 5500,
-    description: "まずは検査アプリから",
-    features: [
-      "検査アプリ 1つ",
-      "データ保存 無制限",
-      "メールサポート",
-      "初期設定サポート",
-      "動画マニュアル付き",
-    ],
-    recommended: false,
-  },
-  {
-    name: "竹（スタンダード）",
-    price: 9800,
-    description: "業務効率化3点セット（一番人気）",
-    features: [
-      "検査アプリ + 顧客管理 + 予約管理",
-      "データ保存 無制限",
-      "3ツール間のデータ連携",
-      "優先メールサポート",
-      "初期データ移行サポート",
-      "月1回オンライン相談",
-    ],
-    recommended: true,
-  },
-  {
-    name: "松（フルセット）",
-    price: 12800,
-    description: "全6ツール使い放題",
-    features: [
-      "全6アプリ使い放題",
-      "顧客管理 + 予約 + 問診 + 検査 + MEO + 睡眠",
-      "全ツール間のデータ連携",
-      "専属サポート担当",
-      "月2回オンライン相談",
-      "新機能の先行利用",
-      "院のロゴ・カラーでカスタマイズ",
-    ],
-    recommended: false,
-  },
+const APP_PRICING = [
+  { id: "kensa", name: "検査アプリ", icon: "🔬", monthlyPrice: 5500, onetimePrice: 55000, description: "神経学的検査のデジタル化" },
+  { id: "customer", name: "顧客管理", icon: "👥", monthlyPrice: 4980, onetimePrice: 49800, description: "患者情報の一元管理" },
+  { id: "reservation", name: "予約管理", icon: "📅", monthlyPrice: 2980, onetimePrice: 29800, description: "カレンダー予約管理" },
+  { id: "monshin", name: "WEB問診", icon: "📝", monthlyPrice: 2980, onetimePrice: 29800, description: "来院前のスマホ問診" },
+  { id: "meo", name: "MEO対策ツール", icon: "📍", monthlyPrice: 2980, onetimePrice: 29800, description: "Googleマップ順位管理" },
+  { id: "sleep", name: "睡眠チェック", icon: "🌙", monthlyPrice: 1980, onetimePrice: 19800, description: "睡眠の質を数値化" },
+];
+
+const DISCOUNT_RULES = [
+  { minApps: 1, discount: 0, label: "" },
+  { minApps: 2, discount: 0.05, label: "2つ以上で5%OFF" },
+  { minApps: 3, discount: 0.10, label: "3つ以上で10%OFF" },
+  { minApps: 4, discount: 0.15, label: "4つ以上で15%OFF" },
+  { minApps: 5, discount: 0.20, label: "5つ以上で20%OFF" },
+  { minApps: 6, discount: 0.25, label: "全6アプリで25%OFF" },
+];
+
+const RECOMMENDED_SETS = [
+  { name: "検査スタートセット", appIds: ["kensa"], tag: "まずはこれ" },
+  { name: "業務効率化セット", appIds: ["kensa", "customer", "reservation"], tag: "一番人気" },
+  { name: "フルDXセット", appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep"], tag: "最大割引" },
 ];
 
 const FAQS = [
@@ -153,7 +132,7 @@ const FAQS = [
   },
   {
     q: "途中でプランを変更できますか？",
-    a: "はい。いつでもアップグレード・ダウングレードが可能です。変更は翌月から適用されます。",
+    a: "はい。いつでもアプリの追加・削除が可能です。変更は翌月から適用されます。",
   },
   {
     q: "患者情報のセキュリティは大丈夫ですか？",
@@ -190,9 +169,13 @@ const TESTIMONIALS = [
   },
 ];
 
+const getDiscount = (count: number) => {
+  const rule = [...DISCOUNT_RULES].reverse().find(r => count >= r.minApps);
+  return rule || DISCOUNT_RULES[0];
+};
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [, setSelectedPlan] = useState<number | null>(null);
   const [contactForm, setContactForm] = useState({
     clinicName: "",
     name: "",
@@ -205,14 +188,39 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
+  // Shopping cart state
+  const [selectedApps, setSelectedApps] = useState<string[]>(["kensa"]);
+  const [paymentType, setPaymentType] = useState<"monthly" | "onetime">("monthly");
+
   // Stripe Checkout用 state
-  const [checkoutModal, setCheckoutModal] = useState<string | null>(null);
+  const [checkoutModal, setCheckoutModal] = useState(false);
   const [checkoutEmail, setCheckoutEmail] = useState("");
   const [checkoutClinicName, setCheckoutClinicName] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
-  const handleCheckout = async (planName: string) => {
+  const calcTotal = useMemo(() => {
+    const selected = APP_PRICING.filter(app => selectedApps.includes(app.id));
+    const subtotal = selected.reduce((sum, app) =>
+      sum + (paymentType === "monthly" ? app.monthlyPrice : app.onetimePrice), 0);
+    const discount = getDiscount(selected.length);
+    const discountAmount = Math.floor(subtotal * discount.discount);
+    return { subtotal, discountAmount, total: subtotal - discountAmount, discount };
+  }, [selectedApps, paymentType]);
+
+  const toggleApp = (appId: string) => {
+    setSelectedApps(prev =>
+      prev.includes(appId)
+        ? prev.filter(id => id !== appId)
+        : [...prev, appId]
+    );
+  };
+
+  const selectSet = (appIds: string[]) => {
+    setSelectedApps([...appIds]);
+  };
+
+  const handleCheckout = async () => {
     if (!checkoutEmail || !checkoutClinicName) {
       setCheckoutError("メールアドレスと院名を入力してください");
       return;
@@ -220,13 +228,17 @@ export default function Home() {
     setCheckoutLoading(true);
     setCheckoutError("");
     try {
+      const appNames = APP_PRICING.filter(a => selectedApps.includes(a.id)).map(a => a.name).join("、");
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          planName,
+          planName: `カスタム（${appNames}）`,
           email: checkoutEmail,
           clinicName: checkoutClinicName,
+          amount: calcTotal.total,
+          paymentType,
+          selectedApps,
         }),
       });
       const data = await res.json();
@@ -237,9 +249,12 @@ export default function Home() {
         window.location.href = data.url;
       }
     } catch (err) {
-      setCheckoutError(
-        err instanceof Error ? err.message : "決済処理に失敗しました"
-      );
+      if (err instanceof Error) {
+        setCheckoutError(err.message);
+      } else {
+        setCheckoutError("決済処理に失敗しました");
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      }
     } finally {
       setCheckoutLoading(false);
     }
@@ -489,71 +504,232 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Pricing - Shopping Cart */}
       <section id="pricing" className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center mb-4">
             料金プラン
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            すべて初期費用0円・解約縛りなし
+            すべて初期費用0円・解約縛りなし。必要なアプリだけ選べます。
           </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {PLANS.map((plan, i) => (
-              <div
-                key={i}
-                className={`bg-white rounded-2xl shadow-sm p-6 border-2 relative ${
-                  plan.recommended ? "border-blue-500 shadow-lg" : "border-transparent"
+
+          {/* Recommended Sets */}
+          <div className="flex gap-3 mb-8 overflow-x-auto pb-2 justify-center flex-wrap">
+            {RECOMMENDED_SETS.map((set) => {
+              const isActive = set.appIds.length === selectedApps.length &&
+                set.appIds.every(id => selectedApps.includes(id));
+              return (
+                <button
+                  key={set.name}
+                  onClick={() => selectSet(set.appIds)}
+                  className={`relative flex-shrink-0 px-5 py-3 rounded-full font-bold text-sm transition border-2 ${
+                    isActive
+                      ? "bg-blue-600 text-white border-blue-600"
+                      : "bg-white text-gray-700 border-gray-200 hover:border-blue-300"
+                  }`}
+                >
+                  {set.tag === "一番人気" && (
+                    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                      一番人気
+                    </span>
+                  )}
+                  {set.tag === "最大割引" && (
+                    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                      最大割引
+                    </span>
+                  )}
+                  {set.tag === "まずはこれ" && (
+                    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                      まずはこれ
+                    </span>
+                  )}
+                  {set.name}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* App Cards Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            {APP_PRICING.map((app) => {
+              const isSelected = selectedApps.includes(app.id);
+              return (
+                <button
+                  key={app.id}
+                  onClick={() => toggleApp(app.id)}
+                  className={`relative text-left p-4 md:p-5 rounded-2xl border-2 transition-all ${
+                    isSelected
+                      ? "border-blue-500 bg-blue-50 shadow-md"
+                      : "border-gray-200 bg-white hover:border-gray-300"
+                  }`}
+                >
+                  {/* Checkbox indicator */}
+                  <div className={`absolute top-3 right-3 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                    isSelected
+                      ? "bg-blue-600 border-blue-600"
+                      : "border-gray-300 bg-white"
+                  }`}>
+                    {isSelected && (
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+
+                  <div className="text-2xl md:text-3xl mb-2">{app.icon}</div>
+                  <h3 className="font-bold text-sm md:text-base mb-1">{app.name}</h3>
+                  <p className="text-xs text-gray-500 mb-3">{app.description}</p>
+                  <div className="space-y-0.5">
+                    <p className={`text-xs ${paymentType === "monthly" ? "font-bold text-blue-700" : "text-gray-400"}`}>
+                      月額: ¥{app.monthlyPrice.toLocaleString()}/月
+                    </p>
+                    <p className={`text-xs ${paymentType === "onetime" ? "font-bold text-blue-700" : "text-gray-400"}`}>
+                      買い切り: ¥{app.onetimePrice.toLocaleString()}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Payment Type Toggle */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-gray-100 rounded-xl p-1">
+              <button
+                onClick={() => setPaymentType("monthly")}
+                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition ${
+                  paymentType === "monthly"
+                    ? "bg-white text-blue-700 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                {plan.recommended && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1 rounded-full">
-                    一番人気
+                月額サブスク
+              </button>
+              <button
+                onClick={() => setPaymentType("onetime")}
+                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition ${
+                  paymentType === "onetime"
+                    ? "bg-white text-blue-700 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                買い切り
+              </button>
+            </div>
+          </div>
+
+          {/* Price Calculation Area (Desktop) */}
+          <div className="hidden md:block">
+            <div className="bg-white rounded-2xl shadow-lg border p-6 max-w-lg mx-auto">
+              {selectedApps.length === 0 ? (
+                <p className="text-center text-gray-400 py-4">アプリを選択してください</p>
+              ) : (
+                <>
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-500 mb-1">
+                      選択中: {APP_PRICING.filter(a => selectedApps.includes(a.id)).map(a => a.name).join("、")}（{selectedApps.length}つ）
+                    </p>
                   </div>
-                )}
-                <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
-                <p className="text-sm text-gray-500 mb-4">{plan.description}</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-black">
-                    {plan.price.toLocaleString()}
-                  </span>
-                  <span className="text-gray-500 text-sm">円/月（税込）</span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  {plan.features.map((f, fi) => (
-                    <li key={fi} className="flex items-start gap-2 text-sm text-gray-600">
-                      <span className="text-green-500 flex-shrink-0">&#10003;</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => {
-                      setSelectedPlan(i);
-                      setCheckoutModal(plan.name);
-                      setCheckoutError("");
-                    }}
-                    className="w-full py-3 rounded-xl font-bold transition bg-blue-600 text-white hover:bg-blue-700"
-                  >
-                    今すぐ始める
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedPlan(i);
-                      setContactForm({ ...contactForm, plan: plan.name });
-                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="w-full py-3 rounded-xl font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  >
-                    まずは相談する
-                  </button>
-                </div>
-              </div>
-            ))}
+                  <div className="border-t border-gray-100 pt-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">定価合計</span>
+                      <span>¥{calcTotal.subtotal.toLocaleString()}{paymentType === "monthly" ? "/月" : ""}</span>
+                    </div>
+                    {calcTotal.discount.discount > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-green-600 font-bold flex items-center gap-1">
+                          <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full">
+                            {Math.round(calcTotal.discount.discount * 100)}%OFF
+                          </span>
+                          セット割引
+                        </span>
+                        <span className="text-green-600 font-bold">-¥{calcTotal.discountAmount.toLocaleString()}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-t-2 border-gray-900 mt-4 pt-4">
+                    <div className="flex justify-between items-end">
+                      <span className="font-bold text-lg">お支払い額</span>
+                      <div className="text-right">
+                        <span className="text-3xl font-black text-blue-700">
+                          ¥{calcTotal.total.toLocaleString()}
+                        </span>
+                        <span className="text-gray-500 text-sm">{paymentType === "monthly" ? "/月（税込）" : "（税込・一括）"}</span>
+                      </div>
+                    </div>
+                  </div>
+                  {calcTotal.discount.label && (
+                    <p className="text-xs text-green-600 text-right mt-1">{calcTotal.discount.label}</p>
+                  )}
+                  <div className="mt-6 space-y-2">
+                    <button
+                      onClick={() => {
+                        setCheckoutModal(true);
+                        setCheckoutError("");
+                      }}
+                      disabled={selectedApps.length === 0}
+                      className="w-full py-3 rounded-xl font-bold transition bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      今すぐ始める
+                    </button>
+                    <button
+                      onClick={() => {
+                        const appNames = APP_PRICING.filter(a => selectedApps.includes(a.id)).map(a => a.name).join("、");
+                        setContactForm({ ...contactForm, plan: `カスタム（${appNames}）` });
+                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="w-full py-3 rounded-xl font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
+                      まずは相談する
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Mobile Sticky Bottom Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-40 px-4 py-3">
+        {selectedApps.length === 0 ? (
+          <p className="text-center text-gray-400 text-sm py-1">アプリを選択してください</p>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-black text-blue-700 whitespace-nowrap">
+                  ¥{calcTotal.total.toLocaleString()}
+                </span>
+                <span className="text-xs text-gray-500 whitespace-nowrap">
+                  {paymentType === "monthly" ? "/月" : "一括"}
+                </span>
+                {calcTotal.discount.discount > 0 && (
+                  <span className="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                    {Math.round(calcTotal.discount.discount * 100)}%OFF
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] text-gray-400 truncate">
+                {selectedApps.length}アプリ選択中
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setCheckoutModal(true);
+                setCheckoutError("");
+              }}
+              className="flex-shrink-0 bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition"
+            >
+              申し込む
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Add bottom padding on mobile for sticky bar */}
+      <div className="md:hidden h-20" />
 
       {/* Comparison */}
       <section className="py-16">
@@ -700,9 +876,9 @@ export default function Home() {
                   className="w-full mt-1 px-4 py-3 border rounded-lg text-sm"
                 >
                   <option value="">未定・相談したい</option>
-                  {PLANS.map((p) => (
-                    <option key={p.name} value={p.name}>
-                      {p.name}（月額{p.price.toLocaleString()}円）
+                  {RECOMMENDED_SETS.map((s) => (
+                    <option key={s.name} value={s.name}>
+                      {s.name}
                     </option>
                   ))}
                 </select>
@@ -741,17 +917,42 @@ export default function Home() {
       {checkoutModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 md:p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold">
-                {checkoutModal}プランで申し込む
-              </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold">お申し込み</h3>
               <button
-                onClick={() => setCheckoutModal(null)}
+                onClick={() => setCheckoutModal(false)}
                 className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
               >
                 &times;
               </button>
             </div>
+
+            {/* Order summary in modal */}
+            <div className="bg-gray-50 rounded-xl p-4 mb-5 text-sm">
+              <p className="text-gray-500 mb-2">
+                選択中のアプリ（{selectedApps.length}つ）
+              </p>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {APP_PRICING.filter(a => selectedApps.includes(a.id)).map(a => (
+                  <span key={a.id} className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-full">
+                    {a.icon} {a.name}
+                  </span>
+                ))}
+              </div>
+              <div className="border-t border-gray-200 pt-2 flex justify-between items-end">
+                <span className="text-gray-500">お支払い額</span>
+                <div>
+                  <span className="text-xl font-black text-blue-700">¥{calcTotal.total.toLocaleString()}</span>
+                  <span className="text-gray-500 text-xs">{paymentType === "monthly" ? "/月" : "（一括）"}</span>
+                </div>
+              </div>
+              {calcTotal.discount.discount > 0 && (
+                <p className="text-green-600 text-xs text-right mt-1">
+                  {calcTotal.discount.label}適用中
+                </p>
+              )}
+            </div>
+
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-bold text-gray-700">
@@ -782,7 +983,7 @@ export default function Home() {
                 </div>
               )}
               <button
-                onClick={() => handleCheckout(checkoutModal)}
+                onClick={handleCheckout}
                 disabled={checkoutLoading}
                 className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
