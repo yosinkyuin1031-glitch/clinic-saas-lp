@@ -4,6 +4,20 @@ import { useState } from "react";
 
 const FEATURES = [
   {
+    id: "kensa",
+    name: "検査アプリ",
+    icon: "🔬",
+    color: "red",
+    points: [
+      "神経学的検査をデジタル化（反射・感覚・筋力）",
+      "検査結果をPDFで出力・患者に共有",
+      "ビフォーアフターの可視化で説得力UP",
+      "セルフケア提案を自動生成",
+      "スタッフの検査スキル標準化に",
+    ],
+    demoUrl: "https://kensa-sheet-app.vercel.app",
+  },
+  {
     id: "customer",
     name: "顧客管理",
     icon: "👥",
@@ -45,22 +59,56 @@ const FEATURES = [
     ],
     demoUrl: "https://web-monshin.vercel.app",
   },
+  {
+    id: "meo",
+    name: "MEO対策ツール",
+    icon: "📍",
+    color: "orange",
+    points: [
+      "Googleマップの検索順位を自動チェック",
+      "キーワード別の順位推移グラフ",
+      "競合院との比較分析",
+      "GBP投稿・ブログ・FAQ記事をAI一括生成",
+      "週10分の運用で集患力アップ",
+    ],
+    demoUrl: "https://app-three-pi-32.vercel.app",
+  },
+  {
+    id: "sleep",
+    name: "睡眠チェック",
+    icon: "🌙",
+    color: "indigo",
+    points: [
+      "患者の睡眠の質を数値化・スコア化",
+      "睡眠改善アドバイスを自動提案",
+      "高額メニュー（睡眠カウンセリング）への導線",
+      "施術前後の睡眠スコア比較",
+      "治療院向け睡眠チェックは競合ゼロ",
+    ],
+    demoUrl: "",
+  },
 ];
 
 const PLANS = [
   {
-    name: "ライト",
-    price: 4980,
-    description: "1ツール単体利用",
-    features: ["ツール1つを選択", "データ保存 1000件", "メールサポート", "初期設定サポート"],
+    name: "梅（ライト）",
+    price: 5500,
+    description: "まずは検査アプリから",
+    features: [
+      "検査アプリ 1つ",
+      "データ保存 無制限",
+      "メールサポート",
+      "初期設定サポート",
+      "動画マニュアル付き",
+    ],
     recommended: false,
   },
   {
-    name: "スタンダード",
+    name: "竹（スタンダード）",
     price: 9800,
-    description: "3点セット（一番人気）",
+    description: "業務効率化3点セット（一番人気）",
     features: [
-      "顧客管理 + 予約 + 問診",
+      "検査アプリ + 顧客管理 + 予約管理",
       "データ保存 無制限",
       "3ツール間のデータ連携",
       "優先メールサポート",
@@ -70,17 +118,17 @@ const PLANS = [
     recommended: true,
   },
   {
-    name: "プレミアム",
-    price: 19800,
-    description: "全機能 + カスタマイズ",
+    name: "松（フルセット）",
+    price: 12800,
+    description: "全6ツール使い放題",
     features: [
-      "スタンダード全機能",
-      "院のロゴ・カラーでカスタマイズ",
-      "独自ドメイン対応",
-      "LINE公式アカウント連携",
+      "全6アプリ使い放題",
+      "顧客管理 + 予約 + 問診 + 検査 + MEO + 睡眠",
+      "全ツール間のデータ連携",
       "専属サポート担当",
       "月2回オンライン相談",
       "新機能の先行利用",
+      "院のロゴ・カラーでカスタマイズ",
     ],
     recommended: false,
   },
@@ -92,12 +140,20 @@ const FAQS = [
     a: "はい。スマホだけでも操作できるシンプル設計です。導入時に画面共有で操作方法をお伝えしますので、ご安心ください。",
   },
   {
+    q: "検査アプリとは何ですか？",
+    a: "神経学的検査（反射・感覚・筋力テスト）の結果をデジタルで記録・管理できるツールです。検査結果をPDFで出力して患者さんに渡せるので、「見える化」で納得感が上がります。スタッフの検査スキル標準化にも役立ちます。",
+  },
+  {
     q: "今使っている紙のカルテからデータを移行できますか？",
     a: "Excelやスプレッドシートにまとめていただければ、CSVで一括取り込みが可能です。移行作業のサポートも行います。",
   },
   {
     q: "途中で解約できますか？",
     a: "はい。最低利用期間はありません。いつでも解約可能で、解約月の月末まで利用できます。",
+  },
+  {
+    q: "途中でプランを変更できますか？",
+    a: "はい。いつでもアップグレード・ダウングレードが可能です。変更は翌月から適用されます。",
   },
   {
     q: "患者情報のセキュリティは大丈夫ですか？",
@@ -109,7 +165,7 @@ const FAQS = [
   },
   {
     q: "他の治療院管理ソフトとの違いは？",
-    a: "大手ソフトは月額3〜5万円が相場ですが、当サービスは3点セットで月額9,800円。治療院経営者が自ら開発したツールなので、現場で本当に必要な機能だけに絞っています。",
+    a: "大手ソフトは月額3〜5万円が相場ですが、当サービスは月額5,500円から。治療院経営者が自ら開発したツールなので、現場で本当に必要な機能だけに絞っています。",
   },
 ];
 
@@ -148,6 +204,46 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  // Stripe Checkout用 state
+  const [checkoutModal, setCheckoutModal] = useState<string | null>(null);
+  const [checkoutEmail, setCheckoutEmail] = useState("");
+  const [checkoutClinicName, setCheckoutClinicName] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+
+  const handleCheckout = async (planName: string) => {
+    if (!checkoutEmail || !checkoutClinicName) {
+      setCheckoutError("メールアドレスと院名を入力してください");
+      return;
+    }
+    setCheckoutLoading(true);
+    setCheckoutError("");
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planName,
+          email: checkoutEmail,
+          clinicName: checkoutClinicName,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "エラーが発生しました");
+      }
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      setCheckoutError(
+        err instanceof Error ? err.message : "決済処理に失敗しました"
+      );
+    } finally {
+      setCheckoutLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,16 +290,16 @@ export default function Home() {
             治療院・整体院・鍼灸院向け
           </p>
           <h1 className="text-3xl md:text-5xl font-black leading-tight mb-6">
-            業務効率化ツール
+            治療院の業務を、
             <br />
-            <span className="text-yellow-300">3点セット</span>で月額9,800円
+            まるごと<span className="text-yellow-300">DX化</span>
           </h1>
           <p className="text-blue-100 text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
-            顧客管理・予約管理・WEB問診。
+            検査・顧客管理・予約・問診・MEO・睡眠チェック。
             <br />
-            治療院に必要なDXツールをまとめて導入。
+            治療院経営者が自ら開発した6つのツールを
             <br />
-            初期費用0円・最短即日スタート。
+            月額5,500円から。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -267,10 +363,10 @@ export default function Home() {
       <section id="features" className="py-16">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center mb-4">
-            3つのツールで院の業務をDX化
+            6つのツールで院の業務をDX化
           </h2>
           <p className="text-center text-gray-500 mb-12">
-            それぞれ単体でも、セットでも利用可能
+            治療院経営者が自ら開発。現場で本当に必要な機能だけを厳選。
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {FEATURES.map((f) => (
@@ -288,14 +384,20 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={f.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-center py-2 border-2 border-blue-600 text-blue-600 rounded-lg font-bold text-sm hover:bg-blue-50 transition"
-                >
-                  デモを見る
-                </a>
+                {f.demoUrl ? (
+                  <a
+                    href={f.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center py-2 border-2 border-blue-600 text-blue-600 rounded-lg font-bold text-sm hover:bg-blue-50 transition"
+                  >
+                    デモを見る
+                  </a>
+                ) : (
+                  <span className="block text-center py-2 border-2 border-gray-300 text-gray-400 rounded-lg font-bold text-sm">
+                    Coming Soon
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -349,6 +451,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Developer Profile */}
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center mb-2">
+            開発者紹介
+          </h2>
+          <p className="text-center text-blue-600 font-bold mb-10">
+            治療家 × 経営者 × エンジニア
+          </p>
+          <div className="bg-white rounded-2xl shadow-sm border p-8">
+            <h3 className="text-xl font-bold mb-1">大口 陽平（30歳）</h3>
+            <p className="text-sm text-gray-500 mb-6">
+              大口神経整体院 院長 / AI Solutions 代表
+            </p>
+            <ul className="space-y-3 mb-8">
+              {[
+                "整体院を経営しながら、自分の現場の課題を解決するためにアプリ開発を開始",
+                "AIを活用し、2週間で30個のアプリを開発",
+                "検査アプリは患者から「すごい見やすい」と好評、家族への紹介にもつながった",
+                "現在4事業（整体院・訪問鍼灸・治療機器・アプリ開発）を同時運営",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                  <span className="text-blue-500 flex-shrink-0 mt-0.5">●</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="bg-blue-50 rounded-xl p-5">
+              <p className="text-sm text-gray-700 leading-relaxed italic">
+                「大手のツールは高くて機能が多すぎる。
+                <br />
+                現場で本当に必要な機能だけを、治療家の目線で作りました。」
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="pricing" className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
@@ -387,20 +527,28 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  onClick={() => {
-                    setSelectedPlan(i);
-                    setContactForm({ ...contactForm, plan: plan.name });
-                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`w-full py-3 rounded-xl font-bold transition ${
-                    plan.recommended
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  このプランで相談する
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      setSelectedPlan(i);
+                      setCheckoutModal(plan.name);
+                      setCheckoutError("");
+                    }}
+                    className="w-full py-3 rounded-xl font-bold transition bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    今すぐ始める
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedPlan(i);
+                      setContactForm({ ...contactForm, plan: plan.name });
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="w-full py-3 rounded-xl font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  >
+                    まずは相談する
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -427,7 +575,7 @@ export default function Home() {
               </thead>
               <tbody>
                 {[
-                  ["月額料金", "9,800円", "30,000円〜", "50,000円〜"],
+                  ["月額料金", "5,500円〜", "30,000円〜", "50,000円〜"],
                   ["初期費用", "0円", "100,000円〜", "200,000円〜"],
                   ["顧客管理", "○", "○", "○"],
                   ["予約管理", "○", "○", "○"],
@@ -589,11 +737,70 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Checkout Modal */}
+      {checkoutModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 md:p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold">
+                {checkoutModal}プランで申し込む
+              </h3>
+              <button
+                onClick={() => setCheckoutModal(null)}
+                className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-bold text-gray-700">
+                  院名 *
+                </label>
+                <input
+                  value={checkoutClinicName}
+                  onChange={(e) => setCheckoutClinicName(e.target.value)}
+                  placeholder="○○整骨院"
+                  className="w-full mt-1 px-4 py-3 border rounded-lg text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-bold text-gray-700">
+                  メールアドレス *
+                </label>
+                <input
+                  type="email"
+                  value={checkoutEmail}
+                  onChange={(e) => setCheckoutEmail(e.target.value)}
+                  placeholder="info@example.com"
+                  className="w-full mt-1 px-4 py-3 border rounded-lg text-sm"
+                />
+              </div>
+              {checkoutError && (
+                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">
+                  {checkoutError}
+                </div>
+              )}
+              <button
+                onClick={() => handleCheckout(checkoutModal)}
+                disabled={checkoutLoading}
+                className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {checkoutLoading ? "処理中..." : "決済に進む"}
+              </button>
+              <p className="text-xs text-gray-400 text-center">
+                Stripeの安全な決済画面に移動します
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-xl font-black text-white mb-2">ClinicDX</p>
-          <p className="text-sm mb-6">治療院DXツール 3点セット</p>
+          <p className="text-sm mb-6">治療院DXツール 6点セット</p>
           <div className="flex justify-center gap-6 text-sm mb-6">
             <a href="#features" className="hover:text-white transition">
               機能紹介
