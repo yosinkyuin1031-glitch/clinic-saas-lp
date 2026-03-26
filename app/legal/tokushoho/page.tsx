@@ -41,7 +41,7 @@ export default function TokushohoPage() {
                 label="メールアドレス"
                 value="yosinkyuin1031@gmail.com"
               />
-              <Row label="販売URL" value="https://clinicdx.jp" />
+              <Row label="販売URL" value="https://clinic-saas-lp.vercel.app" />
               <Row
                 label="販売価格"
                 value={
