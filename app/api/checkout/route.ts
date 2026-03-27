@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
 
     if (!email || !clinicName || !amount || !selectedApps || selectedApps.length === 0) {
       return NextResponse.json(
-        { error: "メールアドレス・院名・選択アプリは必須です" },
+        { error: "メールアドレス・院名・選択システムは必須です" },
         { status: 400 }
       );
     }

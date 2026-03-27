@@ -53,7 +53,7 @@ export default function TermsPage() {
             <ol className="list-decimal pl-5 space-y-2 mt-2">
               <li>
                 <span className="font-medium">「本サービス」</span>
-                ：当社が「ClinicDX」の名称で提供する、検査アプリ・顧客管理・予約管理・WEB問診・MEO勝ち上げくん・睡眠チェック等の治療院向けクラウドアプリケーション群をいいます。
+                ：当社が「ClinicDX」の名称で提供する、検査システム・顧客管理・予約管理・WEB問診・MEO勝ち上げくん・睡眠チェック等の治療院向けクラウドシステム群をいいます。
               </li>
               <li>
                 <span className="font-medium">「契約者」</span>
@@ -119,7 +119,7 @@ export default function TermsPage() {
                     <thead>
                       <tr className="bg-gray-50">
                         <th className="px-3 py-2 text-left font-medium">
-                          アプリ名
+                          システム名
                         </th>
                         <th className="px-3 py-2 text-right font-medium">
                           月額
@@ -130,7 +130,7 @@ export default function TermsPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      <PriceRow name="検査アプリ" m="5,500円" b="55,000円" />
+                      <PriceRow name="検査システム" m="5,500円" b="55,000円" />
                       <PriceRow name="顧客管理" m="4,980円" b="49,800円" />
                       <PriceRow name="予約管理" m="2,980円" b="29,800円" />
                       <PriceRow name="WEB問診" m="2,980円" b="29,800円" />
@@ -148,7 +148,7 @@ export default function TermsPage() {
                 買切りプランをご購入の契約者は、年間保守契約（月額料金の約10%×12ヶ月分）を別途締結するものとします。保守契約には、アップデート提供・障害対応・技術サポートが含まれます。
               </li>
               <li>
-                複数アプリをまとめてご契約いただく場合、セット割引を適用することがあります。割引率は販売ページまたは個別のお見積りにて提示します。
+                複数システムをまとめてご契約いただく場合、セット割引を適用することがあります。割引率は販売ページまたは個別のお見積りにて提示します。
               </li>
               <li>
                 支払いはクレジットカード決済（Stripe経由）によるものとします。
@@ -169,10 +169,10 @@ export default function TermsPage() {
             </h2>
             <ol className="list-decimal pl-5 space-y-2">
               <li>
-                本サービスは、治療院・整体院・鍼灸院等の業務効率化を目的としたクラウド型Webアプリケーション群です。
+                本サービスは、治療院・整体院・鍼灸院等の業務効率化を目的としたクラウド型Webシステム群です。
               </li>
               <li>
-                各アプリの機能詳細は、販売ページおよびヘルプドキュメントに定めるとおりとします。
+                各システムの機能詳細は、販売ページおよびヘルプドキュメントに定めるとおりとします。
               </li>
               <li>
                 当社は、サービスの品質向上のため、事前通知のうえ機能追加・改善を行うことがあります。

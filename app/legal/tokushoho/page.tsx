@@ -47,10 +47,10 @@ export default function TokushohoPage() {
                 value={
                   <div className="space-y-3">
                     <p className="font-medium text-gray-700 mb-2">
-                      各アプリの価格（税込）：
+                      各システムの価格（税込）：
                     </p>
                     <PriceItem
-                      name="検査アプリ"
+                      name="検査システム"
                       monthly="5,500円/月"
                       buyout="55,000円"
                     />
