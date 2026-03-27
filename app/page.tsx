@@ -9,7 +9,7 @@ const APPS = [
     id: "kensa",
     name: "検査シート作成システム",
     shortName: "検査シート",
-    category: "検査・施術支援",
+    categories: ["検査＆診断"],
     description: "神経学的検査をデジタル化。検査結果をPDF出力し、患者ごとの経過記録を残せます。",
     features: ["神経学的検査をデジタル化", "検査結果をPDF出力", "患者ごとの経過記録"],
     monthlyPrice: 5500,
@@ -26,7 +26,7 @@ const APPS = [
     id: "customer",
     name: "顧客管理シート",
     shortName: "顧客管理",
-    category: "患者管理",
+    categories: ["開業", "集客", "内製化"],
     description: "患者情報を一元管理。来院履歴・離反アラート・データ分析ダッシュボード搭載。",
     features: ["患者情報を一元管理", "来院履歴・離反アラート", "データ分析ダッシュボード"],
     monthlyPrice: 4980,
@@ -43,7 +43,7 @@ const APPS = [
     id: "reservation",
     name: "予約管理",
     shortName: "予約管理",
-    category: "患者管理",
+    categories: ["開業", "内製化"],
     description: "カレンダー形式で直感操作。ダブルブッキング防止、LINE通知連携。",
     features: ["カレンダー形式で直感操作", "ダブルブッキング防止", "LINE通知連携"],
     monthlyPrice: 2980,
@@ -60,7 +60,7 @@ const APPS = [
     id: "monshin",
     name: "WEB問診",
     shortName: "WEB問診",
-    category: "患者管理",
+    categories: ["開業"],
     description: "来院前にスマホで問診。自動集計・PDF出力。カスタム問診項目対応。",
     features: ["来院前にスマホで問診", "自動集計・PDF出力", "カスタム問診項目"],
     monthlyPrice: 2980,
@@ -77,7 +77,7 @@ const APPS = [
     id: "meo",
     name: "MEO勝ち上げくん",
     shortName: "MEO対策",
-    category: "集客",
+    categories: ["集客", "内製化"],
     description: "Googleマップ順位を自動チェック。AI投稿文を自動生成。医療広告ガイドライン自動チェック。",
     features: ["Googleマップ順位を自動チェック", "AI投稿文を自動生成", "医療広告ガイドライン自動チェック"],
     monthlyPrice: 4980,
@@ -93,7 +93,7 @@ const APPS = [
   },
 ];
 
-const CATEGORIES = ["すべて", "検査・施術支援", "患者管理", "集客"];
+const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断"];
 
 const COMING_SOON_APPS = [
   "LINE自動化ツール",
@@ -106,21 +106,39 @@ const COMING_SOON_APPS = [
 const SET_EXAMPLES = [
   {
     name: "開業パック",
-    appIds: ["kensa", "reservation", "monshin"],
-    discountRate: 0.10,
+    appIds: ["reservation", "monshin", "customer"],
+    description: "これから開業する先生に必要な3点セット",
+    setMonthly: 9800,
+    setInitial: 49800,
     label: "10%OFF",
+    note: null,
   },
   {
-    name: "集客強化パック",
+    name: "集客パック",
     appIds: ["meo", "customer"],
-    discountRate: 0.05,
+    description: "新規集客を強化したい先生向け",
+    setMonthly: 9460,
+    setInitial: 49800,
     label: "5%OFF",
+    note: null,
   },
   {
-    name: "フルパック",
-    appIds: ["kensa", "customer", "reservation", "monshin", "meo"],
-    discountRate: 0.20,
-    label: "20%OFF + 初期費用半額",
+    name: "内製化パック",
+    appIds: ["customer", "reservation", "meo"],
+    description: "外注をやめて自分で回したい先生向け",
+    setMonthly: 11640,
+    setInitial: 59800,
+    label: "10%OFF",
+    note: null,
+  },
+  {
+    name: "検査＆診断パック",
+    appIds: ["kensa"],
+    description: "施術の質・患者への説明力を上げたい先生向け",
+    setMonthly: 5500,
+    setInitial: 33000,
+    label: "",
+    note: "※今後、睡眠チェック・栄養診断等を追加予定",
   },
 ];
 
@@ -199,7 +217,7 @@ export default function Home() {
 
   const filteredApps = activeCategory === "すべて"
     ? APPS
-    : APPS.filter(app => app.category === activeCategory);
+    : APPS.filter(app => app.categories.includes(activeCategory));
 
   const calcTotal = useMemo(() => {
     const selected = APPS.filter(app => selectedApps.includes(app.id));
@@ -607,64 +625,70 @@ export default function Home() {
             </table>
           </div>
 
-          {/* セット割引 */}
+          {/* セットで買うとお得 */}
           <div className="bg-accent/5 rounded-2xl border border-accent/20 p-6 md:p-8 mb-10">
-            <h3 className="text-xl font-black text-primary text-center mb-6">セット割引</h3>
-            <div className="grid md:grid-cols-3 gap-3 mb-6">
-              <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-                <p className="text-accent font-bold text-lg mb-1">5%OFF</p>
-                <p className="text-sm text-gray-600">2システム以上</p>
-              </div>
-              <div className="bg-white rounded-xl p-4 text-center border border-gray-200">
-                <p className="text-accent font-bold text-lg mb-1">10%OFF</p>
-                <p className="text-sm text-gray-600">3システム以上</p>
-              </div>
-              <div className="bg-white rounded-xl p-4 text-center border border-accent shadow-md">
-                <p className="text-cta font-bold text-lg mb-1">20%OFF + 初期費用半額</p>
-                <p className="text-sm text-gray-600">全5システム導入</p>
-              </div>
-            </div>
+            <h3 className="text-xl font-black text-primary text-center mb-2">セットで買うとお得</h3>
+            <p className="text-center text-gray-500 text-sm mb-6">目的に合わせたパックで、月額も初期費用もお得になります。</p>
           </div>
 
-          {/* セット例 */}
-          <h3 className="text-xl font-black text-primary text-center mb-6">おすすめセット</h3>
-          <div className="grid md:grid-cols-3 gap-5 mb-10">
+          {/* セットパック */}
+          <h3 className="text-xl font-black text-primary text-center mb-6">おすすめパック</h3>
+          <div className="grid md:grid-cols-2 gap-5 mb-10">
             {SET_EXAMPLES.map((set) => {
               const apps = APPS.filter(a => set.appIds.includes(a.id));
               const monthlyTotal = apps.reduce((s, a) => s + a.monthlyPrice, 0);
-              const discounted = Math.floor(monthlyTotal * (1 - set.discountRate));
               const initialTotal = apps.reduce((s, a) => s + a.initialCost, 0);
-              const initialDiscounted = set.appIds.length >= 5 ? Math.floor(initialTotal * 0.5) : initialTotal;
+              const isSingle = set.appIds.length === 1;
               return (
-                <div key={set.name} className={`bg-white rounded-2xl border-2 p-6 ${set.appIds.length >= 5 ? "border-cta shadow-lg" : "border-gray-200"}`}>
-                  {set.appIds.length >= 5 && (
-                    <span className="inline-block bg-cta text-white text-xs font-bold px-3 py-1 rounded-full mb-3">おすすめ</span>
-                  )}
-                  <h4 className="text-lg font-black text-primary mb-3">{set.name}</h4>
+                <div key={set.name} className="bg-white rounded-2xl border-2 border-gray-200 p-6 hover:border-accent/40 hover:shadow-lg transition-all">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h4 className="text-lg font-black text-primary">{set.name}</h4>
+                    {set.label && (
+                      <span className="bg-cta/10 text-cta text-xs font-bold px-2.5 py-0.5 rounded-full">{set.label}</span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 mb-4">{set.description}</p>
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {apps.map(a => (
-                      <span key={a.id} className="bg-accent/10 text-accent text-xs font-bold px-2 py-1 rounded-full">
+                      <span key={a.id} className="bg-accent/10 text-accent text-xs font-bold px-3 py-1.5 rounded-full">
                         {a.shortName}
                       </span>
                     ))}
+                    {isSingle && (
+                      <span className="bg-gray-100 text-gray-400 text-xs font-bold px-3 py-1.5 rounded-full">+ 今後追加予定</span>
+                    )}
                   </div>
-                  <div className="border-t border-gray-100 pt-3">
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-2xl font-black text-primary">{discounted.toLocaleString()}</span>
-                      <span className="text-sm text-gray-400">円/月</span>
-                      <span className="bg-cta/10 text-cta text-xs font-bold px-2 py-0.5 rounded-full">{set.label}</span>
+                  <div className="border-t border-gray-100 pt-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">月額</span>
+                      <div className="flex items-baseline gap-2">
+                        {!isSingle && (
+                          <span className="text-sm text-gray-400 line-through">{monthlyTotal.toLocaleString()}円</span>
+                        )}
+                        <span className="text-2xl font-black text-primary">{set.setMonthly.toLocaleString()}</span>
+                        <span className="text-sm text-gray-400">円/月</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-400 line-through">定価 {monthlyTotal.toLocaleString()}円/月</p>
-                    <p className="text-xs text-gray-500 mt-1">初期費用: {initialDiscounted.toLocaleString()}円</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">初期費用</span>
+                      <div className="flex items-baseline gap-2">
+                        {!isSingle && initialTotal !== set.setInitial && (
+                          <span className="text-sm text-gray-400 line-through">{initialTotal.toLocaleString()}円</span>
+                        )}
+                        <span className="text-base font-bold text-gray-700">{set.setInitial.toLocaleString()}円</span>
+                      </div>
+                    </div>
                   </div>
+                  {set.note && (
+                    <p className="text-xs text-gray-400 mt-3">{set.note}</p>
+                  )}
                   <button
                     onClick={() => {
-                      setSelectedApps([...set.appIds]);
-                      document.getElementById("pricing-calc")?.scrollIntoView({ behavior: "smooth" });
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="w-full mt-4 py-2.5 rounded-lg font-bold text-sm transition bg-accent text-white hover:bg-accent-600"
+                    className="w-full mt-4 py-3 rounded-xl font-bold text-sm transition bg-accent text-white hover:bg-accent-600 hover:shadow-md"
                   >
-                    このセットで申し込む
+                    このパックで相談する
                   </button>
                 </div>
               );
