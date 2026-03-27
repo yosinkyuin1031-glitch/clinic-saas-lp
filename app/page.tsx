@@ -322,16 +322,16 @@ export default function Home() {
         <div className="relative max-w-5xl mx-auto px-4 py-20 md:py-28">
           <div className="text-center">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight">
-              <span className="text-primary">治療院の業務を、</span>
+              <span className="text-primary">治療家が、治療家のために</span>
               <br />
-              <span className="text-primary">まるごと</span>
-              <span className="text-accent">デジタル化。</span>
+              <span className="text-primary">作った</span>
+              <span className="text-accent">業務アプリ。</span>
             </h1>
 
             <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              現役整体院経営者が開発した業務アプリ。
+              高くて使いこなせないシステムは、もういらない。
               <br className="hidden md:block" />
-              必要なものだけ選んで、すぐに使えます。
+              月額1,980円から。現場で本当に必要な機能だけを厳選しました。
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -364,8 +364,8 @@ export default function Home() {
               "カルテや顧客情報が紙やExcelでバラバラ",
               "予約管理が電話対応で手間がかかる",
               "MEO対策、何から始めればいいかわからない",
-              "高い月額のシステムを使いこなせていない",
-              "ITに詳しくないから導入が不安",
+              "月2〜5万円のシステム、使いこなせていない",
+              "ITに詳しくなくて導入が不安",
             ].map((text, i) => (
               <div key={i} className="flex items-start gap-3 bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <div className="flex-shrink-0 w-8 h-8 bg-cta/10 rounded-lg flex items-center justify-center mt-0.5">
@@ -376,6 +376,91 @@ export default function Home() {
                 <p className="text-sm text-gray-700 leading-relaxed">{text}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== 差別化セクション ===== */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
+            現役治療家が、現場で作ったアプリです。
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 text-center">
+              <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-primary mb-2">治療家が設計</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                現役整体院経営者が毎日の診療で使いながら開発。現場で本当に必要な機能だけを厳選しています。
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 text-center">
+              <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-primary mb-2">シンプル設計</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                ITが苦手でも大丈夫。スマホ1つで操作できるシンプルな画面設計。余計な機能は入れていません。
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 text-center">
+              <div className="w-14 h-14 bg-cta/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-7 h-7 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-primary mb-2">大手の1/3以下の料金</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                大手ツールは月額2〜5万円。うちは月額1,980円から。治療院の経営を圧迫しない価格設計です。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== 大手との比較表 ===== */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
+            大手ツールとの比較
+          </h2>
+          <p className="text-center text-gray-500 text-sm mb-10">
+            使いこなせない高いシステムではなく、現場に合ったシンプルなアプリを。
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-primary text-white">
+                  <th className="py-3 px-4 text-left rounded-tl-lg"></th>
+                  <th className="py-3 px-4 text-center font-black">ClinicApps</th>
+                  <th className="py-3 px-4 text-center">大手A社</th>
+                  <th className="py-3 px-4 text-center rounded-tr-lg">大手B社</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "月額料金", ours: "1,980円〜", a: "22,000円〜", b: "33,000円〜" },
+                  { label: "初期費用", ours: "19,800円〜", a: "110,000円〜", b: "無料" },
+                  { label: "最低契約期間", ours: "なし", a: "1年", b: "2年" },
+                  { label: "治療院特化", ours: "◎", a: "△", b: "×" },
+                  { label: "カスタマイズ", ours: "◎", a: "×", b: "△" },
+                  { label: "開発者", ours: "現役治療家", a: "IT企業", b: "IT企業" },
+                ].map((row, i) => (
+                  <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
+                    <td className="py-3 px-4 font-bold text-primary">{row.label}</td>
+                    <td className="py-3 px-4 text-center font-bold text-accent">{row.ours}</td>
+                    <td className="py-3 px-4 text-center text-gray-500">{row.a}</td>
+                    <td className="py-3 px-4 text-center text-gray-500">{row.b}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -457,18 +542,11 @@ export default function Home() {
       </section>
 
       {/* ===== Coming Soon ===== */}
-      <section className="py-10 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
-          <h3 className="text-lg font-bold text-center text-gray-400 mb-6">今後追加予定</h3>
-          <div className="flex flex-wrap gap-3 justify-center mb-4">
-            {COMING_SOON_APPS.map((name, i) => (
-              <div key={i} className="bg-gray-100 text-gray-400 text-sm font-medium px-4 py-2 rounded-lg border border-gray-200">
-                {name}
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-xs text-gray-400">
-            順次リリース予定。ご要望があればお気軽にお問い合わせください。
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <p className="text-sm text-gray-400 mb-2">今後順次リリース予定</p>
+          <p className="text-xs text-gray-400">
+            {COMING_SOON_APPS.join(" / ")}
           </p>
         </div>
       </section>
@@ -480,7 +558,7 @@ export default function Home() {
             料金プラン
           </h2>
           <p className="text-center text-gray-500 text-sm mb-10">
-            すべて初期費用 + 月額制。最低利用期間なし。いつでも解約OK。
+            初期費用 + 月額制。最低契約期間なし。いつでも解約OK。大手の1/3以下の料金です。
           </p>
 
           {/* 単品料金テーブル */}
@@ -690,7 +768,7 @@ export default function Home() {
             既製品で合わない？ゼロから作ります。
           </h2>
           <p className="text-center text-white/70 text-sm mb-12">
-            治療院の業務を知り尽くした開発チームが、あなたの院専用のアプリを開発します。
+            現場を知っている治療家が開発するから、本当に使えるアプリになります。
           </p>
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -1092,8 +1170,8 @@ export default function Home() {
                 <span className="text-lg font-black text-white">ClinicApps</span>
               </div>
               <p className="text-sm text-gray-400 max-w-xs">
-                治療院・整体院・鍼灸院向けの業務アプリ。
-                現役の整体院経営者が自ら開発・提供しています。
+                治療家が、治療家のために作った業務アプリ。
+                現場で毎日使いながら改善を重ねています。
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8 text-sm">
