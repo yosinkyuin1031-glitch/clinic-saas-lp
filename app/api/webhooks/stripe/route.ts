@@ -3,11 +3,21 @@ import Stripe from "stripe";
 import { createAdminClient } from "@/app/lib/supabase";
 import crypto from "crypto";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-02-25.clover",
-});
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY is not set");
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-02-25.clover",
+  });
+}
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getWebhookSecret() {
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    throw new Error("STRIPE_WEBHOOK_SECRET is not set");
+  }
+  return process.env.STRIPE_WEBHOOK_SECRET;
+}
 
 // ユニークなclinic_id生成（CLN-XXXXXXXX形式）
 function generateClinicId(): string {
@@ -64,6 +74,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const stripe = getStripe();
+    const webhookSecret = getWebhookSecret();
     event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
