@@ -113,7 +113,7 @@ export default function KensaDetailPage() {
             ← ClinicApps トップ
           </Link>
           <a
-            href="https://kensa-system.vercel.app/login?demo=true"
+            href="https://kensa-demo.vercel.app"
             className="px-4 py-1.5 bg-cta text-white rounded-lg text-sm font-bold hover:bg-cta-600 transition-colors"
           >
             デモを体験
@@ -141,7 +141,7 @@ export default function KensaDetailPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://kensa-system.vercel.app/login?demo=true"
+              href="https://kensa-demo.vercel.app"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
               無料でデモを体験する
@@ -186,7 +186,7 @@ export default function KensaDetailPage() {
           {/* デモ体験 */}
           <div className="text-center mb-6">
             <a
-              href="https://kensa-system.vercel.app/login?demo=true"
+              href="https://kensa-demo.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg transition-all"
@@ -460,7 +460,7 @@ export default function KensaDetailPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://kensa-system.vercel.app/login?demo=true"
+              href="https://kensa-demo.vercel.app"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
               無料デモを体験する

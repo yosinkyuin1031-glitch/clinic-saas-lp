@@ -15,7 +15,7 @@ const APPS = [
     monthlyPrice: 5500,
     initialCost: 33000,
     badge: "看板商品",
-    demoUrl: "https://kensa-system.vercel.app/login?demo=true",
+    demoUrl: "https://kensa-demo.vercel.app",
     detailUrl: "/systems/kensa",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
