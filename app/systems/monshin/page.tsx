@@ -1,0 +1,339 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "WEB問診システム - 治療院専用WEB問診システム | ClinicApps",
+  description:
+    "治療院専用のWEB問診システム。スマホで来院前に問診入力、カスタム問診項目、自動集計・分析、PDF出力、QRコード対応。月額2,980円。",
+};
+
+const FEATURES = [
+  {
+    icon: "M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3",
+    title: "スマホで来院前に問診",
+    desc: "患者がスマホで事前に問診を入力。来院時の受付時間を大幅短縮。",
+  },
+  {
+    icon: "M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10",
+    title: "カスタム問診項目",
+    desc: "院のスタイルに合わせて問診項目を自由に追加・編集。症状別テンプレートも用意。",
+  },
+  {
+    icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
+    title: "自動集計・分析",
+    desc: "問診データを自動集計。よくある症状・年齢層・来院きっかけが数字でわかる。",
+  },
+  {
+    icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z",
+    title: "PDF出力",
+    desc: "問診票をPDFで出力。印刷してカルテに挟むことも、デジタル保存も可能。",
+  },
+  {
+    icon: "M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z",
+    title: "患者用QRコード",
+    desc: "院に置くQRコードを自動生成。患者がスマホで読み取るだけで問診開始。",
+  },
+  {
+    icon: "M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582",
+    title: "多言語対応",
+    desc: "外国人患者にも対応。英語・中国語の問診テンプレートを用意。",
+  },
+];
+
+const COMPETITORS = [
+  { name: "WEB問診システム", price: "2,980円", smartphone: true, custom: true, analytics: true, pdf: true, qr: true, clinic: "○", highlight: true },
+  { name: "紙の問診票", price: "0円", smartphone: false, custom: false, analytics: false, pdf: false, qr: false, clinic: "×", highlight: false },
+  { name: "Symview", price: "15,000円〜", smartphone: true, custom: "△", analytics: true, pdf: true, qr: true, clinic: "× 医科向け", highlight: false },
+  { name: "メルプ", price: "10,000円〜", smartphone: true, custom: true, analytics: true, pdf: true, qr: true, clinic: "× 医科向け", highlight: false },
+];
+
+const STEPS = [
+  { num: "01", title: "アカウント作成", desc: "メールアドレスで簡単登録。3分で完了。" },
+  { num: "02", title: "問診項目をカスタマイズ", desc: "テンプレートを選んで、必要な項目を追加・編集。" },
+  { num: "03", title: "QRコードを院内に設置", desc: "自動生成されたQRを印刷して受付に置くだけ。" },
+  { num: "04", title: "患者がスマホで入力", desc: "QRを読み取ってスマホで問診。来院前でもOK。" },
+  { num: "05", title: "結果を確認して施術開始", desc: "管理画面で問診内容をチェック。PDFで保存も可能。" },
+];
+
+export default function MonshinDetailPage() {
+  return (
+    <div className="min-h-screen bg-white">
+      {/* ヘッダー */}
+      <header className="bg-primary text-white sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <Link href="/" className="text-sm opacity-80 hover:opacity-100">
+            ← ClinicApps トップ
+          </Link>
+          <a
+            href="https://web-monshin.vercel.app/staff?demo=true"
+            className="px-4 py-1.5 bg-cta text-white rounded-lg text-sm font-bold hover:bg-cta-600 transition-colors"
+          >
+            デモを体験
+          </a>
+        </div>
+      </header>
+
+      {/* ヒーロー */}
+      <section className="bg-gradient-to-br from-primary via-primary-700 to-primary-800 text-white py-16 md:py-24">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm mb-6">
+            治療院専用 WEB問診システム
+          </div>
+          <h1 className="text-3xl md:text-5xl font-black leading-tight mb-6">
+            WEB問診システム
+          </h1>
+          <p className="text-lg md:text-xl text-white/80 mb-4 leading-relaxed">
+            患者がスマホで来院前に問診入力。受付の混雑を解消。
+          </p>
+          <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
+            治療院に特化した問診テンプレートは<span className="text-cta-300 font-bold">業界最安</span>。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://web-monshin.vercel.app/staff?demo=true"
+              className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
+            >
+              無料でデモを体験する
+            </a>
+            <a
+              href="#pricing"
+              className="px-8 py-4 bg-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/20 transition-colors border border-white/20"
+            >
+              料金を見る
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* こんな悩みありませんか？ */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
+            こんな悩みはありませんか？
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              "紙の問診票の記入で受付が混雑する",
+              "手書きが読みにくくて内容を聞き直すことがある",
+              "問診データの集計・分析ができていない",
+              "患者の主訴を施術前に把握しきれない",
+              "問診票の保管場所に困っている",
+              "初回カウンセリングに時間がかかりすぎる",
+            ].map((pain, i) => (
+              <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <span className="text-red-500 text-lg mt-0.5">&#10007;</span>
+                <span className="text-sm text-gray-700">{pain}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-center mt-8 text-primary font-bold text-lg">
+            全て、WEB問診システムで解決できます。
+          </p>
+        </div>
+      </section>
+
+      {/* 機能紹介 */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            主な機能
+          </h2>
+          <p className="text-center text-gray-500 mb-12">
+            治療院のWEB問診に必要な機能を全て搭載
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {FEATURES.map((f, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-accent-50 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d={f.icon} />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-primary mb-2">{f.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 他社との違い */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            他社ツールとの比較
+          </h2>
+          <p className="text-center text-gray-500 mb-10">
+            治療院に必要な機能を、圧倒的な低価格で
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
+              <thead>
+                <tr className="bg-primary text-white">
+                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  {COMPETITORS.map((c, i) => (
+                    <th key={i} className={`px-3 py-3 text-center font-bold ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.name}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3 font-medium">月額料金</td>
+                  {COMPETITORS.map((c, i) => (
+                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
+                      {c.price}
+                    </td>
+                  ))}
+                </tr>
+                {[
+                  { label: "スマホ問診", key: "smartphone" as const },
+                  { label: "カスタム項目", key: "custom" as const },
+                  { label: "自動集計", key: "analytics" as const },
+                  { label: "PDF出力", key: "pdf" as const },
+                  { label: "QRコード", key: "qr" as const },
+                ].map((row, ri) => (
+                  <tr key={ri} className="border-t border-gray-100">
+                    <td className="px-4 py-3 font-medium">{row.label}</td>
+                    {COMPETITORS.map((c, ci) => {
+                      const val = c[row.key];
+                      return (
+                        <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
+                          {val === true ? (
+                            <span className="text-green-600 font-bold">&#9679;</span>
+                          ) : val === "△" ? (
+                            <span className="text-yellow-500 font-bold">△</span>
+                          ) : (
+                            <span className="text-gray-300">-</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3 font-medium">治療院特化</td>
+                  {COMPETITORS.map((c, ci) => (
+                    <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
+                      {c.clinic === "○" ? (
+                        <span className="text-green-600 font-bold">&#9679;</span>
+                      ) : c.clinic === "×" ? (
+                        <span className="text-gray-300">-</span>
+                      ) : (
+                        <span className="text-gray-400 text-xs">{c.clinic}</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* 導入の流れ */}
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-12">
+            導入の流れ
+          </h2>
+          <div className="space-y-6">
+            {STEPS.map((s, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">
+                  {s.num}
+                </div>
+                <div>
+                  <h3 className="font-bold text-primary">{s.title}</h3>
+                  <p className="text-sm text-gray-600 mt-1">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 料金 */}
+      <section id="pricing" className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
+            料金プラン
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent">
+              <div className="text-accent text-sm font-bold mb-2">月額プラン</div>
+              <div className="text-3xl font-black text-primary mb-1">
+                2,980<span className="text-lg">円/月</span>
+              </div>
+              <div className="text-xs text-gray-500 mb-4">初期費用 19,800円</div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>問診回数無制限</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>PDF出力無制限</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+              <div className="text-gray-500 text-sm font-bold mb-2">買い切りプラン</div>
+              <div className="text-3xl font-black text-primary mb-1">
+                39,800<span className="text-lg">円</span>
+              </div>
+              <div className="text-xs text-gray-500 mb-4">月額費用なし・永続利用</div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>追加費用なし</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>アップデート無料</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
+              </ul>
+            </div>
+          </div>
+          <p className="text-center text-sm text-gray-500 mt-6">
+            まずは無料デモで全機能をお試しいただけます
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-primary text-white">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-black mb-4">
+            まずは無料でお試しください
+          </h2>
+          <p className="text-white/70 mb-8">
+            デモアカウントで全機能を体験できます。クレジットカード不要。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://web-monshin.vercel.app/staff?demo=true"
+              className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
+            >
+              無料デモを体験する
+            </a>
+            <Link
+              href="/#contact"
+              className="px-8 py-4 bg-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/20 transition-colors border border-white/20"
+            >
+              お問い合わせ
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* フッター */}
+      <footer className="bg-gray-900 text-gray-400 py-8">
+        <div className="max-w-4xl mx-auto px-4 text-center text-sm">
+          <Link href="/" className="text-white hover:text-accent transition-colors">
+            ClinicApps
+          </Link>
+          <span className="mx-2">|</span>
+          <Link href="/legal/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
+          <span className="mx-2">|</span>
+          <Link href="/legal/terms" className="hover:text-white transition-colors">利用規約</Link>
+          <span className="mx-2">|</span>
+          <Link href="/legal/tokushoho" className="hover:text-white transition-colors">特定商取引法</Link>
+        </div>
+      </footer>
+    </div>
+  );
+}
