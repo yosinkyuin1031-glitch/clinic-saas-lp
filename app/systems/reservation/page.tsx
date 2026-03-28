@@ -157,11 +157,46 @@ export default function ReservationDetailPage() {
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            実際の画面イメージ
+            実際の画面
           </h2>
           <p className="text-center text-gray-500 mb-10">
             カレンダーで一目で空き状況がわかる
           </p>
+
+          {/* スクリーンショット */}
+          <div className="rounded-2xl border border-gray-200 shadow-xl overflow-hidden mb-8">
+            <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div className="w-3 h-3 rounded-full bg-green-400"></div>
+              </div>
+              <span className="text-xs text-gray-400 ml-2">予約管理システム - 実際の画面</span>
+            </div>
+            <img
+              src="/images/reservation.png"
+              alt="予約管理システムの画面"
+              className="w-full"
+            />
+          </div>
+
+          {/* デモ体験 */}
+          <div className="text-center mb-6">
+            <a
+              href="https://reservation-app-steel.vercel.app/login?demo=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+              </svg>
+              実際に触ってみる（デモ体験）
+            </a>
+            <p className="text-xs text-gray-400 mt-2">デモアカウント: demo@clinicapps.jp / demo1234</p>
+          </div>
+
+          {/* 画面の特徴 */}
           <div className="grid md:grid-cols-2 gap-8">
             {/* カレンダー画面 */}
             <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
