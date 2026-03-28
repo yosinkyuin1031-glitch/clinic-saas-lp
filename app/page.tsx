@@ -96,16 +96,86 @@ const APPS = [
       </svg>
     ),
   },
+  {
+    id: "sleep",
+    name: "睡眠チェック分析",
+    shortName: "睡眠チェック",
+    categories: ["検査＆診断", "体質分析"],
+    description: "5軸×30問で睡眠の質を数値化。レーダーチャート・AIセルフケア提案・PDF出力。",
+    features: ["5軸スコアリング分析", "AIセルフケア・施術提案", "ビフォーアフター比較"],
+    monthlyPrice: 4980,
+    initialCost: 0,
+    badge: "NEW",
+    demoUrl: "https://sleep-check-single.vercel.app?demo=true",
+    detailUrl: "/systems/sleep",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+      </svg>
+    ),
+  },
+  {
+    id: "nutrition",
+    name: "栄養バランスチェック",
+    shortName: "栄養チェック",
+    categories: ["検査＆診断", "体質分析"],
+    description: "5軸×30問で栄養バランスを分析。食事改善プラン・施術提案をAIが自動生成。",
+    features: ["5軸栄養分析", "AI食事改善プラン", "ビフォーアフター比較"],
+    monthlyPrice: 4980,
+    initialCost: 0,
+    badge: "NEW",
+    demoUrl: "https://nutrition-check-app.vercel.app?demo=true",
+    detailUrl: "/systems/nutrition",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.38a48.474 48.474 0 00-6-.37c-2.032 0-4.034.125-6 .37m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
+      </svg>
+    ),
+  },
+  {
+    id: "gut",
+    name: "腸内環境チェック",
+    shortName: "腸内環境",
+    categories: ["検査＆診断", "体質分析"],
+    description: "5軸×30問で腸内環境を分析。腸活プラン・施術提案をAIが自動生成。",
+    features: ["5軸腸内環境分析", "AI腸活プラン", "ビフォーアフター比較"],
+    monthlyPrice: 4980,
+    initialCost: 0,
+    badge: "NEW",
+    demoUrl: "https://gut-health-check.vercel.app?demo=true",
+    detailUrl: "/systems/gut",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+      </svg>
+    ),
+  },
+  {
+    id: "headache",
+    name: "頭痛チェック",
+    shortName: "頭痛チェック",
+    categories: ["検査＆診断", "体質分析"],
+    description: "5軸×30問で頭痛パターンを分析。頭痛ノート・施術提案をAIが自動生成。",
+    features: ["5軸頭痛分析", "頭痛ノート記録", "ビフォーアフター比較"],
+    monthlyPrice: 4980,
+    initialCost: 0,
+    badge: "NEW",
+    demoUrl: "https://headache-check.vercel.app?demo=true",
+    detailUrl: "/systems/headache",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" />
+      </svg>
+    ),
+  },
 ];
 
-const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断"];
+const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断", "体質分析"];
 
 const COMING_SOON_APPS = [
   "LINE自動化ツール",
   "請求書作成システム",
   "LP作成ツール",
-  "ECサイト構築",
-  "広告管理ツール",
 ];
 
 const SET_EXAMPLES = [
@@ -120,30 +190,30 @@ const SET_EXAMPLES = [
   },
   {
     name: "集客パック",
-    appIds: ["meo", "customer"],
+    appIds: ["meo", "customer", "monshin"],
     description: "新規集客を強化したい先生向け",
-    setMonthly: 9460,
-    setInitial: 49800,
-    label: "5%OFF",
-    note: null,
-  },
-  {
-    name: "内製化パック",
-    appIds: ["customer", "reservation", "meo"],
-    description: "外注をやめて自分で回したい先生向け",
     setMonthly: 11640,
-    setInitial: 59800,
+    setInitial: 49800,
     label: "10%OFF",
     note: null,
   },
   {
-    name: "検査＆診断パック",
-    appIds: ["kensa"],
-    description: "施術の質・患者への説明力を上げたい先生向け",
-    setMonthly: 5500,
-    setInitial: 33000,
-    label: "",
-    note: "※今後、睡眠チェック・栄養診断等を追加予定",
+    name: "体質分析パック",
+    appIds: ["sleep", "nutrition", "gut"],
+    description: "睡眠・栄養・腸内の3軸で体質を可視化",
+    setMonthly: 9800,
+    setInitial: 0,
+    label: "35%OFF",
+    note: "初期費用0円。頭痛チェックも追加可能",
+  },
+  {
+    name: "フルパック",
+    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep", "nutrition", "gut", "headache"],
+    description: "全9システムまとめて導入。圧倒的コスパ",
+    setMonthly: 29800,
+    setInitial: 0,
+    label: "30%OFF",
+    note: "全システムの初期費用が無料",
   },
 ];
 
@@ -189,6 +259,8 @@ const TESTIMONIALS = [
 ];
 
 const getDiscount = (count: number) => {
+  if (count >= 9) return { discount: 0.30, label: "30%OFF" };
+  if (count >= 7) return { discount: 0.25, label: "25%OFF" };
   if (count >= 5) return { discount: 0.20, label: "20%OFF" };
   if (count >= 3) return { discount: 0.10, label: "10%OFF" };
   if (count >= 2) return { discount: 0.05, label: "5%OFF" };
@@ -232,7 +304,7 @@ export default function Home() {
     const initialSubtotal = selected.reduce((sum, app) => sum + app.initialCost, 0);
     const discount = getDiscount(selected.length);
     const monthlyDiscount = Math.floor(monthlySubtotal * discount.discount);
-    const isFullPack = selected.length >= 5;
+    const isFullPack = selected.length >= 9;
     const initialDiscount = isFullPack ? Math.floor(initialSubtotal * 0.5) : 0;
     const monthlyTotal = monthlySubtotal - monthlyDiscount;
     const yearlyTotal = monthlyTotal * 10; // 年払い = 月額 × 10（2ヶ月分お得）
@@ -374,9 +446,9 @@ export default function Home() {
             </h1>
 
             <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              高くて使いこなせないシステムは、もういらない。
+              高くて使いこなせないシステムは、���ういらない。
               <br className="hidden md:block" />
-              月額1,980円から。現場で本当に必要な機能だけを厳選しました。
+              月額2,980円から、初期費用0円のプランも。全9システムを自由に組み合わせ。
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -776,7 +848,7 @@ export default function Home() {
           <div id="pricing-calc" className="bg-gray-50 rounded-2xl border border-gray-200 p-6 md:p-8">
             <h3 className="text-xl font-black text-primary text-center mb-6">カスタム選択</h3>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
               {APPS.map((app) => {
                 const isSelected = selectedApps.includes(app.id);
                 return (
