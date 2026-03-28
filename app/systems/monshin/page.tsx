@@ -153,6 +153,106 @@ export default function MonshinDetailPage() {
         </div>
       </section>
 
+      {/* 画面イメージ */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            実際の画面イメージ
+          </h2>
+          <p className="text-center text-gray-500 mb-10">
+            患者のスマホ画面と、スタッフの管理画面
+          </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* 患者側スマホ画面 */}
+            <div className="flex justify-center">
+              <div className="w-72 rounded-[2rem] border-4 border-gray-800 shadow-xl overflow-hidden bg-white">
+                <div className="bg-gray-800 px-6 py-2 flex justify-center">
+                  <div className="w-20 h-5 bg-gray-700 rounded-full"></div>
+                </div>
+                <div className="p-5">
+                  <div className="text-center mb-4">
+                    <div className="text-sm font-bold text-primary mb-1">WEB問診票</div>
+                    <div className="text-[10px] text-gray-400">ご来院前にご記入ください</div>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-[10px] text-gray-500 mb-1">お名前</div>
+                      <div className="bg-gray-50 rounded-lg px-3 py-2 border border-gray-200 text-xs text-gray-700">山田 太郎</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-gray-500 mb-1">お悩みの症状（複数選択可）</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {["肩こり", "腰痛", "頭痛", "不眠", "疲労感"].map((s, i) => (
+                          <span key={i} className={`text-[10px] px-2 py-1 rounded-full border ${i < 2 ? "bg-accent/10 border-accent/30 text-accent font-bold" : "bg-white border-gray-200 text-gray-400"}`}>{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-gray-500 mb-1">来院のきっかけ</div>
+                      <div className="bg-gray-50 rounded-lg px-3 py-2 border border-gray-200 text-xs text-gray-700">Googleマップ</div>
+                    </div>
+                    <div className="pt-2">
+                      <div className="bg-accent text-white rounded-xl py-2.5 text-center text-xs font-bold">送信する</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* スタッフ管理画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">スタッフ管理画面 - 問診一覧</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-sm font-bold text-primary">本日の問診</div>
+                  <div className="text-xs text-gray-400">3件</div>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { name: "山田 太郎", time: "9:00来院", symptoms: "肩こり, 腰痛", status: "確認済", statusColor: "bg-green-50 text-green-600" },
+                    { name: "佐藤 花子", time: "10:00来院", symptoms: "頭痛, 不眠", status: "未確認", statusColor: "bg-cta-50 text-cta" },
+                    { name: "田中 美咲", time: "11:00来院", symptoms: "肩こり, 疲労感", status: "未確認", statusColor: "bg-cta-50 text-cta" },
+                  ].map((p, i) => (
+                    <div key={i} className="bg-white rounded-lg p-3 border border-gray-100">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs text-gray-700 font-medium">{p.name}</span>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${p.statusColor}`}>{p.status}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[10px] text-gray-400">
+                        <span>{p.time}</span>
+                        <span>|</span>
+                        <span>{p.symptoms}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {[
+                    { label: "来院きっかけ1位", value: "Google" },
+                    { label: "主訴1位", value: "肩こり" },
+                    { label: "年齢層", value: "30-40代" },
+                  ].map((stat, i) => (
+                    <div key={i} className="bg-accent/5 rounded-lg p-2 text-center border border-accent/10">
+                      <div className="text-[9px] text-gray-400">{stat.label}</div>
+                      <div className="text-xs font-bold text-accent">{stat.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
+          </p>
+        </div>
+      </section>
+
       {/* こんな悩みありませんか？ */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">

@@ -153,6 +153,83 @@ export default function MeoDetailPage() {
         </div>
       </section>
 
+      {/* 画面イメージ */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            実際の画面イメージ
+          </h2>
+          <p className="text-center text-gray-500 mb-10">
+            シンプルで直感的な操作画面
+          </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* ダッシュボード画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">MEO勝ち上げくん - ダッシュボード</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-sm font-bold text-primary">順位チェック</div>
+                  <div className="text-xs text-gray-400">2026/03/28 更新</div>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { kw: "横浜 整体", rank: "2位", change: "+1", color: "text-green-600" },
+                    { kw: "横浜 肩こり 整体", rank: "1位", change: "→", color: "text-gray-400" },
+                    { kw: "横浜 腰痛", rank: "4位", change: "+2", color: "text-green-600" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between bg-white rounded-lg p-3 border border-gray-100">
+                      <span className="text-sm text-gray-700">{item.kw}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-primary">{item.rank}</span>
+                        <span className={`text-xs font-bold ${item.color}`}>{item.change}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* AI生成画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">AI投稿文生成</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="text-sm font-bold text-primary mb-3">GBP投稿を生成</div>
+                <div className="bg-white rounded-lg p-3 border border-gray-100 mb-3">
+                  <div className="text-xs text-gray-400 mb-1">テーマ</div>
+                  <div className="text-sm text-gray-700">肩こりの原因と改善法</div>
+                </div>
+                <div className="bg-accent/5 rounded-lg p-3 border border-accent/20">
+                  <div className="text-xs text-accent font-bold mb-1">AI生成結果</div>
+                  <div className="text-xs text-gray-600 leading-relaxed">デスクワークで肩こりに悩む方が増えています。長時間の同じ姿勢は、肩周りの筋肉を緊張させ...</div>
+                </div>
+                <div className="flex items-center gap-2 mt-3">
+                  <div className="flex-1 bg-green-50 rounded-lg px-3 py-1.5 border border-green-200">
+                    <span className="text-xs text-green-700 font-bold">GL適合</span>
+                  </div>
+                  <div className="px-4 py-1.5 bg-accent text-white rounded-lg text-xs font-bold">投稿する</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
+          </p>
+        </div>
+      </section>
+
       {/* こんな悩みありませんか？ */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">

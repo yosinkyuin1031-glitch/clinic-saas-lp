@@ -153,6 +153,101 @@ export default function ReservationDetailPage() {
         </div>
       </section>
 
+      {/* 画面イメージ */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            実際の画面イメージ
+          </h2>
+          <p className="text-center text-gray-500 mb-10">
+            カレンダーで一目で空き状況がわかる
+          </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* カレンダー画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">予約カレンダー - 日表示</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-sm font-bold text-primary">3月28日（金）</div>
+                  <div className="flex gap-1">
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded font-bold">日</span>
+                    <span className="px-2 py-0.5 bg-gray-100 text-gray-400 text-[10px] rounded">週</span>
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { time: "9:00", name: "山田 太郎", menu: "整体60分", color: "bg-accent/10 border-accent/30" },
+                    { time: "10:00", name: "佐藤 花子", menu: "鍼灸30分", color: "bg-primary/10 border-primary/30" },
+                    { time: "10:30", name: "", menu: "", color: "bg-gray-50 border-dashed border-gray-200" },
+                    { time: "11:00", name: "鈴木 一郎", menu: "整体90分", color: "bg-accent/10 border-accent/30" },
+                    { time: "13:00", name: "田中 美咲", menu: "整体60分", color: "bg-accent/10 border-accent/30" },
+                    { time: "14:00", name: "", menu: "", color: "bg-gray-50 border-dashed border-gray-200" },
+                  ].map((slot, i) => (
+                    <div key={i} className={`flex items-center gap-3 rounded-lg p-2 border ${slot.color}`}>
+                      <span className="text-xs text-gray-500 w-10 shrink-0">{slot.time}</span>
+                      {slot.name ? (
+                        <div>
+                          <span className="text-xs text-gray-700 font-medium">{slot.name}</span>
+                          <span className="text-[10px] text-gray-400 ml-1">{slot.menu}</span>
+                        </div>
+                      ) : (
+                        <span className="text-[10px] text-gray-300">空き</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* LINE通知画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">LINE自動通知イメージ</span>
+              </div>
+              <div className="bg-[#7494C0] p-6">
+                <div className="space-y-3">
+                  <div className="flex justify-start">
+                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%] shadow-sm">
+                      <div className="text-xs text-gray-700 leading-relaxed">
+                        <div className="font-bold text-green-700 mb-1">予約確定のお知らせ</div>
+                        <div>山田 太郎 様</div>
+                        <div className="mt-1">日時: 3/28（金）9:00</div>
+                        <div>メニュー: 整体60分</div>
+                        <div className="mt-1 text-gray-500">ご来院お待ちしております。</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-start">
+                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%] shadow-sm">
+                      <div className="text-xs text-gray-700 leading-relaxed">
+                        <div className="font-bold text-accent mb-1">明日のご予約リマインド</div>
+                        <div>山田 太郎 様</div>
+                        <div className="mt-1">明日 3/28（金）9:00 にご予約が入っています。</div>
+                        <div className="mt-1 text-gray-500">変更・キャンセルはお電話ください。</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
+          </p>
+        </div>
+      </section>
+
       {/* こんな悩みありませんか？ */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">

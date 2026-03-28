@@ -156,6 +156,90 @@ export default function KensaDetailPage() {
         </div>
       </section>
 
+      {/* 画面イメージ */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
+            実際の画面イメージ
+          </h2>
+          <p className="text-center text-gray-500 mb-10">
+            タブレットで直感操作、結果はワンクリックでPDF化
+          </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* 検査入力画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">神経学的検査 - 入力画面</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-sm font-bold text-primary">山田 太郎 様</div>
+                  <div className="text-xs text-gray-400">2026/03/28</div>
+                </div>
+                <div className="text-xs text-gray-500 mb-3 font-bold">反射テスト</div>
+                <div className="space-y-2">
+                  {[
+                    { name: "膝蓋腱反射（L4）", left: "正常", right: "亢進" },
+                    { name: "アキレス腱反射（S1）", left: "正常", right: "減弱" },
+                    { name: "上腕二頭筋反射（C5）", left: "正常", right: "正常" },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-white rounded-lg p-3 border border-gray-100">
+                      <div className="text-xs text-gray-700 font-medium mb-1">{item.name}</div>
+                      <div className="flex gap-4 text-xs">
+                        <span className="text-gray-500">左: <span className="text-green-600 font-bold">{item.left}</span></span>
+                        <span className="text-gray-500">右: <span className={`font-bold ${item.right === "正常" ? "text-green-600" : "text-cta"}`}>{item.right}</span></span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* 経過グラフ画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">経過比較・改善グラフ</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="text-sm font-bold text-primary mb-3">改善度推移</div>
+                <div className="flex items-end gap-3 h-32 mb-3">
+                  {[
+                    { h: "30%", label: "初回", score: "42" },
+                    { h: "50%", label: "2回目", score: "58" },
+                    { h: "65%", label: "3回目", score: "71" },
+                    { h: "80%", label: "4回目", score: "82" },
+                    { h: "90%", label: "5回目", score: "91" },
+                  ].map((bar, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                      <span className="text-[10px] text-accent font-bold">{bar.score}</span>
+                      <div className="w-full bg-accent/20 rounded-t-md relative" style={{ height: bar.h }}>
+                        <div className="absolute inset-0 bg-accent rounded-t-md opacity-60"></div>
+                      </div>
+                      <span className="text-[10px] text-gray-400">{bar.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-green-50 rounded-lg px-3 py-2 border border-green-200">
+                  <span className="text-xs text-green-700 font-bold">改善率 +116% （初回比）</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">
+            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
+          </p>
+        </div>
+      </section>
+
       {/* こんな悩みありませんか？ */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
