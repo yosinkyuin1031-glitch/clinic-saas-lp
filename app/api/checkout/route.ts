@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const isSubscription = paymentType === "monthly";
+    const isSubscription = paymentType === "monthly" || paymentType === "yearly";
 
     const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
       price_data: {
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         ...(isSubscription
           ? {
               recurring: {
-                interval: "month",
+                interval: paymentType === "yearly" ? "year" : "month",
               },
             }
           : {}),

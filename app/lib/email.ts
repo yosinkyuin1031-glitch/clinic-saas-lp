@@ -8,7 +8,7 @@ interface WelcomeEmailParams {
   clinicId: string
   password: string
   selectedApps: string[]
-  planType: 'monthly' | 'onetime'
+  planType: 'monthly' | 'yearly' | 'onetime'
 }
 
 export async function sendWelcomeEmail(params: WelcomeEmailParams) {
@@ -24,7 +24,7 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
   }
 
   const appList = selectedApps.map(id => appNames[id] || id).join('、')
-  const planLabel = planType === 'monthly' ? '月額プラン' : '買い切りプラン'
+  const planLabel = planType === 'monthly' ? '月額プラン' : planType === 'yearly' ? '年額プラン' : '買い切りプラン'
 
   try {
     const { data, error } = await resend.emails.send({

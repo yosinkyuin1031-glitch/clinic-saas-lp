@@ -37,6 +37,11 @@ function generatePassword(length = 12): string {
   return password;
 }
 
+// 年会費（保守費）のデフォルト金額（環境変数で上書き可能）
+function getMaintenanceFeeAmount(): number {
+  return parseInt(process.env.MAINTENANCE_FEE_AMOUNT || "12000", 10);
+}
+
 // イベントログをSupabaseに記録
 async function logWebhookEvent(
   supabase: ReturnType<typeof createAdminClient>,
@@ -57,6 +62,73 @@ async function logWebhookEvent(
   } catch (err) {
     // ログ記録の失敗は握り潰さずconsoleに出す
     console.error("Webhookログ記録失敗:", err);
+  }
+}
+
+// 買い切り購入後に1年後から保守費サブスクを作成
+async function createMaintenanceSubscriptionSchedule(
+  stripe: Stripe,
+  customerId: string,
+  clinicName: string
+) {
+  const maintenanceFee = getMaintenanceFeeAmount();
+  const oneYearLater = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
+
+  try {
+    // まずProductとPriceを作成（SubscriptionScheduleではprice_data内にproduct_dataが使えないため）
+    const product = await stripe.products.create({
+      name: `${clinicName} - 年間保守費`,
+      metadata: {
+        type: "maintenance_fee",
+        clinic_name: clinicName,
+      },
+    });
+
+    const price = await stripe.prices.create({
+      product: product.id,
+      currency: "jpy",
+      unit_amount: maintenanceFee,
+      recurring: {
+        interval: "year",
+      },
+    });
+
+    const schedule = await stripe.subscriptionSchedules.create({
+      customer: customerId,
+      start_date: oneYearLater,
+      end_behavior: "release",
+      phases: [
+        {
+          items: [
+            {
+              price: price.id,
+              quantity: 1,
+            },
+          ],
+          duration: {
+            interval: "year",
+            interval_count: 1,
+          },
+        },
+      ],
+      metadata: {
+        type: "maintenance_fee",
+        clinic_name: clinicName,
+        annual_amount: maintenanceFee.toString(),
+      },
+    });
+
+    console.log(
+      `保守費サブスクスケジュール作成: schedule=${schedule.id}, 開始=${new Date(oneYearLater * 1000).toISOString()}, 金額=${maintenanceFee}円/年`
+    );
+
+    return {
+      scheduleId: schedule.id,
+      startsAt: new Date(oneYearLater * 1000).toISOString(),
+    };
+  } catch (err) {
+    console.error("保守費サブスクスケジュール作成エラー:", err);
+    return null;
   }
 }
 
@@ -86,6 +158,7 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = createAdminClient();
+  const stripe = getStripe();
 
   try {
     switch (event.type) {
@@ -147,9 +220,15 @@ export async function POST(req: NextRequest) {
           selectedApps = [];
         }
 
-        // plan_typeの決定
-        const planType: "monthly" | "onetime" =
-          paymentType === "monthly" ? "monthly" : "onetime";
+        // plan_typeの決定（monthly / yearly / onetime）
+        let planType: "monthly" | "yearly" | "onetime";
+        if (paymentType === "monthly") {
+          planType = "monthly";
+        } else if (paymentType === "yearly") {
+          planType = "yearly";
+        } else {
+          planType = "onetime";
+        }
 
         // ユニークclinic_id生成（衝突回避リトライ付き）
         let clinicId = generateClinicId();
@@ -193,6 +272,29 @@ export async function POST(req: NextRequest) {
           break;
         }
 
+        // 買い切りの場合、保守費サブスクスケジュールを作成
+        let maintenanceInfo: { scheduleId: string; startsAt: string } | null = null;
+        if (planType === "onetime" && stripeCustomerId) {
+          maintenanceInfo = await createMaintenanceSubscriptionSchedule(
+            stripe,
+            stripeCustomerId,
+            clinicName
+          );
+        }
+
+        // metadata構築
+        const accountMetadata: Record<string, unknown> = {
+          plan_name: planName,
+          payment_type: paymentType,
+          created_via: "stripe_checkout",
+        };
+
+        if (maintenanceInfo) {
+          accountMetadata.maintenance_fee_starts = maintenanceInfo.startsAt.split("T")[0];
+          accountMetadata.maintenance_schedule_id = maintenanceInfo.scheduleId;
+          accountMetadata.maintenance_fee_amount = getMaintenanceFeeAmount();
+        }
+
         // clinic_accounts テーブルに院情報を保存
         const { error: insertError } = await supabase
           .from("clinic_accounts")
@@ -206,11 +308,7 @@ export async function POST(req: NextRequest) {
             stripe_customer_id: stripeCustomerId,
             stripe_subscription_id: stripeSubscriptionId,
             status: "active",
-            metadata: {
-              plan_name: planName,
-              payment_type: paymentType,
-              created_via: "stripe_checkout",
-            },
+            metadata: accountMetadata,
           });
 
         if (insertError) {
@@ -236,6 +334,10 @@ export async function POST(req: NextRequest) {
         console.log(`選択アプリ: ${selectedApps.join(", ")}`);
         console.log(`Stripe Customer: ${stripeCustomerId}`);
         console.log(`Stripe Subscription: ${stripeSubscriptionId || "なし"}`);
+        if (maintenanceInfo) {
+          console.log(`保守費開始: ${maintenanceInfo.startsAt}`);
+          console.log(`保守費スケジュール: ${maintenanceInfo.scheduleId}`);
+        }
         console.log("========================");
 
         await logWebhookEvent(
@@ -248,6 +350,7 @@ export async function POST(req: NextRequest) {
             clinic_name: clinicName,
             plan_type: planType,
             selected_apps: selectedApps,
+            maintenance_info: maintenanceInfo,
           },
           "success"
         );

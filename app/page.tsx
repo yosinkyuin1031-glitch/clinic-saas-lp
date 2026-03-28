@@ -208,8 +208,10 @@ export default function Home() {
   const [submitError, setSubmitError] = useState("");
 
   const [selectedApps, setSelectedApps] = useState<string[]>(["kensa"]);
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
 
   const [checkoutModal, setCheckoutModal] = useState(false);
+  const [checkoutPaymentType, setCheckoutPaymentType] = useState<"monthly" | "yearly" | "onetime">("monthly");
   const [checkoutEmail, setCheckoutEmail] = useState("");
   const [checkoutClinicName, setCheckoutClinicName] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -227,12 +229,15 @@ export default function Home() {
     const monthlyDiscount = Math.floor(monthlySubtotal * discount.discount);
     const isFullPack = selected.length >= 5;
     const initialDiscount = isFullPack ? Math.floor(initialSubtotal * 0.5) : 0;
+    const monthlyTotal = monthlySubtotal - monthlyDiscount;
+    const yearlyTotal = monthlyTotal * 10; // 年払い = 月額 × 10（2ヶ月分お得）
     return {
       monthlySubtotal,
       initialSubtotal,
       monthlyDiscount,
       initialDiscount,
-      monthlyTotal: monthlySubtotal - monthlyDiscount,
+      monthlyTotal,
+      yearlyTotal,
       initialTotal: initialSubtotal - initialDiscount,
       discount,
       isFullPack,
@@ -247,7 +252,7 @@ export default function Home() {
     );
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (paymentType: "monthly" | "yearly" | "onetime") => {
     if (!checkoutEmail || !checkoutClinicName) {
       setCheckoutError("メールアドレスと院名を入力してください");
       return;
@@ -256,15 +261,27 @@ export default function Home() {
     setCheckoutError("");
     try {
       const appNames = APPS.filter(a => selectedApps.includes(a.id)).map(a => a.shortName).join(", ");
+      let amount: number;
+      let planSuffix: string;
+      if (paymentType === "yearly") {
+        amount = calcTotal.yearlyTotal;
+        planSuffix = "年払い";
+      } else if (paymentType === "onetime") {
+        amount = calcTotal.initialTotal;
+        planSuffix = "買い切り";
+      } else {
+        amount = calcTotal.monthlyTotal;
+        planSuffix = "月払い";
+      }
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          planName: `ClinicApps（${appNames}）`,
+          planName: `ClinicApps（${appNames}）${planSuffix}`,
           email: checkoutEmail,
           clinicName: checkoutClinicName,
-          amount: calcTotal.monthlyTotal,
-          paymentType: "monthly",
+          amount,
+          paymentType,
           selectedApps,
         }),
       });
@@ -596,9 +613,38 @@ export default function Home() {
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
             料金プラン
           </h2>
-          <p className="text-center text-gray-500 text-sm mb-10">
+          <p className="text-center text-gray-500 text-sm mb-6">
             初期費用 + 月額制。最低契約期間なし。いつでも解約OK。大手の1/3以下の料金です。
           </p>
+
+          {/* 月払い / 年払い 切り替えタブ */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-gray-100 rounded-xl p-1">
+              <button
+                onClick={() => setBillingCycle("monthly")}
+                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition ${
+                  billingCycle === "monthly"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                月払い
+              </button>
+              <button
+                onClick={() => setBillingCycle("yearly")}
+                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition relative ${
+                  billingCycle === "yearly"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                年払い
+                <span className="absolute -top-2.5 -right-2 bg-cta text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                  2ヶ月分お得
+                </span>
+              </button>
+            </div>
+          </div>
 
           {/* 単品料金テーブル */}
           <div className="overflow-x-auto mb-10">
@@ -606,21 +652,37 @@ export default function Home() {
               <thead>
                 <tr className="bg-primary text-white">
                   <th className="py-3 px-4 text-left rounded-tl-lg">システム名</th>
-                  <th className="py-3 px-4 text-center">月額料金</th>
+                  <th className="py-3 px-4 text-center">
+                    {billingCycle === "yearly" ? "年額料金" : "月額料金"}
+                  </th>
                   <th className="py-3 px-4 text-center rounded-tr-lg">初期費用</th>
                 </tr>
               </thead>
               <tbody>
-                {APPS.map((app, i) => (
-                  <tr key={app.id} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
-                    <td className="py-3 px-4 font-bold text-primary">
-                      {app.name}
-                      {app.badge && <span className="ml-2 text-[10px] bg-cta text-white px-2 py-0.5 rounded-full">{app.badge}</span>}
-                    </td>
-                    <td className="py-3 px-4 text-center font-bold">{app.monthlyPrice.toLocaleString()}円/月</td>
-                    <td className="py-3 px-4 text-center">{app.initialCost.toLocaleString()}円</td>
-                  </tr>
-                ))}
+                {APPS.map((app, i) => {
+                  const yearlyPrice = app.monthlyPrice * 10;
+                  return (
+                    <tr key={app.id} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
+                      <td className="py-3 px-4 font-bold text-primary">
+                        {app.name}
+                        {app.badge && <span className="ml-2 text-[10px] bg-cta text-white px-2 py-0.5 rounded-full">{app.badge}</span>}
+                      </td>
+                      <td className="py-3 px-4 text-center font-bold">
+                        {billingCycle === "yearly" ? (
+                          <>
+                            {yearlyPrice.toLocaleString()}円/年
+                            <span className="block text-[10px] text-gray-400 font-normal">
+                              (月あたり約{Math.floor(yearlyPrice / 12).toLocaleString()}円)
+                            </span>
+                          </>
+                        ) : (
+                          <>{app.monthlyPrice.toLocaleString()}円/月</>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-center">{app.initialCost.toLocaleString()}円</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -758,6 +820,17 @@ export default function Home() {
                         <span className="text-accent font-bold">-{calcTotal.monthlyDiscount.toLocaleString()}円</span>
                       </div>
                     )}
+                    {billingCycle === "yearly" && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-cta font-bold flex items-center gap-1">
+                          <span className="bg-cta/10 text-cta text-xs px-2 py-0.5 rounded-full">
+                            2ヶ月分お得
+                          </span>
+                          年払い割引
+                        </span>
+                        <span className="text-cta font-bold">-{(calcTotal.monthlyTotal * 2).toLocaleString()}円</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">初期費用</span>
                       <span>
@@ -769,26 +842,55 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="border-t-2 border-primary mt-4 pt-4">
-                    <div className="flex justify-between items-end">
-                      <span className="font-bold text-lg text-primary">月額お支払い</span>
-                      <div className="text-right">
-                        <span className="text-3xl font-black text-accent">
-                          {calcTotal.monthlyTotal.toLocaleString()}
-                        </span>
-                        <span className="text-gray-500 text-sm">円/月（税込）</span>
+                    {billingCycle === "yearly" ? (
+                      <div className="flex justify-between items-end">
+                        <span className="font-bold text-lg text-primary">年額お支払い</span>
+                        <div className="text-right">
+                          <span className="text-3xl font-black text-accent">
+                            {calcTotal.yearlyTotal.toLocaleString()}
+                          </span>
+                          <span className="text-gray-500 text-sm">円/年（税込）</span>
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            月あたり約{Math.floor(calcTotal.yearlyTotal / 12).toLocaleString()}円
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex justify-between items-end">
+                        <span className="font-bold text-lg text-primary">月額お支払い</span>
+                        <div className="text-right">
+                          <span className="text-3xl font-black text-accent">
+                            {calcTotal.monthlyTotal.toLocaleString()}
+                          </span>
+                          <span className="text-gray-500 text-sm">円/月（税込）</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-6 space-y-2">
                     <button
                       onClick={() => {
+                        setCheckoutPaymentType(billingCycle);
                         setCheckoutModal(true);
                         setCheckoutError("");
                       }}
                       disabled={selectedApps.length === 0}
                       className="w-full py-3.5 rounded-xl font-bold transition bg-cta text-white hover:bg-cta-600 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      今すぐ申し込む
+                      {billingCycle === "yearly"
+                        ? `年払いで申し込む（${calcTotal.yearlyTotal.toLocaleString()}円/年）`
+                        : `月払いで申し込む（${calcTotal.monthlyTotal.toLocaleString()}円/月）`}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setCheckoutPaymentType("onetime");
+                        setCheckoutModal(true);
+                        setCheckoutError("");
+                      }}
+                      disabled={selectedApps.length === 0}
+                      className="w-full py-3.5 rounded-xl font-bold transition border-2 border-primary/20 text-primary hover:border-primary/40 hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      買い切りで申し込む（{calcTotal.initialTotal.toLocaleString()}円）
                     </button>
                     <button
                       onClick={() => {
@@ -1142,7 +1244,18 @@ export default function Home() {
               </button>
             </div>
             <div className="bg-gray-50 rounded-xl p-4 mb-5 text-sm">
-              <p className="text-gray-500 mb-2">選択中のシステム（{selectedApps.length}つ）</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-gray-500">選択中のシステム（{selectedApps.length}つ）</p>
+                <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                  checkoutPaymentType === "onetime"
+                    ? "bg-primary/10 text-primary"
+                    : checkoutPaymentType === "yearly"
+                    ? "bg-cta/10 text-cta"
+                    : "bg-accent/10 text-accent"
+                }`}>
+                  {checkoutPaymentType === "onetime" ? "買い切り" : checkoutPaymentType === "yearly" ? "年払い" : "月払い"}
+                </span>
+              </div>
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {APPS.filter(a => selectedApps.includes(a.id)).map(a => (
                   <span key={a.id} className="bg-accent/10 text-accent text-xs font-bold px-2 py-1 rounded-full">
@@ -1151,19 +1264,50 @@ export default function Home() {
                 ))}
               </div>
               <div className="border-t border-gray-200 pt-2 space-y-1">
-                <div className="flex justify-between items-end">
-                  <span className="text-gray-500">月額お支払い</span>
-                  <div>
-                    <span className="text-xl font-black text-accent">{calcTotal.monthlyTotal.toLocaleString()}円</span>
-                    <span className="text-gray-500 text-xs">/月</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-end">
-                  <span className="text-gray-500">初期費用</span>
-                  <span className="font-bold">{calcTotal.initialTotal.toLocaleString()}円</span>
-                </div>
+                {checkoutPaymentType === "onetime" ? (
+                  <>
+                    <div className="flex justify-between items-end">
+                      <span className="text-gray-500">買い切り金額</span>
+                      <div>
+                        <span className="text-xl font-black text-accent">{calcTotal.initialTotal.toLocaleString()}円</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      初年度サポート込み。2年目以降は年間保守費（12,000円/年）が発生します。
+                    </p>
+                  </>
+                ) : checkoutPaymentType === "yearly" ? (
+                  <>
+                    <div className="flex justify-between items-end">
+                      <span className="text-gray-500">年額お支払い</span>
+                      <div>
+                        <span className="text-xl font-black text-accent">{calcTotal.yearlyTotal.toLocaleString()}円</span>
+                        <span className="text-gray-500 text-xs">/年</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <span className="text-gray-500">初期費用</span>
+                      <span className="font-bold">{calcTotal.initialTotal.toLocaleString()}円</span>
+                    </div>
+                    <p className="text-cta text-xs text-right mt-1">2ヶ月分お得!</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-end">
+                      <span className="text-gray-500">月額お支払い</span>
+                      <div>
+                        <span className="text-xl font-black text-accent">{calcTotal.monthlyTotal.toLocaleString()}円</span>
+                        <span className="text-gray-500 text-xs">/月</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-end">
+                      <span className="text-gray-500">初期費用</span>
+                      <span className="font-bold">{calcTotal.initialTotal.toLocaleString()}円</span>
+                    </div>
+                  </>
+                )}
               </div>
-              {calcTotal.discount.discount > 0 && (
+              {calcTotal.discount.discount > 0 && checkoutPaymentType !== "onetime" && (
                 <p className="text-accent text-xs text-right mt-1">{calcTotal.discount.label}適用中</p>
               )}
             </div>
@@ -1191,7 +1335,7 @@ export default function Home() {
                 <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{checkoutError}</div>
               )}
               <button
-                onClick={handleCheckout}
+                onClick={() => handleCheckout(checkoutPaymentType)}
                 disabled={checkoutLoading}
                 className="w-full py-3.5 bg-cta text-white rounded-xl font-bold hover:bg-cta-600 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
