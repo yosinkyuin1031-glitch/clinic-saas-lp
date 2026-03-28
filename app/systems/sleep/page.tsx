@@ -2,55 +2,57 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "睡眠チェック分析アプリ - 治療院専用 睡眠評価システム | ClinicApps",
+  title: "睡眠チェック分析アプリ - 治療院専用 睡眠分析システム | ClinicApps",
   description:
-    "治療院専用の睡眠チェック分析アプリ。5軸×30問で睡眠の質を数値化。レーダーチャート・AIセルフケア提案・PDF出力。月額4,980円・初期費用0円。",
+    "治療院専用の睡眠チェック分析アプリ。5軸×30問のスコアリング・レーダーチャート・AIセルフケア提案・1週間改善プラン・ビフォーアフター比較・PDF出力。月額4,980円。",
 };
 
 const FEATURES = [
   {
-    icon: "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z",
-    title: "睡眠の質を可視化",
-    desc: "患者の睡眠スコアを数値化。入眠時間・中途覚醒・起床時の状態など多角的に評価。",
-  },
-  {
-    icon: "M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z",
-    title: "チェックシートで簡単入力",
-    desc: "患者がスマホでチェックを入れるだけ。専門的な知識がなくても正確に睡眠状態を把握。",
-  },
-  {
     icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
-    title: "分析レポート自動生成",
-    desc: "チェック結果からAIが分析レポートを自動生成。睡眠改善のアドバイスも自動提案。",
+    title: "5軸×30問のスコアリング",
+    desc: "睡眠の質・入眠・中途覚醒・起床・日中の眠気の5軸で総合分析。加重平均で精密スコアリング。",
+  },
+  {
+    icon: "M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z",
+    title: "レーダーチャートで可視化",
+    desc: "5軸の結果をレーダーチャートで一目で把握。患者への説明がわかりやすい。",
+  },
+  {
+    icon: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z",
+    title: "AIセルフケア・施術提案",
+    desc: "分析結果に基づきAIが自動で施術提案・セルフケアメニュー・ツボ情報を生成。",
   },
   {
     icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
-    title: "経過トラッキング",
-    desc: "定期的なチェックで睡眠の改善度を追跡。来院ごとの変化をグラフで可視化。",
+    title: "1週間改善プラン",
+    desc: "患者ごとにカスタマイズされた1週間の改善プランをAIが自動作成。",
+  },
+  {
+    icon: "M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3",
+    title: "ビフォーアフター比較",
+    desc: "初回と再検査の結果を重ねて表示。改善度が数字とグラフでわかる。",
   },
   {
     icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z",
-    title: "PDF出力",
-    desc: "分析結果をPDFで出力。患者への説明資料やカルテ添付に活用。",
-  },
-  {
-    icon: "M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18",
-    title: "セルフケア提案",
-    desc: "睡眠の質に応じたセルフケアメニューを自動提案。物販やサプリ提案の根拠にも。",
+    title: "PDFレポート出力",
+    desc: "検査結果・施術提案・セルフケアをまとめたPDFを患者に渡せる。",
   },
 ];
 
 const COMPARISON_ROWS = [
   { label: "月額料金", type: "price" as const },
   { label: "初期費用", type: "custom" as const },
-  { label: "睡眠チェックシート", type: "check" as const },
-  { label: "スコア自動算出", type: "check" as const },
-  { label: "AI分析レポート", type: "check" as const },
-  { label: "経過グラフ", type: "check" as const },
-  { label: "PDF出力", type: "check" as const },
-  { label: "セルフケア自動提案", type: "check" as const },
+  { label: "5軸スコアリング分析", type: "check" as const },
+  { label: "レーダーチャート", type: "check" as const },
+  { label: "AIセルフケア提案", type: "check" as const },
+  { label: "AI施術提案", type: "check" as const },
+  { label: "1週間改善プラン", type: "check" as const },
+  { label: "ビフォーアフター比較", type: "check" as const },
+  { label: "PDFレポート出力", type: "check" as const },
+  { label: "患者追跡・推移グラフ", type: "check" as const },
+  { label: "質問数カスタマイズ", type: "check" as const },
   { label: "治療院専用設計", type: "check" as const },
-  { label: "物販・サプリ提案連携", type: "check" as const },
   { label: "導入サポート", type: "custom" as const },
   { label: "最低契約期間", type: "custom" as const },
 ];
@@ -59,41 +61,46 @@ const COMPETITORS = [
   {
     name: "睡眠チェック\n分析アプリ",
     highlight: true,
-    values: ["2,980円", "19,800円", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+    values: ["4,980円", "0円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
   },
   {
-    name: "紙の\nチェックシート",
+    name: "紙の問診票",
     highlight: false,
-    values: ["0円", "0円", "△", "×", "×", "×", "×", "×", "△", "×", "なし", "-"],
+    values: ["0円", "0円", "△", "×", "×", "×", "×", "×", "×", "×", "×", "△", "なし", "-"],
   },
   {
-    name: "一般的な\n睡眠アプリ",
+    name: "AI姿勢分析\n(Posen等)",
     highlight: false,
-    values: ["500円〜", "0円", "○", "○", "△", "△", "×", "×", "×", "×", "なし", "-"],
+    values: ["19,800円〜", "132,000円〜", "×", "×", "×", "×", "×", "×", "△", "×", "×", "×", "メール", "12ヶ月"],
+  },
+  {
+    name: "汎用アンケート\nツール",
+    highlight: false,
+    values: ["3,000円〜", "0円", "×", "×", "×", "×", "×", "×", "△", "×", "×", "×", "メール", "なし"],
   },
 ];
 
 const ADVANTAGES = [
   {
-    title: "治療院の施術フローに直結",
-    desc: "一般的な睡眠アプリはユーザー個人向け。当システムは治療院の施術前チェックとして使えるよう設計。患者への説明根拠として活用できます。",
+    title: "睡眠の\"体の内側\"を5軸で分析する競合ゼロの領域",
+    desc: "AI姿勢分析は外見だけ。WEB問診は症状収集だけ。5軸で体の内側を分析し施術まで提案するのはこのアプリだけです。",
   },
   {
-    title: "物販提案の数値的根拠に",
-    desc: "睡眠スコアが低い患者に対して、サプリ・寝具・セルフケアグッズの提案を数値で裏付け。押し売り感なく自然に物販につなげられます。",
+    title: "初期費用0円で始められる",
+    desc: "AI姿勢分析は初期13万円以上。当アプリは初期費用ゼロ、月4,980円で全機能利用可能。",
   },
   {
-    title: "検査シートとの連携で価値倍増",
-    desc: "検査シート作成システムと合わせて使うことで、身体の状態+睡眠の質を総合的に評価。患者満足度と通院継続率がアップします。",
+    title: "「睡眠改善」を武器にした差別化が可能",
+    desc: "睡眠に悩む患者は増加中。検査→数値化→改善提案のフローで「睡眠に強い院」として差別化できます。",
   },
 ];
 
 const STEPS = [
   { num: "01", title: "アカウント作成", desc: "メールアドレスで簡単登録。3分で完了。" },
-  { num: "02", title: "チェックシートを選択", desc: "テンプレートから最適なチェックシートを選択。" },
-  { num: "03", title: "患者にチェックしてもらう", desc: "スマホまたはタブレットで簡単入力。" },
-  { num: "04", title: "分析結果を確認", desc: "自動生成されたレポートで睡眠の質を説明。" },
-  { num: "05", title: "セルフケア・物販提案", desc: "改善提案と合わせて次回予約・物販に自然につなげる。" },
+  { num: "02", title: "患者情報入力", desc: "氏名・年齢・主訴を入力して検査開始。" },
+  { num: "03", title: "30問の質問に回答", desc: "患者がタブレットで回答。5〜10分で完了。" },
+  { num: "04", title: "AIが5軸分析", desc: "回答結果をAIが即座にスコアリング・分析。" },
+  { num: "05", title: "PDFレポート出力", desc: "分析結果・セルフケア・施術提案をまとめたレポート完成。" },
 ];
 
 export default function SleepDetailPage() {
@@ -118,16 +125,16 @@ export default function SleepDetailPage() {
       <section className="bg-gradient-to-br from-primary via-primary-700 to-primary-800 text-white py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm mb-6">
-            治療院専用 睡眠チェック分析
+            治療院専用 睡眠分析システム
           </div>
           <h1 className="text-3xl md:text-5xl font-black leading-tight mb-6">
             睡眠チェック分析アプリ
           </h1>
           <p className="text-lg md:text-xl text-white/80 mb-4 leading-relaxed">
-            患者の睡眠の質を数値で可視化。施術の根拠に。
+            5軸×30問で睡眠の質を徹底分析し、AI施術提案・セルフケアまで一貫。
           </p>
           <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
-            治療院で使える睡眠評価ツールは<span className="text-cta-300 font-bold">業界初</span>。
+            検査から改善プランまで<span className="text-cta-300 font-bold">全自動</span>で完結。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -153,40 +160,10 @@ export default function SleepDetailPage() {
             実際の画面イメージ
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            患者のチェック画面と、スタッフの分析画面
+            5軸レーダーチャートで睡眠状態を一目で把握
           </p>
           <div className="grid md:grid-cols-2 gap-8">
-            {/* 患者側チェック画面 */}
-            <div className="flex justify-center">
-              <div className="w-72 rounded-[2rem] border-4 border-gray-800 shadow-xl overflow-hidden bg-white">
-                <div className="bg-gray-800 px-6 py-2 flex justify-center">
-                  <div className="w-20 h-5 bg-gray-700 rounded-full"></div>
-                </div>
-                <div className="p-5">
-                  <div className="text-center mb-4">
-                    <div className="text-sm font-bold text-primary mb-1">睡眠チェックシート</div>
-                    <div className="text-[10px] text-gray-400">最近1週間の睡眠について</div>
-                  </div>
-                  <div className="space-y-3">
-                    {[
-                      { q: "寝つきは良いですか？", a: "やや悪い" },
-                      { q: "夜中に目が覚めますか？", a: "週2-3回" },
-                      { q: "朝の目覚めは？", a: "すっきりしない" },
-                      { q: "日中の眠気は？", a: "時々感じる" },
-                    ].map((item, i) => (
-                      <div key={i}>
-                        <div className="text-[10px] text-gray-500 mb-1">{item.q}</div>
-                        <div className="bg-accent/5 rounded-lg px-3 py-2 border border-accent/20 text-xs text-accent font-medium">{item.a}</div>
-                      </div>
-                    ))}
-                    <div className="pt-2">
-                      <div className="bg-accent text-white rounded-xl py-2.5 text-center text-xs font-bold">チェック完了</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* スタッフ分析画面 */}
+            {/* レーダーチャート画面 */}
             <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
               <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
                 <div className="flex gap-1.5">
@@ -194,41 +171,95 @@ export default function SleepDetailPage() {
                   <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
                 </div>
-                <span className="text-xs text-gray-400 ml-2">分析レポート - 睡眠スコア</span>
+                <span className="text-xs text-gray-400 ml-2">5軸レーダーチャート分析</span>
               </div>
               <div className="bg-gray-50 p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-sm font-bold text-primary">山田 太郎さんの睡眠分析</div>
+                  <div className="text-sm font-bold text-primary">山田 太郎 様</div>
+                  <div className="text-xs text-gray-400">2026/03/28</div>
                 </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-100 mb-3">
-                  <div className="text-center mb-3">
-                    <div className="text-[10px] text-gray-400">総合睡眠スコア</div>
-                    <div className="text-3xl font-black text-cta">58<span className="text-sm text-gray-400">/100</span></div>
-                    <div className="text-[10px] text-cta font-bold">要改善</div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { label: "入眠", score: "45", color: "text-red-500" },
-                      { label: "中途覚醒", score: "60", color: "text-yellow-500" },
-                      { label: "起床時", score: "70", color: "text-green-500" },
-                    ].map((s, i) => (
-                      <div key={i} className="text-center">
-                        <div className="text-[9px] text-gray-400">{s.label}</div>
-                        <div className={`text-sm font-bold ${s.color}`}>{s.score}</div>
-                      </div>
-                    ))}
-                  </div>
+                <div className="text-xs text-gray-500 mb-3 font-bold">睡眠スコア分析</div>
+                {/* レーダーチャート風モックアップ */}
+                <div className="relative w-48 h-48 mx-auto mb-4">
+                  <svg viewBox="0 0 200 200" className="w-full h-full">
+                    {/* 背景の五角形ガイド */}
+                    <polygon points="100,20 180,75 155,160 45,160 20,75" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+                    <polygon points="100,44 156,81 139,144 61,144 44,81" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+                    <polygon points="100,68 132,87 123,128 77,128 68,87" fill="none" stroke="#e5e7eb" strokeWidth="1" />
+                    {/* データ */}
+                    <polygon points="100,32 168,78 140,155 55,140 32,75" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" strokeWidth="2" />
+                    {/* ラベル */}
+                    <text x="100" y="12" textAnchor="middle" className="text-[9px] fill-gray-600">睡眠の質</text>
+                    <text x="190" y="78" textAnchor="start" className="text-[9px] fill-gray-600">入眠</text>
+                    <text x="162" y="172" textAnchor="middle" className="text-[9px] fill-gray-600">中途覚醒</text>
+                    <text x="38" y="172" textAnchor="middle" className="text-[9px] fill-gray-600">起床</text>
+                    <text x="4" y="78" textAnchor="start" className="text-[9px] fill-gray-600">日中の眠気</text>
+                  </svg>
                 </div>
-                <div className="bg-white rounded-xl p-3 border border-gray-100">
-                  <div className="text-[10px] font-bold text-primary mb-2">改善提案</div>
-                  <div className="space-y-1.5">
-                    {["就寝前のスマホ使用を控える", "入浴時間を就寝1時間前に", "マグネシウムサプリの摂取"].map((tip, i) => (
-                      <div key={i} className="flex items-center gap-2 text-[10px] text-gray-600">
-                        <span className="text-accent">&#10003;</span>
-                        {tip}
+                <div className="space-y-1">
+                  {[
+                    { axis: "睡眠の質", score: 72, color: "bg-blue-500" },
+                    { axis: "入眠", score: 85, color: "bg-blue-500" },
+                    { axis: "中途覚醒", score: 45, color: "bg-red-400" },
+                    { axis: "起床", score: 58, color: "bg-yellow-500" },
+                    { axis: "日中の眠気", score: 65, color: "bg-blue-400" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs">
+                      <span className="w-20 text-gray-600">{item.axis}</span>
+                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                        <div className={`${item.color} h-2 rounded-full`} style={{ width: `${item.score}%` }}></div>
                       </div>
-                    ))}
-                  </div>
+                      <span className="font-bold text-gray-700 w-8 text-right">{item.score}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* ビフォーアフター比較画面 */}
+            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <span className="text-xs text-gray-400 ml-2">ビフォーアフター比較</span>
+              </div>
+              <div className="bg-gray-50 p-6">
+                <div className="text-sm font-bold text-primary mb-3">改善度推移</div>
+                <div className="flex items-end gap-3 h-32 mb-3">
+                  {[
+                    { h: "35%", label: "初回", score: "52" },
+                    { h: "50%", label: "2週後", score: "64" },
+                    { h: "65%", label: "1ヶ月", score: "73" },
+                    { h: "80%", label: "2ヶ月", score: "82" },
+                    { h: "92%", label: "3ヶ月", score: "91" },
+                  ].map((bar, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                      <span className="text-[10px] text-accent font-bold">{bar.score}</span>
+                      <div className="w-full bg-accent/20 rounded-t-md relative" style={{ height: bar.h }}>
+                        <div className="absolute inset-0 bg-accent rounded-t-md opacity-60"></div>
+                      </div>
+                      <span className="text-[10px] text-gray-400">{bar.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-green-50 rounded-lg px-3 py-2 border border-green-200 mb-3">
+                  <span className="text-xs text-green-700 font-bold">総合スコア +75% 改善（初回比）</span>
+                </div>
+                <div className="space-y-1">
+                  {[
+                    { axis: "中途覚醒", before: 45, after: 78 },
+                    { axis: "起床", before: 58, after: 85 },
+                    { axis: "日中の眠気", before: 65, after: 88 },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs">
+                      <span className="w-20 text-gray-600">{item.axis}</span>
+                      <span className="text-red-400 w-6 text-right">{item.before}</span>
+                      <span className="text-gray-400">→</span>
+                      <span className="text-green-600 font-bold w-6">{item.after}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -247,12 +278,12 @@ export default function SleepDetailPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              "患者の睡眠状態を客観的に評価できない",
-              "睡眠の改善を数値で示せない",
-              "物販やサプリを提案する根拠がない",
-              "施術だけでなく生活習慣改善もサポートしたい",
-              "患者の通院継続率を上げたい",
-              "他院との差別化ポイントが欲しい",
+              "患者の睡眠の悩みを感覚でしか聞けていない",
+              "睡眠の改善度を数値で示せない",
+              "セルフケア指導がワンパターンになる",
+              "睡眠に特化した検査ツールが見つからない",
+              "施術前後の変化を見える化できない",
+              "睡眠改善を売りにしたいが差別化できない",
             ].map((pain, i) => (
               <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                 <span className="text-red-500 text-lg mt-0.5">&#10007;</span>
@@ -273,7 +304,7 @@ export default function SleepDetailPage() {
             主な機能
           </h2>
           <p className="text-center text-gray-500 mb-12">
-            治療院の睡眠評価に必要な機能を全て搭載
+            睡眠分析・改善提案に必要な機能を全て搭載
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
@@ -298,7 +329,7 @@ export default function SleepDetailPage() {
             他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院で使える睡眠評価ツールはこれだけ
+            睡眠分析に必要な機能を全て備えているのは、このアプリだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
@@ -388,15 +419,15 @@ export default function SleepDetailPage() {
               <div className="text-xs text-gray-500 mb-4">初期費用 0円</div>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>チェック回数無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>レポート出力無制限</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>AI提案回数無制限</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>PDF出力無制限</li>
                 <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
               </ul>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
               <div className="text-gray-500 text-sm font-bold mb-2">買い切りプラン</div>
               <div className="text-3xl font-black text-primary mb-1">
-                39,800<span className="text-lg">円</span>
+                49,800<span className="text-lg">円</span>
               </div>
               <div className="text-xs text-gray-500 mb-4">月額費用なし・永続利用</div>
               <ul className="space-y-2 text-sm text-gray-700">
