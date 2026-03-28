@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import DemoSlideshow from "@/app/components/DemoSlideshow";
 
 export const metadata: Metadata = {
   title: "検査シート作成システム - 治療院専用 検査・記録システム | ClinicApps",
@@ -166,25 +167,11 @@ export default function KensaDetailPage() {
             タブレットで直感操作、結果はワンクリックでPDF化
           </p>
 
-          {/* スクリーンショット */}
-          <div className="rounded-2xl border border-gray-200 shadow-xl overflow-hidden mb-8">
-            <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
-              <span className="text-xs text-gray-400 ml-2">検査シート作成システム - 実際の画面</span>
-            </div>
-            <img
-              src="/images/kensa.png"
-              alt="検査シート作成システムの画面"
-              className="w-full"
-            />
-          </div>
+          {/* 操作デモ スライドショー */}
+          <DemoSlideshow />
 
-          {/* デモ体験 */}
-          <div className="text-center mb-6">
+          {/* デモ体験ボタン */}
+          <div className="text-center mt-8 mb-6">
             <a
               href="https://kensa-demo.vercel.app"
               target="_blank"
@@ -194,9 +181,9 @@ export default function KensaDetailPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
               </svg>
-              実際に触ってみる（デモ体験）
+              自分で触ってみる（無料デモ）
             </a>
-            <p className="text-xs text-gray-400 mt-2">デモアカウント: demo@clinicapps.jp / demo1234</p>
+            <p className="text-xs text-gray-400 mt-2">ログイン不要・すぐに全機能を体験できます</p>
           </div>
 
           {/* 画面の特徴 */}
