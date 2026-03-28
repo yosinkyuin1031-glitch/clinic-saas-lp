@@ -40,11 +40,59 @@ const FEATURES = [
   },
 ];
 
+const COMPARISON_ROWS = [
+  { label: "月額料金", type: "price" as const },
+  { label: "初期費用", type: "custom" as const },
+  { label: "カレンダー形式（週/日表示）", type: "check" as const },
+  { label: "ダブルブッキング自動防止", type: "check" as const },
+  { label: "LINE通知（確定/リマインド）", type: "check" as const },
+  { label: "患者ごとの予約履歴", type: "check" as const },
+  { label: "スタッフ別スケジュール", type: "check" as const },
+  { label: "ドラッグ&ドロップ変更", type: "check" as const },
+  { label: "キャンセル待ち管理", type: "check" as const },
+  { label: "スマホ対応（外出先確認）", type: "check" as const },
+  { label: "施術メニュー別の時間設定", type: "check" as const },
+  { label: "治療院専用設計", type: "check" as const },
+  { label: "導入サポート", type: "custom" as const },
+  { label: "最低契約期間", type: "custom" as const },
+];
+
 const COMPETITORS = [
-  { name: "予約管理システム", price: "2,980円", calendar: true, doubleBooking: true, line: true, history: true, staff: true, clinic: true, highlight: true },
-  { name: "紙の予約帳", price: "0円", calendar: false, doubleBooking: false, line: false, history: false, staff: false, clinic: false, highlight: false },
-  { name: "STORES予約", price: "0円〜", calendar: true, doubleBooking: true, line: false, history: "half" as const, staff: true, clinic: false, highlight: false },
-  { name: "しんきゅう予約", price: "5,000円〜", calendar: true, doubleBooking: true, line: "half" as const, history: true, staff: true, clinic: true, highlight: false },
+  {
+    name: "予約管理\nシステム",
+    highlight: true,
+    values: ["2,980円", "19,800円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+  },
+  {
+    name: "紙の予約帳",
+    highlight: false,
+    values: ["0円", "0円", "△", "×", "×", "×", "×", "×", "×", "×", "×", "△", "なし", "-"],
+  },
+  {
+    name: "STORES予約",
+    highlight: false,
+    values: ["0円〜", "0円", "○", "○", "×", "△", "○", "×", "×", "○", "○", "×", "メール", "なし"],
+  },
+  {
+    name: "しんきゅう予約",
+    highlight: false,
+    values: ["5,000円〜", "30,000円〜", "○", "○", "△", "○", "○", "×", "△", "○", "○", "○", "電話", "6ヶ月"],
+  },
+];
+
+const ADVANTAGES = [
+  {
+    title: "LINE通知でキャンセル率が激減",
+    desc: "予約確定・前日リマインドをLINEで自動送信。無断キャンセルが多い院では、リマインド導入で当日キャンセルが半減したケースも。STORES予約にはLINE連携がありません。",
+  },
+  {
+    title: "治療院の予約パターンを理解した設計",
+    desc: "施術メニューごとに所要時間が異なる治療院の予約に最適化。30分・60分・90分の施術が混在しても、カレンダー上で自動調整されます。",
+  },
+  {
+    title: "月2,980円は業界最安クラス",
+    desc: "しんきゅう予約は月5,000円＋初期3万円。STORES予約は無料だがLINE連携なし。当システムは月2,980円で全機能が使え、しかも縛り期間なしです。",
+  },
 ];
 
 const STEPS = [
@@ -54,28 +102,6 @@ const STEPS = [
   { num: "04", title: "LINE通知が自動送信", desc: "予約確定・前日リマインドが自動でLINEに届く。" },
   { num: "05", title: "スマホで確認", desc: "外出先からもスケジュールを確認・変更。" },
 ];
-
-function CompetitorCell({ value, highlight }: { value: boolean | "half"; highlight: boolean }) {
-  if (value === true) {
-    return (
-      <td className={`px-3 py-3 text-center ${highlight ? "bg-cta-50" : ""}`}>
-        <span className="text-green-600 font-bold">&#9679;</span>
-      </td>
-    );
-  }
-  if (value === "half") {
-    return (
-      <td className={`px-3 py-3 text-center ${highlight ? "bg-cta-50" : ""}`}>
-        <span className="text-yellow-500 font-bold">&#9650;</span>
-      </td>
-    );
-  }
-  return (
-    <td className={`px-3 py-3 text-center ${highlight ? "bg-cta-50" : ""}`}>
-      <span className="text-gray-300">-</span>
-    </td>
-  );
-}
 
 export default function ReservationDetailPage() {
   return (
@@ -181,51 +207,60 @@ export default function ReservationDetailPage() {
 
       {/* 他社との違い */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの比較
+            他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院に必要な機能を、この価格で
+            治療院に必要な予約管理機能を全て備えているのは、このシステムだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
                   {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold ${c.highlight ? "bg-cta" : ""}`}>
+                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
                       {c.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">月額料金</td>
-                  {COMPETITORS.map((c, i) => (
-                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
-                      {c.price}
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  { label: "カレンダー表示", key: "calendar" as const },
-                  { label: "ダブルブッキング防止", key: "doubleBooking" as const },
-                  { label: "LINE通知", key: "line" as const },
-                  { label: "予約履歴", key: "history" as const },
-                  { label: "スタッフ管理", key: "staff" as const },
-                  { label: "治療院特化", key: "clinic" as const },
-                ].map((row, ri) => (
+                {COMPARISON_ROWS.map((row, ri) => (
                   <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium">{row.label}</td>
-                    {COMPETITORS.map((c, ci) => (
-                      <CompetitorCell key={ci} value={c[row.key]} highlight={c.highlight} />
-                    ))}
+                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
+                    {COMPETITORS.map((c, ci) => {
+                      const val = c.values[ri];
+                      const isHighlight = c.highlight;
+                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
+                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
+                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
+                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
+                    })}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* 治療院特化の強み解説 */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-primary mb-6 text-center">
+              治療院特化だから、ここが違う
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

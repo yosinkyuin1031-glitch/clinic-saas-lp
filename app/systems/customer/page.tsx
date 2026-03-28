@@ -40,11 +40,59 @@ const FEATURES = [
   },
 ];
 
+const COMPARISON_ROWS = [
+  { label: "月額料金", type: "price" as const },
+  { label: "初期費用", type: "custom" as const },
+  { label: "患者情報の一元管理", type: "check" as const },
+  { label: "来院履歴・施術記録", type: "check" as const },
+  { label: "離反アラート（自動検出）", type: "check" as const },
+  { label: "リピート率・LTV分析", type: "check" as const },
+  { label: "月別来院数グラフ", type: "check" as const },
+  { label: "新規/既存比率の可視化", type: "check" as const },
+  { label: "CSV一括インポート", type: "check" as const },
+  { label: "スマホ対応", type: "check" as const },
+  { label: "スタッフ間の情報共有", type: "check" as const },
+  { label: "治療院専用設計", type: "check" as const },
+  { label: "導入サポート", type: "custom" as const },
+  { label: "最低契約期間", type: "custom" as const },
+];
+
 const COMPETITORS = [
-  { name: "顧客管理シート", price: "4,980円", alert: "○", analytics: "○", csv: "○", cloud: "○", mobile: "○", clinic: "○", highlight: true },
-  { name: "Excel管理", price: "0円", alert: "×", analytics: "×", csv: "△", cloud: "×", mobile: "×", clinic: "×", highlight: false },
-  { name: "汎用CRM\n(Salesforce等)", price: "3,000円〜", alert: "△", analytics: "○", csv: "○", cloud: "○", mobile: "○", clinic: "×", highlight: false },
-  { name: "大手カルテ\nシステム", price: "15,000円〜", alert: "×", analytics: "△", csv: "△", cloud: "○", mobile: "△", clinic: "△", highlight: false },
+  {
+    name: "顧客管理シート",
+    highlight: true,
+    values: ["4,980円", "29,800円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+  },
+  {
+    name: "Excel管理",
+    highlight: false,
+    values: ["0円", "0円", "△", "△", "×", "×", "×", "×", "△", "×", "×", "×", "なし", "-"],
+  },
+  {
+    name: "汎用CRM\n(Salesforce等)",
+    highlight: false,
+    values: ["3,000円〜", "0円〜", "○", "△", "△", "○", "○", "△", "○", "○", "○", "×", "メール", "12ヶ月"],
+  },
+  {
+    name: "大手カルテ\nシステム",
+    highlight: false,
+    values: ["15,000円〜", "100,000円〜", "○", "○", "×", "△", "△", "×", "△", "△", "○", "△", "訪問", "12ヶ月"],
+  },
+];
+
+const ADVANTAGES = [
+  {
+    title: "離反アラートで売上の取りこぼしゼロ",
+    desc: "来院間隔が空いた患者を自動検出。「来なくなったことに気づけない」を解消し、早めのフォローでリピート率を維持。Excel管理では絶対にできない機能です。",
+  },
+  {
+    title: "治療院の指標に特化した分析",
+    desc: "リピート率・新規/既存比率・LTVなど、治療院経営で本当に見るべき数字だけをダッシュボードに表示。汎用CRMにはない「治療院目線」の分析です。",
+  },
+  {
+    title: "初期費用が大手の1/3以下",
+    desc: "大手カルテシステムは初期費用10万円以上+月額1.5万円が相場。当システムは初期29,800円・月額4,980円で、必要な機能は全て揃っています。",
+  },
 ];
 
 const STEPS = [
@@ -159,62 +207,60 @@ export default function CustomerDetailPage() {
 
       {/* 他社との違い */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの比較
+            他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院に必要な機能を、この価格で
+            治療院に必要な顧客管理機能を全て備えているのは、このシステムだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
                   {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
+                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
                       {c.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">月額料金</td>
-                  {COMPETITORS.map((c, i) => (
-                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
-                      {c.price}
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  { label: "離反アラート", key: "alert" as const },
-                  { label: "データ分析", key: "analytics" as const },
-                  { label: "CSV移行", key: "csv" as const },
-                  { label: "クラウド", key: "cloud" as const },
-                  { label: "スマホ対応", key: "mobile" as const },
-                  { label: "治療院特化", key: "clinic" as const },
-                ].map((row, ri) => (
+                {COMPARISON_ROWS.map((row, ri) => (
                   <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium">{row.label}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
                     {COMPETITORS.map((c, ci) => {
-                      const val = c[row.key];
-                      return (
-                        <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
-                          {val === "○" ? (
-                            <span className="text-green-600 font-bold">&#9679;</span>
-                          ) : val === "△" ? (
-                            <span className="text-yellow-500 font-bold">&#9650;</span>
-                          ) : (
-                            <span className="text-gray-300">-</span>
-                          )}
-                        </td>
-                      );
+                      const val = c.values[ri];
+                      const isHighlight = c.highlight;
+                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
+                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
+                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
+                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
                     })}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* 治療院特化の強み解説 */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-primary mb-6 text-center">
+              治療院特化だから、ここが違う
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

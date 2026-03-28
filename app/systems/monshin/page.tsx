@@ -40,11 +40,59 @@ const FEATURES = [
   },
 ];
 
+const COMPARISON_ROWS = [
+  { label: "月額料金", type: "price" as const },
+  { label: "初期費用", type: "custom" as const },
+  { label: "スマホで事前問診", type: "check" as const },
+  { label: "問診項目カスタマイズ", type: "check" as const },
+  { label: "症状別テンプレート", type: "check" as const },
+  { label: "自動集計・分析", type: "check" as const },
+  { label: "PDF出力", type: "check" as const },
+  { label: "患者用QRコード生成", type: "check" as const },
+  { label: "多言語対応（英語/中国語）", type: "check" as const },
+  { label: "問診→施術の導線設計", type: "check" as const },
+  { label: "来院きっかけ分析", type: "check" as const },
+  { label: "治療院専用設計", type: "check" as const },
+  { label: "導入サポート", type: "custom" as const },
+  { label: "最低契約期間", type: "custom" as const },
+];
+
 const COMPETITORS = [
-  { name: "WEB問診システム", price: "2,980円", smartphone: true, custom: true, analytics: true, pdf: true, qr: true, clinic: "○", highlight: true },
-  { name: "紙の問診票", price: "0円", smartphone: false, custom: false, analytics: false, pdf: false, qr: false, clinic: "×", highlight: false },
-  { name: "Symview", price: "15,000円〜", smartphone: true, custom: "△", analytics: true, pdf: true, qr: true, clinic: "× 医科向け", highlight: false },
-  { name: "メルプ", price: "10,000円〜", smartphone: true, custom: true, analytics: true, pdf: true, qr: true, clinic: "× 医科向け", highlight: false },
+  {
+    name: "WEB問診\nシステム",
+    highlight: true,
+    values: ["2,980円", "19,800円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+  },
+  {
+    name: "紙の問診票",
+    highlight: false,
+    values: ["0円", "0円", "×", "△", "×", "×", "×", "×", "×", "×", "×", "△", "なし", "-"],
+  },
+  {
+    name: "Symview",
+    highlight: false,
+    values: ["15,000円〜", "200,000円〜", "○", "△", "○", "○", "○", "○", "×", "×", "△", "×", "専任担当", "12ヶ月"],
+  },
+  {
+    name: "メルプ",
+    highlight: false,
+    values: ["10,000円〜", "100,000円〜", "○", "○", "○", "○", "○", "○", "×", "×", "○", "×", "電話", "12ヶ月"],
+  },
+];
+
+const ADVANTAGES = [
+  {
+    title: "治療院の問診に特化した設計",
+    desc: "Symviewやメルプは病院・クリニック向け。整体・鍼灸の現場で聞くべき項目（主訴・既往歴・生活習慣・来院きっかけ）に特化したテンプレートを標準搭載しています。",
+  },
+  {
+    title: "初期費用が大手の1/10以下",
+    desc: "Symviewは初期20万円、メルプは初期10万円が相場。当システムは初期19,800円・月額2,980円で全機能を利用可能。個人院でも無理なく導入できます。",
+  },
+  {
+    title: "問診→施術の導線まで設計済み",
+    desc: "問診データを取るだけでなく、施術前のカウンセリングに直接活かせる構成。来院きっかけ分析で広告の費用対効果も見えるようになります。",
+  },
 ];
 
 const STEPS = [
@@ -159,75 +207,60 @@ export default function MonshinDetailPage() {
 
       {/* 他社との違い */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの比較
+            他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院に必要な機能を、圧倒的な低価格で
+            治療院に必要な問診機能を全て備えているのは、このシステムだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
                   {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold ${c.highlight ? "bg-cta" : ""}`}>
+                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
                       {c.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">月額料金</td>
-                  {COMPETITORS.map((c, i) => (
-                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
-                      {c.price}
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  { label: "スマホ問診", key: "smartphone" as const },
-                  { label: "カスタム項目", key: "custom" as const },
-                  { label: "自動集計", key: "analytics" as const },
-                  { label: "PDF出力", key: "pdf" as const },
-                  { label: "QRコード", key: "qr" as const },
-                ].map((row, ri) => (
+                {COMPARISON_ROWS.map((row, ri) => (
                   <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium">{row.label}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
                     {COMPETITORS.map((c, ci) => {
-                      const val = c[row.key];
-                      return (
-                        <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
-                          {val === true ? (
-                            <span className="text-green-600 font-bold">&#9679;</span>
-                          ) : val === "△" ? (
-                            <span className="text-yellow-500 font-bold">△</span>
-                          ) : (
-                            <span className="text-gray-300">-</span>
-                          )}
-                        </td>
-                      );
+                      const val = c.values[ri];
+                      const isHighlight = c.highlight;
+                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
+                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
+                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
+                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
                     })}
                   </tr>
                 ))}
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">治療院特化</td>
-                  {COMPETITORS.map((c, ci) => (
-                    <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
-                      {c.clinic === "○" ? (
-                        <span className="text-green-600 font-bold">&#9679;</span>
-                      ) : c.clinic === "×" ? (
-                        <span className="text-gray-300">-</span>
-                      ) : (
-                        <span className="text-gray-400 text-xs">{c.clinic}</span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
               </tbody>
             </table>
+          </div>
+
+          {/* 治療院特化の強み解説 */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-primary mb-6 text-center">
+              治療院特化だから、ここが違う
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

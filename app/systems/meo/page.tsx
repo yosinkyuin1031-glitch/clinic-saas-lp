@@ -40,11 +40,59 @@ const FEATURES = [
   },
 ];
 
+const COMPARISON_ROWS = [
+  { label: "月額料金", type: "price" as const },
+  { label: "初期費用", type: "custom" as const },
+  { label: "AI投稿文生成", type: "check" as const },
+  { label: "医療広告GLチェック", type: "check" as const },
+  { label: "口コミ返信AI", type: "check" as const },
+  { label: "GBP画像生成", type: "check" as const },
+  { label: "WordPress連携", type: "check" as const },
+  { label: "GSC連携（SEO分析）", type: "check" as const },
+  { label: "順位チェック・変動アラート", type: "check" as const },
+  { label: "競合分析ダッシュボード", type: "check" as const },
+  { label: "note記事・FAQ一括生成", type: "check" as const },
+  { label: "治療院特化テンプレート", type: "check" as const },
+  { label: "導入サポート", type: "custom" as const },
+  { label: "最低契約期間", type: "custom" as const },
+];
+
 const COMPETITORS = [
-  { name: "MEO勝ち上げくん", price: "4,980円", ai: true, gl: true, reply: true, wp: true, image: true, clinic: true, highlight: true },
-  { name: "MEOチェキ", price: "3,278円〜", ai: false, gl: false, reply: false, wp: false, image: false, clinic: false, highlight: false },
-  { name: "Gyro-n MEO", price: "1,500円〜", ai: false, gl: false, reply: false, wp: false, image: false, clinic: false, highlight: false },
-  { name: "ローカルミエルカ", price: "50,000円〜", ai: false, gl: false, reply: false, wp: false, image: false, clinic: false, highlight: false },
+  {
+    name: "MEO勝ち上げくん",
+    highlight: true,
+    values: ["4,980円", "29,800円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+  },
+  {
+    name: "MEOチェキ",
+    highlight: false,
+    values: ["3,278円〜", "0円", "×", "×", "×", "×", "×", "×", "○", "△", "×", "×", "メール", "6ヶ月"],
+  },
+  {
+    name: "Gyro-n MEO",
+    highlight: false,
+    values: ["1,500円〜", "0円", "×", "×", "×", "×", "×", "×", "○", "×", "×", "×", "メール", "なし"],
+  },
+  {
+    name: "ローカルミエルカ",
+    highlight: false,
+    values: ["50,000円〜", "要問合せ", "×", "×", "×", "×", "×", "△", "○", "○", "×", "×", "専任担当", "12ヶ月"],
+  },
+];
+
+const ADVANTAGES = [
+  {
+    title: "医療広告ガイドラインチェックは業界唯一",
+    desc: "治療院のMEO投稿で最もリスクが高いのがGL違反。「最高」「絶対治る」などのNG表現をAIが自動検出。他社ツールにはこの機能がありません。",
+  },
+  {
+    title: "AI生成が治療院の文脈を理解している",
+    desc: "一般的なAIツールと違い、整体・鍼灸・接骨院の専門用語や患者心理を理解した文章を生成。投稿後の手直しがほぼ不要です。",
+  },
+  {
+    title: "月5万円のMEO業者と同等以上の機能が月4,980円",
+    desc: "MEO業者に外注すると月3〜5万円が相場。勝ち上げくんなら同等の投稿・口コミ管理・順位追跡が月4,980円で全部できます。",
+  },
 ];
 
 const STEPS = [
@@ -159,57 +207,60 @@ export default function MeoDetailPage() {
 
       {/* 他社との違い */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの比較
+            他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院に必要な機能は、勝ち上げくんだけ
+            治療院に必要な機能を全て備えているのは、勝ち上げくんだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
                   {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold ${c.highlight ? "bg-cta" : ""}`}>
+                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
                       {c.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">月額料金</td>
-                  {COMPETITORS.map((c, i) => (
-                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
-                      {c.price}
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  { label: "AI投稿生成", key: "ai" as const },
-                  { label: "医療広告GLチェック", key: "gl" as const },
-                  { label: "口コミ返信AI", key: "reply" as const },
-                  { label: "WordPress連携", key: "wp" as const },
-                  { label: "GBP画像生成", key: "image" as const },
-                  { label: "治療院特化", key: "clinic" as const },
-                ].map((row, ri) => (
+                {COMPARISON_ROWS.map((row, ri) => (
                   <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium">{row.label}</td>
-                    {COMPETITORS.map((c, ci) => (
-                      <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
-                        {c[row.key] ? (
-                          <span className="text-green-600 font-bold">&#9679;</span>
-                        ) : (
-                          <span className="text-gray-300">-</span>
-                        )}
-                      </td>
-                    ))}
+                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
+                    {COMPETITORS.map((c, ci) => {
+                      const val = c.values[ri];
+                      const isHighlight = c.highlight;
+                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
+                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
+                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
+                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
+                    })}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* 治療院特化の強み解説 */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-primary mb-6 text-center">
+              治療院特化だから、ここが違う
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

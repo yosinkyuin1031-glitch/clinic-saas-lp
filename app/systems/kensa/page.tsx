@@ -40,11 +40,59 @@ const FEATURES = [
   },
 ];
 
+const COMPARISON_ROWS = [
+  { label: "月額料金", type: "price" as const },
+  { label: "初期費用", type: "custom" as const },
+  { label: "神経学的検査テンプレート", type: "check" as const },
+  { label: "整形外科テスト対応", type: "check" as const },
+  { label: "検査結果PDF出力", type: "check" as const },
+  { label: "経過比較グラフ", type: "check" as const },
+  { label: "セルフケアAI提案", type: "check" as const },
+  { label: "施術提案書の自動生成", type: "check" as const },
+  { label: "患者への説明用ビジュアル", type: "check" as const },
+  { label: "ダッシュボード・統計分析", type: "check" as const },
+  { label: "スマホ・タブレット対応", type: "check" as const },
+  { label: "治療院専用設計", type: "check" as const },
+  { label: "導入サポート", type: "custom" as const },
+  { label: "最低契約期間", type: "custom" as const },
+];
+
 const COMPETITORS = [
-  { name: "検査シート作成システム", price: "5,500円", ai: true, pdf: true, history: true, selfcare: true, proposal: true, clinic: true, highlight: true },
-  { name: "紙の検査用紙", price: "0円", ai: false, pdf: false, history: false, selfcare: false, proposal: false, clinic: false, highlight: false },
-  { name: "汎用電子カルテ", price: "10,000円〜", ai: false, pdf: true, history: "△" as string | boolean, selfcare: false, proposal: false, clinic: false, highlight: false },
-  { name: "大手レセコン", price: "20,000円〜", ai: false, pdf: true, history: true, selfcare: false, proposal: false, clinic: "△" as string | boolean, highlight: false },
+  {
+    name: "検査シート\n作成システム",
+    highlight: true,
+    values: ["5,500円", "33,000円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
+  },
+  {
+    name: "紙の検査用紙",
+    highlight: false,
+    values: ["0円", "0円", "△", "△", "×", "×", "×", "×", "×", "×", "×", "△", "なし", "-"],
+  },
+  {
+    name: "汎用電子カルテ",
+    highlight: false,
+    values: ["10,000円〜", "50,000円〜", "×", "×", "○", "△", "×", "×", "△", "△", "△", "×", "メール", "12ヶ月"],
+  },
+  {
+    name: "大手レセコン",
+    highlight: false,
+    values: ["20,000円〜", "100,000円〜", "×", "×", "○", "○", "×", "×", "△", "○", "×", "△", "訪問", "12ヶ月"],
+  },
+];
+
+const ADVANTAGES = [
+  {
+    title: "神経学的検査に完全対応は業界唯一",
+    desc: "反射テスト・感覚テスト・筋力テストの3ステップを完全デジタル化。整体・鍼灸の現場で本当に使う検査に特化しています。汎用カルテにこの機能はありません。",
+  },
+  {
+    title: "セルフケアAIで患者満足度が上がる",
+    desc: "検査結果に基づいてAIがセルフケアメニューを自動提案。患者が「自分専用のケア」をもらえるため、信頼感とリピート率が同時に上がります。",
+  },
+  {
+    title: "施術提案書で「なぜ通うべきか」が伝わる",
+    desc: "検査データから治療方針・通院プランを自動生成。患者に数字で説明できるので、回数券やプランの成約率が大幅に改善します。",
+  },
 ];
 
 const STEPS = [
@@ -162,62 +210,60 @@ export default function KensaDetailPage() {
 
       {/* 他社との違い */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの比較
+            他社ツールとの徹底比較
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            治療院に必要な検査機能は、このシステムだけ
+            治療院の検査に必要な機能を全て備えているのは、このシステムだけ
           </p>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
               <thead>
                 <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold">機能</th>
+                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
                   {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold ${c.highlight ? "bg-cta" : ""}`}>
+                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
+                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
                       {c.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="px-4 py-3 font-medium">月額料金</td>
-                  {COMPETITORS.map((c, i) => (
-                    <td key={i} className={`px-3 py-3 text-center ${c.highlight ? "font-bold text-cta bg-cta-50" : ""}`}>
-                      {c.price}
-                    </td>
-                  ))}
-                </tr>
-                {[
-                  { label: "AI提案", key: "ai" as const },
-                  { label: "PDF出力", key: "pdf" as const },
-                  { label: "経過記録", key: "history" as const },
-                  { label: "セルフケアAI", key: "selfcare" as const },
-                  { label: "施術提案書", key: "proposal" as const },
-                  { label: "治療院特化", key: "clinic" as const },
-                ].map((row, ri) => (
+                {COMPARISON_ROWS.map((row, ri) => (
                   <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium">{row.label}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
                     {COMPETITORS.map((c, ci) => {
-                      const val = c[row.key];
-                      return (
-                        <td key={ci} className={`px-3 py-3 text-center ${c.highlight ? "bg-cta-50" : ""}`}>
-                          {val === true ? (
-                            <span className="text-green-600 font-bold">&#9679;</span>
-                          ) : val === "△" ? (
-                            <span className="text-yellow-500 font-bold">△</span>
-                          ) : (
-                            <span className="text-gray-300">-</span>
-                          )}
-                        </td>
-                      );
+                      const val = c.values[ri];
+                      const isHighlight = c.highlight;
+                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
+                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
+                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
+                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
                     })}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* 治療院特化の強み解説 */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-primary mb-6 text-center">
+              治療院特化だから、ここが違う
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {ADVANTAGES.map((a, i) => (
+                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
+                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
