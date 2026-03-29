@@ -168,6 +168,25 @@ const APPS = [
       </svg>
     ),
   },
+  {
+    id: "heatscope",
+    name: "HeatScope ヒートマップ分析",
+    shortName: "ヒートマップ",
+    categories: ["集客", "内製化"],
+    description: "HPのどこが見られ、どこがクリックされているかを可視化。スクロール深度・注目エリア・クリック位置をリアルタイム分析。",
+    features: ["クリックヒートマップ", "スクロール深度分析", "注目エリア可視化", "デバイス別レポート"],
+    monthlyPrice: 2980,
+    initialCost: 0,
+    badge: "NEW",
+    demoUrl: "",
+    detailUrl: "/systems/heatscope",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+      </svg>
+    ),
+  },
 ];
 
 const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断", "体質分析"];
@@ -208,8 +227,8 @@ const SET_EXAMPLES = [
   },
   {
     name: "フルパック",
-    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep", "nutrition", "gut", "headache"],
-    description: "全9システムまとめて導入。圧倒的コスパ",
+    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep", "nutrition", "gut", "headache", "heatscope"],
+    description: "全10システムまとめて導入。圧倒的コスパ",
     setMonthly: 29800,
     setInitial: 0,
     label: "30%OFF",

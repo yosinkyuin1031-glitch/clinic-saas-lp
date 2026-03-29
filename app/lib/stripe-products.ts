@@ -29,4 +29,9 @@ export const STRIPE_PRODUCTS = {
     monthly_price_id: 'price_1TEsjrCQ4UqT5PqXrj3uhyF6',
     onetime_price_id: 'price_1TEsjsCQ4UqT5PqXxbAtLSWX',
   },
+  heatscope: {
+    product_id: 'prod_TODO_heatscope',
+    monthly_price_id: 'price_TODO_heatscope_monthly',
+    onetime_price_id: null,
+  },
 } as const;
