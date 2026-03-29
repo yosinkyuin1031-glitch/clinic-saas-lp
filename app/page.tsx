@@ -114,82 +114,9 @@ const APPS = [
       </svg>
     ),
   },
-  {
-    id: "nutrition",
-    name: "栄養バランスチェック",
-    shortName: "栄養チェック",
-    categories: ["検査＆診断", "体質分析"],
-    description: "5軸×30問で栄養バランスを分析。食事改善プラン・施術提案をAIが自動生成。",
-    features: ["5軸栄養分析", "AI食事改善プラン", "ビフォーアフター比較"],
-    monthlyPrice: 4980,
-    initialCost: 0,
-    badge: "NEW",
-    demoUrl: "",
-    detailUrl: "/systems/nutrition",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.38a48.474 48.474 0 00-6-.37c-2.032 0-4.034.125-6 .37m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
-      </svg>
-    ),
-  },
-  {
-    id: "gut",
-    name: "腸内環境チェック",
-    shortName: "腸内環境",
-    categories: ["検査＆診断", "体質分析"],
-    description: "5軸×30問で腸内環境を分析。腸活プラン・施術提案をAIが自動生成。",
-    features: ["5軸腸内環境分析", "AI腸活プラン", "ビフォーアフター比較"],
-    monthlyPrice: 4980,
-    initialCost: 0,
-    badge: "NEW",
-    demoUrl: "",
-    detailUrl: "/systems/gut",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-      </svg>
-    ),
-  },
-  {
-    id: "headache",
-    name: "頭痛チェック",
-    shortName: "頭痛チェック",
-    categories: ["検査＆診断", "体質分析"],
-    description: "5軸×30問で頭痛パターンを分析。頭痛ノート・施術提案をAIが自動生成。",
-    features: ["5軸頭痛分析", "頭痛ノート記録", "ビフォーアフター比較"],
-    monthlyPrice: 4980,
-    initialCost: 0,
-    badge: "NEW",
-    demoUrl: "",
-    detailUrl: "/systems/headache",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" />
-      </svg>
-    ),
-  },
-  {
-    id: "heatscope",
-    name: "HeatScope ヒートマップ分析",
-    shortName: "ヒートマップ",
-    categories: ["集客", "内製化"],
-    description: "HPのどこが見られ、どこがクリックされているかを可視化。スクロール深度・注目エリア・クリック位置をリアルタイム分析。",
-    features: ["クリックヒートマップ", "スクロール深度分析", "注目エリア可視化", "デバイス別レポート"],
-    monthlyPrice: 2980,
-    initialCost: 0,
-    badge: "NEW",
-    demoUrl: "",
-    detailUrl: "/systems/heatscope",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-      </svg>
-    ),
-  },
 ];
 
-const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断", "体質分析"];
+const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断"];
 
 const COMING_SOON_APPS = [
   "LINE自動化ツール",
@@ -217,21 +144,12 @@ const SET_EXAMPLES = [
     note: null,
   },
   {
-    name: "体質分析パック",
-    appIds: ["sleep", "nutrition", "gut"],
-    description: "睡眠・栄養・腸内の3軸で体質を可視化",
-    setMonthly: 9800,
-    setInitial: 0,
-    label: "35%OFF",
-    note: "初期費用0円。頭痛チェックも追加可能",
-  },
-  {
     name: "フルパック",
-    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep", "nutrition", "gut", "headache", "heatscope"],
-    description: "全10システムまとめて導入。圧倒的コスパ",
-    setMonthly: 29800,
+    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep"],
+    description: "全6システムまとめて導入。圧倒的コスパ",
+    setMonthly: 19800,
     setInitial: 0,
-    label: "30%OFF",
+    label: "20%OFF",
     note: "全システムの初期費用が無料",
   },
 ];
@@ -277,14 +195,6 @@ const TESTIMONIALS = [
   },
 ];
 
-const getDiscount = (count: number) => {
-  if (count >= 9) return { discount: 0.30, label: "30%OFF" };
-  if (count >= 7) return { discount: 0.25, label: "25%OFF" };
-  if (count >= 5) return { discount: 0.20, label: "20%OFF" };
-  if (count >= 3) return { discount: 0.10, label: "10%OFF" };
-  if (count >= 2) return { discount: 0.05, label: "5%OFF" };
-  return { discount: 0, label: "" };
-};
 
 // ========== コンポーネント ==========
 
@@ -321,22 +231,18 @@ export default function Home() {
     const selected = APPS.filter(app => selectedApps.includes(app.id));
     const monthlySubtotal = selected.reduce((sum, app) => sum + app.monthlyPrice, 0);
     const initialSubtotal = selected.reduce((sum, app) => sum + app.initialCost, 0);
-    const discount = getDiscount(selected.length);
-    const monthlyDiscount = Math.floor(monthlySubtotal * discount.discount);
-    const isFullPack = selected.length >= 9;
-    const initialDiscount = isFullPack ? Math.floor(initialSubtotal * 0.5) : 0;
-    const monthlyTotal = monthlySubtotal - monthlyDiscount;
+    const monthlyTotal = monthlySubtotal;
     const yearlyTotal = monthlyTotal * 10; // 年払い = 月額 × 10（2ヶ月分お得）
     return {
       monthlySubtotal,
       initialSubtotal,
-      monthlyDiscount,
-      initialDiscount,
+      monthlyDiscount: 0,
+      initialDiscount: 0,
       monthlyTotal,
       yearlyTotal,
-      initialTotal: initialSubtotal - initialDiscount,
-      discount,
-      isFullPack,
+      initialTotal: initialSubtotal,
+      discount: { discount: 0, label: "" },
+      isFullPack: false,
     };
   }, [selectedApps]);
 
