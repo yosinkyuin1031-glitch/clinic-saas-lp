@@ -8,14 +8,19 @@ interface Slide {
 }
 
 const SLIDES: Slide[] = [
-  { src: "/images/kensa-demo/01-dashboard.png", label: "ダッシュボード - 統計・月別推移" },
-  { src: "/images/kensa-demo/03-patient-filled.png", label: "患者情報を入力" },
-  { src: "/images/kensa-demo/05-standing-filled.png", label: "立位検査 - ランドマーク入力" },
-  { src: "/images/kensa-demo/07-seated-filled.png", label: "座位検査 - 立位との比較" },
-  { src: "/images/kensa-demo/08-diagnosis-result.png", label: "診断結果が自動で出る" },
-  { src: "/images/kensa-demo/09-selfcare.png", label: "AIがセルフケアを自動提案" },
-  { src: "/images/kensa-demo/10-pdf-buttons.png", label: "PDFレポートをワンクリック出力" },
-  { src: "/images/kensa-demo/11-patients.png", label: "患者一覧・検索" },
+  { src: "/images/kensa-demo/01-dashboard.png", label: "ダッシュボード - 検査数・患者数・月別推移" },
+  { src: "/images/kensa-demo/02-patient-info.png", label: "Step1: 患者情報 - 新規 or 既存患者を検索" },
+  { src: "/images/kensa-demo/03-patient-filled.png", label: "Step1: 主訴・痛みレベル(NRS)・重心バランス入力" },
+  { src: "/images/kensa-demo/04-standing-default.png", label: "Step2: 立位検査 - 3つのランドマークを評価" },
+  { src: "/images/kensa-demo/05-standing-filled.png", label: "Step2: 立位検査 - 左右差をタップで記録" },
+  { src: "/images/kensa-demo/06-seated-default.png", label: "Step3: 座位検査 - 足の影響を自動判定" },
+  { src: "/images/kensa-demo/07-seated-filled.png", label: "Step3: 座位検査 - 立位との比較結果" },
+  { src: "/images/kensa-demo/08-diagnosis-result.png", label: "Step4: 診断結果 - 原因部位を自動特定" },
+  { src: "/images/kensa-demo/09-selfcare.png", label: "AIがセルフケアメニューを自動提案" },
+  { src: "/images/kensa-demo/10-pdf-buttons.png", label: "PDF出力 - 患者用・施術者用を選択" },
+  { src: "/images/kensa-demo/11-patients.png", label: "患者一覧 - 検索・検査履歴・カルテ管理" },
+  { src: "/images/kensa-demo/12-history.png", label: "検査履歴 - 患者別 or 時系列で閲覧" },
+  { src: "/images/kensa-demo/13-exam-detail.png", label: "検査詳細 - 過去の検査を確認・前回比較" },
 ];
 
 export default function DemoSlideshow() {

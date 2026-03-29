@@ -10,12 +10,12 @@ const APPS = [
     name: "検査シート作成システム",
     shortName: "検査シート",
     categories: ["検査＆診断"],
-    description: "神経学的検査をデジタル化。検査結果をPDF出力し、患者ごとの経過記録を残せます。",
-    features: ["神経学的検査をデジタル化", "検査結果をPDF出力", "患者ごとの経過記録"],
-    monthlyPrice: 5500,
-    initialCost: 33000,
+    description: "5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、セルフケア自動提案まで。",
+    features: ["5段階検査ウィザード", "原因部位を自動特定", "患者用・施術者用PDF出力", "セルフケア自動提案"],
+    monthlyPrice: 3980,
+    initialCost: 0,
     badge: "看板商品",
-    demoUrl: "https://kensa-demo.vercel.app",
+    demoUrl: "https://kensa-sheet-app.vercel.app",
     detailUrl: "/systems/kensa",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -33,7 +33,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 29800,
     badge: null,
-    demoUrl: "https://customer-mgmt.vercel.app/login?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/customer",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -51,7 +51,7 @@ const APPS = [
     monthlyPrice: 2980,
     initialCost: 19800,
     badge: null,
-    demoUrl: "https://reservation-app-steel.vercel.app/login?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/reservation",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -69,7 +69,7 @@ const APPS = [
     monthlyPrice: 2980,
     initialCost: 19800,
     badge: null,
-    demoUrl: "https://web-monshin.vercel.app/staff?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/monshin",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -87,7 +87,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 29800,
     badge: "看板商品",
-    demoUrl: "https://meo-kachiage-beta.vercel.app/login?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/meo",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -106,7 +106,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 0,
     badge: "NEW",
-    demoUrl: "https://sleep-check-single.vercel.app?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/sleep",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -124,7 +124,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 0,
     badge: "NEW",
-    demoUrl: "https://nutrition-check-app.vercel.app?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/nutrition",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -142,7 +142,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 0,
     badge: "NEW",
-    demoUrl: "https://gut-health-check.vercel.app?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/gut",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -160,7 +160,7 @@ const APPS = [
     monthlyPrice: 4980,
     initialCost: 0,
     badge: "NEW",
-    demoUrl: "https://headache-check.vercel.app?demo=true",
+    demoUrl: "",
     detailUrl: "/systems/headache",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -662,20 +662,19 @@ export default function Home() {
                       詳しく見る
                     </a>
                   )}
-                  {app.demoUrl && (
-                    <>
-                      <a
-                        href={app.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
-                      >
-                        デモを体験する &rarr;
-                      </a>
-                      <p className="text-[10px] text-gray-400 text-center">
-                        デモアカウント: demo@clinicapps.jp / demo1234
-                      </p>
-                    </>
+                  {app.demoUrl ? (
+                    <a
+                      href={app.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
+                    >
+                      デモを体験する &rarr;
+                    </a>
+                  ) : (
+                    <span className="block w-full text-center border-2 border-gray-200 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-sm">
+                      デモ準備中
+                    </span>
                   )}
                 </div>
               </div>
