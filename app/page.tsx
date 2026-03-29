@@ -14,6 +14,7 @@ const APPS = [
     features: ["5段階検査ウィザード", "原因部位を自動特定", "患者用・施術者用PDF出力", "セルフケア自動提案"],
     monthlyPrice: 3980,
     initialCost: 0,
+    maintenancePrice: 1580,
     badge: "看板商品",
     demoUrl: "https://kensa-sheet-app.vercel.app",
     detailUrl: "/systems/kensa",
@@ -32,6 +33,7 @@ const APPS = [
     features: ["患者情報を一元管理", "来院履歴・離反アラート", "データ分析ダッシュボード"],
     monthlyPrice: 4980,
     initialCost: 29800,
+    maintenancePrice: 1980,
     badge: null,
     demoUrl: "",
     detailUrl: "/systems/customer",
@@ -50,6 +52,7 @@ const APPS = [
     features: ["カレンダー形式で直感操作", "ダブルブッキング防止", "LINE通知連携"],
     monthlyPrice: 2980,
     initialCost: 19800,
+    maintenancePrice: 1180,
     badge: null,
     demoUrl: "",
     detailUrl: "/systems/reservation",
@@ -68,6 +71,7 @@ const APPS = [
     features: ["来院前にスマホで問診", "自動集計・PDF出力", "カスタム問診項目"],
     monthlyPrice: 2980,
     initialCost: 19800,
+    maintenancePrice: 1180,
     badge: null,
     demoUrl: "",
     detailUrl: "/systems/monshin",
@@ -86,6 +90,7 @@ const APPS = [
     features: ["Googleマップ順位を自動チェック", "AI投稿文を自動生成", "医療広告ガイドライン自動チェック"],
     monthlyPrice: 4980,
     initialCost: 29800,
+    maintenancePrice: 1980,
     badge: "看板商品",
     demoUrl: "",
     detailUrl: "/systems/meo",
@@ -105,6 +110,7 @@ const APPS = [
     features: ["5軸スコアリング分析", "AIセルフケア・施術提案", "ビフォーアフター比較"],
     monthlyPrice: 4980,
     initialCost: 0,
+    maintenancePrice: 1980,
     badge: "NEW",
     demoUrl: "",
     detailUrl: "/systems/sleep",
@@ -231,11 +237,13 @@ export default function Home() {
     const selected = APPS.filter(app => selectedApps.includes(app.id));
     const monthlySubtotal = selected.reduce((sum, app) => sum + app.monthlyPrice, 0);
     const initialSubtotal = selected.reduce((sum, app) => sum + app.initialCost, 0);
+    const maintenanceSubtotal = selected.reduce((sum, app) => sum + app.maintenancePrice, 0);
     const monthlyTotal = monthlySubtotal;
     const yearlyTotal = monthlyTotal * 10; // 年払い = 月額 × 10（2ヶ月分お得）
     return {
       monthlySubtotal,
       initialSubtotal,
+      maintenanceSubtotal,
       monthlyDiscount: 0,
       initialDiscount: 0,
       monthlyTotal,
@@ -903,6 +911,13 @@ export default function Home() {
                     >
                       買い切りで申し込む（{calcTotal.initialTotal.toLocaleString()}円）
                     </button>
+                    {selectedApps.length > 0 && (
+                      <p className="text-xs text-gray-500 text-center">
+                        ※ 買い切りの場合、別途保守料金 {calcTotal.maintenanceSubtotal.toLocaleString()}円/月がかかります
+                        <br />
+                        <span className="text-gray-400">（サーバー運用・アップデート・サポート費用）</span>
+                      </p>
+                    )}
                     <button
                       onClick={() => {
                         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
