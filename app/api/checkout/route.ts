@@ -13,6 +13,16 @@ function getStripe() {
 
 type AppId = keyof typeof STRIPE_PRODUCTS;
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -21,7 +31,7 @@ export async function POST(req: NextRequest) {
     if (!email || !clinicName || !selectedApps || selectedApps.length === 0) {
       return NextResponse.json(
         { error: "メールアドレス・院名・選択システムは必須です" },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -79,7 +89,7 @@ export async function POST(req: NextRequest) {
         cancel_url: `${appUrl}/`,
       });
 
-      return NextResponse.json({ url: session.url });
+      return NextResponse.json({ url: session.url }, { headers: corsHeaders });
     } else {
       // 月額 or 年額サブスク
       const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
@@ -106,13 +116,13 @@ export async function POST(req: NextRequest) {
         cancel_url: `${appUrl}/`,
       });
 
-      return NextResponse.json({ url: session.url });
+      return NextResponse.json({ url: session.url }, { headers: corsHeaders });
     }
   } catch (error) {
     console.error("Checkout API error:", error);
     return NextResponse.json(
       { error: "決済セッションの作成に失敗しました" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
