@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { APP_LIST, APP_LABELS, APP_MONTHLY_PRICES, APP_COLORS } from "@/app/lib/app-config";
 
 interface ClinicAccount {
   id: string;
@@ -18,35 +19,6 @@ interface ClinicAccount {
   owner_name?: string;
   phone?: string;
 }
-
-const APP_LIST = ["kensa", "customer", "reservation", "monshin", "meo", "sleep"] as const;
-
-const APP_LABELS: Record<string, string> = {
-  kensa: "検査シート",
-  customer: "顧客管理",
-  reservation: "予約管理",
-  monshin: "WEB問診",
-  meo: "MEO勝ち上げくん",
-  sleep: "睡眠チェック",
-};
-
-const APP_MONTHLY_PRICES: Record<string, number> = {
-  kensa: 3980,
-  customer: 4980,
-  reservation: 2980,
-  monshin: 2980,
-  meo: 4980,
-  sleep: 4980,
-};
-
-const APP_COLORS: Record<string, string> = {
-  kensa: "bg-blue-500",
-  customer: "bg-emerald-500",
-  reservation: "bg-purple-500",
-  monshin: "bg-amber-500",
-  meo: "bg-rose-500",
-  sleep: "bg-indigo-500",
-};
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   active: { bg: "bg-green-100", text: "text-green-700", label: "利用中" },

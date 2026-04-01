@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/app/lib/supabase";
-import { STRIPE_PRODUCTS } from "@/app/lib/stripe-products";
+import { STRIPE_PRODUCTS, APP_FLAG_MAP, APP_MONTHLY_PRICES } from "@/app/lib/app-config";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -17,22 +17,6 @@ function isAuthenticated(req: NextRequest): boolean {
   if (queryPassword === ADMIN_PASSWORD) return true;
   return false;
 }
-
-const APP_FLAG_MAP: Record<string, string> = {
-  kensa: "app_kensa",
-  customer: "app_crm",
-  meo: "app_meo",
-  sleep: "app_sleep",
-};
-
-const APP_MONTHLY_PRICES: Record<string, number> = {
-  kensa: 3980,
-  customer: 4980,
-  reservation: 2980,
-  monshin: 2980,
-  meo: 4980,
-  sleep: 4980,
-};
 
 // 一覧取得
 export async function GET(req: NextRequest) {

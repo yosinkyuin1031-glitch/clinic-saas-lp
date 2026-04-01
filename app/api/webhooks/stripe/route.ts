@@ -132,12 +132,7 @@ async function createMaintenanceSubscriptionSchedule(
   }
 }
 
-const APP_FLAG_MAP: Record<string, string> = {
-  kensa: "app_kensa",
-  customer: "app_crm",
-  meo: "app_meo",
-  sleep: "app_sleep",
-};
+import { APP_FLAG_MAP } from "@/app/lib/app-config";
 
 export async function POST(req: NextRequest) {
   let event: Stripe.Event;

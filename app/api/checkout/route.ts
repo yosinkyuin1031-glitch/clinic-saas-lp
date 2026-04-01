@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { STRIPE_PRODUCTS } from "@/app/lib/stripe-products";
+import { STRIPE_PRODUCTS } from "@/app/lib/app-config";
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
