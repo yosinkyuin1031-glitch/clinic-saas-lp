@@ -132,6 +132,13 @@ async function createMaintenanceSubscriptionSchedule(
   }
 }
 
+const APP_FLAG_MAP: Record<string, string> = {
+  kensa: "app_kensa",
+  customer: "app_crm",
+  meo: "app_meo",
+  sleep: "app_sleep",
+};
+
 export async function POST(req: NextRequest) {
   let event: Stripe.Event;
 
@@ -382,6 +389,82 @@ export async function POST(req: NextRequest) {
             `DB保存エラー: ${insertError.message}`
           );
           break;
+        }
+
+        // clinicsテーブルに挿入（アプリ側で使用）
+        const appFlags: Record<string, boolean> = {};
+        for (const app of selectedApps) {
+          const flag = APP_FLAG_MAP[app];
+          if (flag) appFlags[flag] = true;
+        }
+
+        const clinicCode = clinicName
+          .replace(/[^\w\u3000-\u9fff]/g, "")
+          .slice(0, 20)
+          .toLowerCase() || `clinic-${Date.now()}`;
+
+        const { data: clinic, error: clinicError } = await supabase
+          .from("clinics")
+          .insert({
+            name: clinicName,
+            code: clinicCode,
+            owner_name: "",
+            phone: "",
+            email,
+            plan: selectedApps.includes("kensa") ? "basic" : "active",
+            is_active: true,
+            theme_color: "#2563eb",
+            max_staff: 5,
+            max_exams_per_month: 9999,
+            max_patients: 9999,
+            max_checks_per_month: 9999,
+            notes: `Stripe購入から自動作成 | ${clinicId}`,
+            stripe_customer_id: stripeCustomerId || "",
+            ...appFlags,
+          })
+          .select()
+          .single();
+
+        if (clinicError) console.error("clinics挿入エラー:", clinicError);
+
+        // clinic_membersに挿入
+        if (clinic && authData.user) {
+          const { error: memberError } = await supabase
+            .from("clinic_members")
+            .insert({
+              clinic_id: clinic.id,
+              user_id: authData.user.id,
+              role: "owner",
+              display_name: clinicName,
+              is_active: true,
+            });
+          if (memberError) console.error("clinic_members挿入エラー:", memberError);
+        }
+
+        // MEOアプリが含まれている場合、MEOテーブルを自動作成
+        if (selectedApps.includes("meo") && authData.user) {
+          const meoClinicId = `clinic-${Date.now().toString(36)}`;
+
+          await supabase
+            .from("meo_user_settings")
+            .upsert({
+              user_id: authData.user.id,
+              anthropic_key: "",
+              active_clinic_id: meoClinicId,
+              serp_api_key: "",
+            }, { onConflict: "user_id" });
+
+          await supabase
+            .from("meo_clinics")
+            .upsert({
+              id: meoClinicId,
+              user_id: authData.user.id,
+              name: clinicName,
+              area: "",
+              keywords: [],
+              category: "整体院",
+              owner_name: "",
+            }, { onConflict: "id,user_id" });
         }
 
         // 成功ログ
