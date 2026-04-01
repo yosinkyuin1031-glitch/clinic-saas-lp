@@ -62,7 +62,18 @@ const PLAN_LABELS: Record<string, string> = {
   onetime: "買い切り",
 };
 
-type Tab = "dashboard" | "apps" | "accounts" | "create";
+type Tab = "dashboard" | "apps" | "accounts" | "create" | "meo";
+
+interface MeoMonitor {
+  user_id: string;
+  email: string;
+  last_sign_in: string | null;
+  created_at: string;
+  clinics: { id: string; name: string; area: string; category: string; keywords: string[] }[];
+  rankings: { keyword: string; latest: number | null; previous: number | null; latestDate: string; previousDate: string }[];
+  account_status: string | null;
+  clinic_name_account: string | null;
+}
 
 function getMonthlyAmount(account: ClinicAccount): number {
   if (account.plan_type === "onetime") return 0;
@@ -92,6 +103,11 @@ export default function AdminPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
+  // MEOモニター
+  const [meoMonitors, setMeoMonitors] = useState<MeoMonitor[]>([]);
+  const [meoLoading, setMeoLoading] = useState(false);
+  const [selectedMonitor, setSelectedMonitor] = useState<MeoMonitor | null>(null);
+
   // 新規作成フォーム
   const [newClinicName, setNewClinicName] = useState("");
   const [newOwnerName, setNewOwnerName] = useState("");
@@ -115,11 +131,22 @@ export default function AdminPage() {
       if (!res.ok) throw new Error(data.error);
       setAccounts(data.accounts);
       setAuthenticated(true);
+      fetchMeoMonitors(pw);
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const fetchMeoMonitors = useCallback(async (pw: string) => {
+    setMeoLoading(true);
+    try {
+      const res = await fetch("/api/admin-meo", { headers: { "x-admin-password": pw } });
+      const data = await res.json();
+      if (res.ok) setMeoMonitors(data.monitors || []);
+    } catch { /* ignore */ }
+    finally { setMeoLoading(false); }
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -335,6 +362,7 @@ export default function AdminPage() {
             { key: "apps", label: "アプリ別" },
             { key: "accounts", label: "アカウント管理" },
             { key: "create", label: "新規作成" },
+            { key: "meo", label: "MEOモニター" },
           ] as { key: Tab; label: string }[]).map((tab) => (
             <button
               key={tab.key}
@@ -399,6 +427,43 @@ export default function AdminPage() {
                 })}
               </div>
             </div>
+
+            {/* MEOモニター概要 */}
+            {meoMonitors.length > 0 && (
+              <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-black">MEOモニター概要</h2>
+                  <button
+                    onClick={() => { setActiveTab("meo"); setSelectedMonitor(null); }}
+                    className="text-xs text-blue-400 hover:text-blue-300"
+                  >
+                    詳細を見る →
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                  <div className="bg-gray-800 rounded-xl p-3 border border-gray-700 text-center">
+                    <div className="text-2xl font-black text-rose-400">{meoMonitors.length}</div>
+                    <div className="text-xs text-gray-500">モニター数</div>
+                  </div>
+                  <div className="bg-gray-800 rounded-xl p-3 border border-gray-700 text-center">
+                    <div className="text-2xl font-black text-green-400">
+                      {meoMonitors.reduce((sum, m) => sum + m.rankings.filter((r) => r.previous !== null && r.latest !== null && r.latest < r.previous).length, 0)}
+                    </div>
+                    <div className="text-xs text-gray-500">順位UP</div>
+                  </div>
+                  <div className="bg-gray-800 rounded-xl p-3 border border-gray-700 text-center">
+                    <div className="text-2xl font-black text-gray-400">
+                      {meoMonitors.filter((m) => {
+                        if (!m.last_sign_in) return true;
+                        const diff = Date.now() - new Date(m.last_sign_in).getTime();
+                        return diff > 7 * 24 * 60 * 60 * 1000;
+                      }).length}
+                    </div>
+                    <div className="text-xs text-gray-500">7日以上未ログイン</div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* 最近の登録 */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
@@ -924,6 +989,219 @@ export default function AdminPage() {
             </div>
           </div>
         )}
+        {/* MEOモニター */}
+        {activeTab === "meo" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-black">MEOモニター管理</h2>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-500">{meoMonitors.length}名のモニター</span>
+                <button
+                  onClick={() => fetchMeoMonitors(password)}
+                  className="text-sm bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg font-bold transition border border-gray-700"
+                >
+                  {meoLoading ? "読み込み中..." : "データ更新"}
+                </button>
+              </div>
+            </div>
+
+            {meoLoading ? (
+              <div className="text-center py-12 text-gray-500">読み込み中...</div>
+            ) : (
+              <div className="flex gap-6">
+                {/* モニター一覧 */}
+                <div className={`${selectedMonitor ? "w-1/2" : "w-full"} bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden`}>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-gray-800/50 text-gray-500 text-xs">
+                        <th className="text-left px-4 py-3 font-bold">院名 / メール</th>
+                        <th className="text-left px-4 py-3 font-bold">エリア</th>
+                        <th className="text-center px-4 py-3 font-bold">KW数</th>
+                        <th className="text-center px-4 py-3 font-bold">順位変動</th>
+                        <th className="text-left px-4 py-3 font-bold">最終ログイン</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {meoMonitors.length === 0 ? (
+                        <tr><td colSpan={5} className="text-center py-12 text-gray-600">モニターなし</td></tr>
+                      ) : (
+                        meoMonitors.map((m) => {
+                          const clinicName = m.clinics[0]?.name || m.clinic_name_account || "未設定";
+                          const area = m.clinics[0]?.area || "-";
+                          const kwCount = m.rankings.length;
+                          const improved = m.rankings.filter((r) => r.previous !== null && r.latest !== null && r.latest < r.previous).length;
+                          const declined = m.rankings.filter((r) => r.previous !== null && r.latest !== null && r.latest > r.previous).length;
+                          return (
+                            <tr
+                              key={m.user_id}
+                              onClick={() => setSelectedMonitor(m)}
+                              className={`border-b border-gray-800/50 cursor-pointer transition ${
+                                selectedMonitor?.user_id === m.user_id ? "bg-rose-900/20" : "hover:bg-gray-800/50"
+                              }`}
+                            >
+                              <td className="px-4 py-3">
+                                <div className="font-bold">{clinicName}</div>
+                                <div className="text-xs text-gray-500">{m.email}</div>
+                              </td>
+                              <td className="px-4 py-3 text-gray-400">{area}</td>
+                              <td className="px-4 py-3 text-center">{kwCount}</td>
+                              <td className="px-4 py-3 text-center">
+                                {kwCount > 0 ? (
+                                  <div className="flex items-center justify-center gap-2">
+                                    {improved > 0 && <span className="text-green-400 text-xs font-bold">{improved}UP</span>}
+                                    {declined > 0 && <span className="text-red-400 text-xs font-bold">{declined}DOWN</span>}
+                                    {improved === 0 && declined === 0 && <span className="text-gray-500 text-xs">変動なし</span>}
+                                  </div>
+                                ) : (
+                                  <span className="text-gray-600 text-xs">未計測</span>
+                                )}
+                              </td>
+                              <td className="px-4 py-3 text-xs text-gray-500">
+                                {m.last_sign_in
+                                  ? new Date(m.last_sign_in).toLocaleDateString("ja-JP", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+                                  : "未ログイン"}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* 詳細パネル */}
+                {selectedMonitor && (
+                  <div className="w-1/2 bg-gray-900 rounded-2xl border border-gray-800 p-6 space-y-5">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-black text-lg">
+                        {selectedMonitor.clinics[0]?.name || selectedMonitor.clinic_name_account || "未設定"}
+                      </h3>
+                      <button onClick={() => setSelectedMonitor(null)} className="text-gray-500 hover:text-white text-sm">閉じる</button>
+                    </div>
+
+                    {/* 基本情報 */}
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">メール</div>
+                        <div>{selectedMonitor.email}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">エリア</div>
+                        <div>{selectedMonitor.clinics[0]?.area || "-"}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">カテゴリ</div>
+                        <div>{selectedMonitor.clinics[0]?.category || "-"}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">登録日</div>
+                        <div>{new Date(selectedMonitor.created_at).toLocaleDateString("ja-JP")}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">最終ログイン</div>
+                        <div className={selectedMonitor.last_sign_in ? "" : "text-red-400"}>
+                          {selectedMonitor.last_sign_in
+                            ? new Date(selectedMonitor.last_sign_in).toLocaleString("ja-JP")
+                            : "未ログイン"}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">契約ステータス</div>
+                        <div>
+                          {selectedMonitor.account_status
+                            ? <StatusBadge status={selectedMonitor.account_status} />
+                            : <span className="text-xs text-yellow-400 bg-yellow-900/30 px-2 py-0.5 rounded-full">モニター</span>}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* キーワード順位一覧 */}
+                    <div>
+                      <div className="text-xs text-gray-500 font-bold mb-3">キーワード順位</div>
+                      {selectedMonitor.rankings.length === 0 ? (
+                        <p className="text-sm text-gray-600">まだ順位チェックされていません</p>
+                      ) : (
+                        <div className="space-y-2">
+                          {selectedMonitor.rankings.map((r) => {
+                            const change = r.previous !== null && r.latest !== null ? r.previous - r.latest : null;
+                            return (
+                              <div key={r.keyword} className="bg-gray-800 rounded-xl px-4 py-3 border border-gray-700">
+                                <div className="flex items-center justify-between">
+                                  <div className="font-bold text-sm">{r.keyword}</div>
+                                  <div className="flex items-center gap-3">
+                                    <div className="text-right">
+                                      <div className="text-2xl font-black">
+                                        {r.latest !== null ? `${r.latest}位` : "圏外"}
+                                      </div>
+                                      {change !== null && change !== 0 && (
+                                        <div className={`text-xs font-bold ${change > 0 ? "text-green-400" : "text-red-400"}`}>
+                                          {change > 0 ? `${change}UP` : `${Math.abs(change)}DOWN`}
+                                        </div>
+                                      )}
+                                      {change === 0 && <div className="text-xs text-gray-500">変動なし</div>}
+                                      {change === null && r.latest !== null && <div className="text-xs text-gray-500">初回計測</div>}
+                                    </div>
+                                    <button
+                                      onClick={async () => {
+                                        try {
+                                          await fetch("/api/admin-meo", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json", "x-admin-password": password },
+                                            body: JSON.stringify({
+                                              user_id: selectedMonitor.user_id,
+                                              keyword: r.keyword,
+                                              rank: r.latest,
+                                              previous_rank: r.previous,
+                                              snapshot_data: {
+                                                clinic_name: selectedMonitor.clinics[0]?.name || "",
+                                                area: selectedMonitor.clinics[0]?.area || "",
+                                                checked_at: r.latestDate,
+                                              },
+                                            }),
+                                          });
+                                          showToast("スナップショット保存しました");
+                                        } catch {
+                                          showToast("保存に失敗しました", "error");
+                                        }
+                                      }}
+                                      className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition"
+                                      title="スナップショット保存"
+                                    >
+                                      保存
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="text-xs text-gray-500 mt-1">
+                                  計測: {new Date(r.latestDate).toLocaleDateString("ja-JP")}
+                                  {r.previousDate && ` / 前回: ${new Date(r.previousDate).toLocaleDateString("ja-JP")}`}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 登録キーワード */}
+                    {selectedMonitor.clinics[0]?.keywords?.length > 0 && (
+                      <div>
+                        <div className="text-xs text-gray-500 font-bold mb-2">登録キーワード</div>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedMonitor.clinics[0].keywords.map((kw: string) => (
+                            <span key={kw} className="text-xs bg-rose-900/30 text-rose-400 px-3 py-1 rounded-full border border-rose-700/30">
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
       </main>
     </div>
   );
