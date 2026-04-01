@@ -325,6 +325,36 @@ export async function POST(req: NextRequest) {
       if (mError) console.error("clinic_members挿入エラー:", mError);
     }
 
+    // 9. MEOアプリが含まれている場合、MEOテーブルを自動作成
+    if (selected_apps.includes("meo") && authUserId) {
+      const meoClinicId = `clinic-${Date.now().toString(36)}`;
+
+      // meo_user_settings作成
+      const { error: meoSettingError } = await supabase
+        .from("meo_user_settings")
+        .upsert({
+          user_id: authUserId,
+          anthropic_key: "",
+          active_clinic_id: meoClinicId,
+          serp_api_key: "",
+        }, { onConflict: "user_id" });
+      if (meoSettingError) console.error("meo_user_settings挿入エラー:", meoSettingError);
+
+      // meo_clinics作成
+      const { error: meoClinicError } = await supabase
+        .from("meo_clinics")
+        .upsert({
+          id: meoClinicId,
+          user_id: authUserId,
+          name: clinic_name,
+          area: "",
+          keywords: [],
+          category: "整体院",
+          owner_name: owner_name || "",
+        }, { onConflict: "id,user_id" });
+      if (meoClinicError) console.error("meo_clinics挿入エラー:", meoClinicError);
+    }
+
     // 月額合計を計算
     const monthlyTotal = selected_apps.reduce((sum: number, appId: string) => sum + (APP_MONTHLY_PRICES[appId] || 0), 0);
     let discount = 0;
