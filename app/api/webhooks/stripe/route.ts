@@ -177,6 +177,22 @@ export async function POST(req: NextRequest) {
         const stripeSubscriptionId =
           (session.subscription as string) || null;
 
+        // 解約済みメールアドレスの再登録ブロック
+        if (email) {
+          const { data: cancelledCheck } = await supabase
+            .from("clinic_accounts")
+            .select("id")
+            .eq("email", email)
+            .eq("status", "cancelled")
+            .maybeSingle();
+
+          if (cancelledCheck) {
+            console.log(`解約済みメールの再登録をブロック: ${email}`);
+            await logWebhookEvent(supabase, event.type, event.id, { email }, "error", "解約済みメールの再登録ブロック");
+            break;
+          }
+        }
+
         if (!email) {
           console.error("メールアドレスが見つかりません");
           await logWebhookEvent(
@@ -190,11 +206,55 @@ export async function POST(req: NextRequest) {
           break;
         }
 
-        // 重複チェック（同じstripe_customer_idで既に作成済みか）
+        // 管理画面で事前作成されたpending_paymentアカウントがあるか確認
+        const { data: pendingAccount } = await supabase
+          .from("clinic_accounts")
+          .select("id, clinic_id, email, clinic_name")
+          .eq("stripe_customer_id", stripeCustomerId)
+          .eq("status", "pending_payment")
+          .maybeSingle();
+
+        if (pendingAccount) {
+          // pending_payment → active に切り替え
+          await supabase
+            .from("clinic_accounts")
+            .update({
+              status: "active",
+              stripe_subscription_id: stripeSubscriptionId,
+            })
+            .eq("id", pendingAccount.id);
+
+          // clinicsテーブルも有効化
+          const { data: clinicRows } = await supabase
+            .from("clinics")
+            .select("id")
+            .like("notes", `%${pendingAccount.clinic_id}%`);
+
+          if (clinicRows && clinicRows.length > 0) {
+            await supabase
+              .from("clinics")
+              .update({ is_active: true })
+              .eq("id", clinicRows[0].id);
+          }
+
+          console.log(`管理画面アカウント有効化: clinic_id=${pendingAccount.clinic_id}, email=${pendingAccount.email}`);
+          await logWebhookEvent(
+            supabase,
+            event.type,
+            event.id,
+            { clinic_id: pendingAccount.clinic_id, email: pendingAccount.email },
+            "success",
+            "管理画面作成アカウントを有効化"
+          );
+          break;
+        }
+
+        // 重複チェック（同じstripe_customer_idで既にactiveアカウントがあるか）
         const { data: existing } = await supabase
           .from("clinic_accounts")
           .select("id")
           .eq("stripe_customer_id", stripeCustomerId)
+          .eq("status", "active")
           .maybeSingle();
 
         if (existing) {
@@ -422,6 +482,18 @@ export async function POST(req: NextRequest) {
             `更新エラー: ${updateError.message}`
           );
         } else {
+          // clinicsテーブルも無効化
+          const { data: clinicRows } = await supabase
+            .from("clinics")
+            .select("id")
+            .like("notes", `%${account.clinic_id}%`);
+          if (clinicRows && clinicRows.length > 0) {
+            await supabase
+              .from("clinics")
+              .update({ is_active: false })
+              .eq("id", clinicRows[0].id);
+          }
+
           console.log(
             `サブスクリプション解約完了: clinic_id=${account.clinic_id}, email=${account.email}`
           );

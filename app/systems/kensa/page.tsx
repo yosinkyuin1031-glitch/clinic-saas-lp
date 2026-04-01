@@ -5,7 +5,7 @@ import DemoSlideshow from "@/app/components/DemoSlideshow";
 export const metadata: Metadata = {
   title: "検査シート作成システム - 段階的原因特定 | ClinicApps",
   description:
-    "治療院専用の検査シート作成システム。5段階検査ウィザードで原因部位を自動特定。PDF出力・経過記録・セルフケアAI・施術提案書。30日間無料トライアル。",
+    "治療院専用の検査シート作成システム。5段階検査ウィザードで原因部位を自動特定。PDF出力・経過記録・セルフケアAI・施術提案書。月額3,980円から。",
 };
 
 const FEATURES = [
@@ -69,7 +69,7 @@ const COMPARISON_ROWS = [
   { label: "スタッフ管理・権限設定", type: "check" as const },
   { label: "オフライン対応（PWA）", type: "check" as const },
   { label: "治療院専用設計", type: "check" as const },
-  { label: "30日間無料トライアル", type: "check" as const },
+  { label: "最低契約期間なし", type: "check" as const },
   { label: "最低契約期間", type: "custom" as const },
 ];
 
@@ -78,6 +78,7 @@ const COMPETITORS = [
     name: "検査シート\n作成システム",
     highlight: true,
     values: ["3,980円〜", "0円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "なし"],
+
   },
   {
     name: "紙の検査用紙",
@@ -112,7 +113,7 @@ const ADVANTAGES = [
 ];
 
 const STEPS = [
-  { num: "01", title: "30日間無料トライアル開始", desc: "メールアドレスで登録するだけ。クレジットカード不要。3分で完了。" },
+  { num: "01", title: "アカウント登録", desc: "メールアドレスで登録するだけ。3分で完了。" },
   { num: "02", title: "院の情報を設定", desc: "院名・代表者名を入力。ロゴやテーマカラーのカスタマイズも可能。" },
   { num: "03", title: "患者を登録して検査開始", desc: "患者情報を入力 → 5段階の検査ステップをタップ操作で進めるだけ。" },
   { num: "04", title: "診断結果を自動取得", desc: "原因部位の特定・セルフケア提案・施術プロトコルが全て自動で出力。" },
@@ -165,7 +166,7 @@ export default function KensaDetailPage() {
             href="https://kensa-sheet-app.vercel.app"
             className="px-4 py-1.5 bg-cta text-white rounded-lg text-sm font-bold hover:bg-cta-600 transition-colors"
           >
-            30日間無料で始める
+            今すぐ始める
           </a>
         </div>
       </header>
@@ -193,7 +194,7 @@ export default function KensaDetailPage() {
               href="https://kensa-sheet-app.vercel.app"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
-              30日間無料トライアル開始
+              今すぐ始める
             </a>
             <a
               href="#pricing"
@@ -203,7 +204,7 @@ export default function KensaDetailPage() {
             </a>
           </div>
           <p className="text-sm text-white/50 mt-4">
-            クレジットカード不要・全機能利用可能・いつでも解約OK
+            初期費用0円・全機能利用可能・いつでも解約OK
           </p>
         </div>
       </section>
@@ -232,7 +233,7 @@ export default function KensaDetailPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
               </svg>
-              30日間無料で始める
+              今すぐ始める
             </a>
             <p className="text-xs text-gray-400 mt-2">メールアドレスだけで登録完了・全機能使えます</p>
           </div>
@@ -422,23 +423,9 @@ export default function KensaDetailPage() {
             料金プラン
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            30日間無料トライアルで全機能をお試しいただけます
+            初期費用0円・いつでも解約OK
           </p>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {/* Free */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <div className="text-gray-500 text-sm font-bold mb-2">Freeプラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                0<span className="text-lg">円</span>
-              </div>
-              <div className="text-xs text-gray-500 mb-4">ずっと無料</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>月30回まで検査可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>スタッフ1名</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>基本診断機能</li>
-                <li className="flex items-center gap-2"><span className="text-gray-300">-</span><span className="text-gray-400">PDFに透かしあり</span></li>
-              </ul>
-            </div>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {/* Basic */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-accent text-white text-xs font-bold rounded-full">
@@ -474,7 +461,7 @@ export default function KensaDetailPage() {
             </div>
           </div>
           <p className="text-center text-sm text-gray-500 mt-6">
-            全プラン30日間無料トライアル付き。クレジットカード登録不要。
+            最低契約期間なし。いつでも解約できます。
           </p>
         </div>
       </section>
@@ -483,17 +470,17 @@ export default function KensaDetailPage() {
       <section className="py-16 bg-primary text-white">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-black mb-4">
-            30日間、全機能を無料でお試しください
+            検査の質を上げて、紹介を増やしませんか
           </h2>
           <p className="text-white/70 mb-8">
-            メールアドレスだけで登録完了。クレジットカード不要。いつでも解約OK。
+            初期費用0円。月額3,980円から全機能が使えます。いつでも解約OK。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://kensa-sheet-app.vercel.app"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
-              無料トライアルを始める
+              今すぐ始める
             </a>
             <Link
               href="/#contact"
