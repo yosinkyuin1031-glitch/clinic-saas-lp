@@ -3,9 +3,9 @@ import Link from "next/link";
 import DemoSlideshow from "@/app/components/DemoSlideshow";
 
 export const metadata: Metadata = {
-  title: "検査シート作成システム - 段階的原因特定 | ClinicApps",
+  title: "カラダマップ - 段階的原因特定 | ClinicApps",
   description:
-    "治療院専用の検査シート作成システム。5段階検査ウィザードで原因部位を自動特定。PDF出力・経過記録・セルフケアAI・施術提案書。月額3,980円から。",
+    "治療院専用のカラダマップ。5段階検査ウィザードで原因部位を自動特定。PDF出力・経過記録・セルフケアAI・施術提案書。月額3,980円から。",
 };
 
 const FEATURES = [
@@ -69,31 +69,30 @@ const COMPARISON_ROWS = [
   { label: "スタッフ管理・権限設定", type: "check" as const },
   { label: "オフライン対応（PWA）", type: "check" as const },
   { label: "治療院専用設計", type: "check" as const },
-  { label: "最低契約期間なし", type: "check" as const },
   { label: "最低契約期間", type: "custom" as const },
 ];
 
 const COMPETITORS = [
   {
-    name: "検査シート\n作成システム",
+    name: "カラダマップ",
     highlight: true,
-    values: ["3,980円〜", "0円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "なし"],
+    values: ["3,980円〜", "11,000円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "6ヶ月"],
 
   },
   {
     name: "紙の検査用紙",
     highlight: false,
-    values: ["0円", "0円", "×", "△", "×", "×", "×", "×", "×", "×", "×", "△", "-", "-"],
+    values: ["0円", "0円", "×", "△", "×", "×", "×", "×", "×", "×", "×", "△", "-"],
   },
   {
     name: "汎用電子カルテ",
     highlight: false,
-    values: ["10,000円〜", "50,000円〜", "×", "×", "○", "△", "×", "×", "△", "○", "×", "×", "△", "12ヶ月"],
+    values: ["10,000円〜", "50,000円〜", "×", "×", "○", "△", "×", "×", "△", "○", "×", "×", "12ヶ月"],
   },
   {
     name: "大手レセコン",
     highlight: false,
-    values: ["20,000円〜", "100,000円〜", "×", "×", "○", "○", "×", "×", "△", "○", "×", "△", "×", "12ヶ月"],
+    values: ["20,000円〜", "100,000円〜", "×", "×", "○", "○", "×", "×", "△", "○", "×", "△", "12ヶ月"],
   },
 ];
 
@@ -163,7 +162,7 @@ export default function KensaDetailPage() {
             ← ClinicApps トップ
           </Link>
           <a
-            href="https://kensa-sheet-app.vercel.app"
+            href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
             className="px-4 py-1.5 bg-cta text-white rounded-lg text-sm font-bold hover:bg-cta-600 transition-colors"
           >
             今すぐ始める
@@ -181,7 +180,7 @@ export default function KensaDetailPage() {
             看板商品
           </div>
           <h1 className="text-3xl md:text-5xl font-black leading-tight mb-6">
-            検査シート作成システム
+            カラダマップ
           </h1>
           <p className="text-lg md:text-xl text-white/80 mb-4 leading-relaxed">
             5段階の検査ウィザードで原因部位を自動特定。
@@ -191,7 +190,7 @@ export default function KensaDetailPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://kensa-sheet-app.vercel.app"
+              href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
               今すぐ始める
@@ -204,7 +203,7 @@ export default function KensaDetailPage() {
             </a>
           </div>
           <p className="text-sm text-white/50 mt-4">
-            初期費用0円・全機能利用可能・いつでも解約OK
+            初期費用11,000円・モニター中は初期費用0円・全機能利用可能
           </p>
         </div>
       </section>
@@ -225,7 +224,7 @@ export default function KensaDetailPage() {
           {/* デモ体験ボタン */}
           <div className="text-center mt-8 mb-6">
             <a
-              href="https://kensa-sheet-app.vercel.app"
+              href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg transition-all"
@@ -418,50 +417,49 @@ export default function KensaDetailPage() {
 
       {/* 料金 */}
       <section id="pricing" className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
             料金プラン
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            初期費用0円・いつでも解約OK
+            シンプルな1プラン。全機能が使えます。
           </p>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Basic */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-accent text-white text-xs font-bold rounded-full">
-                おすすめ
+          <div className="max-w-md mx-auto">
+            <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-accent relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-white text-xs font-bold rounded-full">
+                全機能込み
               </div>
-              <div className="text-accent text-sm font-bold mb-2">Basicプラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                3,980<span className="text-lg">円/月</span>
+              <div className="text-center mb-6">
+                <div className="text-3xl font-black text-primary mb-1">
+                  3,980<span className="text-lg font-normal text-gray-500">円/月（税込）</span>
+                </div>
+                <div className="text-sm text-gray-500">初期費用 11,000円（税込）</div>
+                <div className="mt-2 inline-block px-4 py-1.5 bg-cta/10 border border-cta/30 rounded-full">
+                  <span className="text-sm font-bold text-cta">モニター募集中：初期費用0円</span>
+                </div>
               </div>
-              <div className="text-xs text-gray-500 mb-4">初期費用0円</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>検査回数無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>スタッフ3名まで</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>院ロゴ入りPDF</li>
+              <ul className="space-y-3 text-sm text-gray-700 mb-6">
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>患者管理</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>検査記録（回数無制限）</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>レポート生成・PDF出力</li>
                 <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>AIセルフケア提案</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>データ移行サポート</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>データバックアップ</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>導入サポート付き</li>
               </ul>
-            </div>
-            {/* Pro */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <div className="text-primary text-sm font-bold mb-2">Proプラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                7,980<span className="text-lg">円/月</span>
+              <a
+                href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
+                className="block w-full text-center py-3.5 bg-cta text-white rounded-xl font-bold hover:bg-cta-600 transition-all shadow-md"
+              >
+                今すぐ始める
+              </a>
+              <div className="mt-4 bg-accent/5 rounded-lg p-3 text-center">
+                <p className="text-xs text-gray-500 mb-1">年払いなら2ヶ月分お得</p>
+                <p className="text-sm font-bold text-accent">39,800円/年（月あたり約3,317円）</p>
               </div>
-              <div className="text-xs text-gray-500 mb-4">初期費用0円</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>Basicの全機能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>スタッフ無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>ブランドカスタマイズ</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>優先サポート</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>今後のAPI連携対応</li>
-              </ul>
             </div>
           </div>
           <p className="text-center text-sm text-gray-500 mt-6">
-            最低契約期間なし。いつでも解約できます。
+            最低契約期間：6ヶ月
           </p>
         </div>
       </section>
@@ -473,11 +471,11 @@ export default function KensaDetailPage() {
             検査の質を上げて、紹介を増やしませんか
           </h2>
           <p className="text-white/70 mb-8">
-            初期費用0円。月額3,980円から全機能が使えます。いつでも解約OK。
+            月額3,980円で全機能が使えます。初期費用11,000円。最低契約期間6ヶ月。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://kensa-sheet-app.vercel.app"
+              href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
               今すぐ始める

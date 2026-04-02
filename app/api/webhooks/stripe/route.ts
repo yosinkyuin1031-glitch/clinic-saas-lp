@@ -132,7 +132,35 @@ async function createMaintenanceSubscriptionSchedule(
   }
 }
 
-import { APP_FLAG_MAP } from "@/app/lib/app-config";
+import { APP_FLAG_MAP, APP_CONFIGS } from "@/app/lib/app-config";
+
+// Stripe Price ID → アプリID のマッピング（Payment Link対応用）
+const PRICE_TO_APP: Record<string, string> = {};
+for (const app of APP_CONFIGS) {
+  if (app.stripe.monthly_price_id) PRICE_TO_APP[app.stripe.monthly_price_id] = app.id;
+  if (app.stripe.onetime_price_id) PRICE_TO_APP[app.stripe.onetime_price_id] = app.id;
+}
+
+// Payment Link経由の場合、line_itemsから購入アプリを判別する
+async function resolveAppsFromLineItems(
+  stripe: Stripe,
+  sessionId: string
+): Promise<string[]> {
+  try {
+    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+    const apps: string[] = [];
+    for (const item of lineItems.data) {
+      const priceId = item.price?.id;
+      if (priceId && PRICE_TO_APP[priceId]) {
+        apps.push(PRICE_TO_APP[priceId]);
+      }
+    }
+    return apps;
+  } catch (err) {
+    console.error("line_items取得エラー:", err);
+    return [];
+  }
+}
 
 export async function POST(req: NextRequest) {
   let event: Stripe.Event;
@@ -170,14 +198,51 @@ export async function POST(req: NextRequest) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        const email = session.customer_email;
-        const clinicName = session.metadata?.clinicName || "";
-        const planName = session.metadata?.planName || "";
-        const paymentType = session.metadata?.paymentType || "monthly";
-        const selectedAppsRaw = session.metadata?.selectedApps || "[]";
         const stripeCustomerId = session.customer as string;
         const stripeSubscriptionId =
           (session.subscription as string) || null;
+
+        // Payment Link経由かどうかを判定（metadataが空ならPayment Link）
+        const isPaymentLink = !session.metadata?.clinicName;
+
+        let email: string | null;
+        let clinicName: string;
+        let planName: string;
+        let paymentType: string;
+        let selectedAppsRaw: string;
+
+        if (isPaymentLink) {
+          // === Payment Link経由 ===
+          email = session.customer_details?.email || session.customer_email;
+          clinicName = session.customer_details?.name || "";
+          // custom_fieldsがある場合はそちらを優先（治療院名フィールド）
+          const customFields = (session as unknown as Record<string, unknown>).custom_fields as Array<{ key: string; text?: { value: string } }> | undefined;
+          if (customFields && customFields.length > 0) {
+            const clinicField = customFields.find(f => f.text?.value);
+            if (clinicField?.text?.value) {
+              clinicName = clinicField.text.value;
+            }
+          }
+          // line_itemsから購入アプリを判別
+          const resolvedApps = await resolveAppsFromLineItems(stripe, session.id);
+          selectedAppsRaw = JSON.stringify(resolvedApps);
+          paymentType = session.mode === "subscription" ? "monthly" : "onetime";
+          // アプリ名をプラン名として使用
+          const appLabels = resolvedApps.map(id => {
+            const cfg = APP_CONFIGS.find(a => a.id === id);
+            return cfg?.label || id;
+          });
+          planName = appLabels.join(" + ");
+
+          console.log(`Payment Link経由の決済: email=${email}, clinicName=${clinicName}, apps=${resolvedApps.join(",")}`);
+        } else {
+          // === カスタムCheckout経由（既存フロー） ===
+          email = session.customer_email;
+          clinicName = session.metadata?.clinicName || "";
+          planName = session.metadata?.planName || "";
+          paymentType = session.metadata?.paymentType || "monthly";
+          selectedAppsRaw = session.metadata?.selectedApps || "[]";
+        }
 
         // 解約済みメールアドレスの再登録ブロック
         if (email) {

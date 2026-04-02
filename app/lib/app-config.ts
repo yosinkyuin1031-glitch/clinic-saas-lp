@@ -20,7 +20,7 @@ export interface AppConfig {
 export const APP_CONFIGS: AppConfig[] = [
   {
     id: "kensa",
-    label: "検査シート",
+    label: "カラダマップ",
     monthlyPrice: 3980,
     color: "bg-blue-500",
     clinicFlag: "app_kensa",
@@ -34,7 +34,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "customer",
     label: "顧客管理",
-    monthlyPrice: 4980,
+    monthlyPrice: 5500,
     color: "bg-emerald-500",
     clinicFlag: "app_crm",
     stripe: {
@@ -47,7 +47,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "reservation",
     label: "予約管理",
-    monthlyPrice: 2980,
+    monthlyPrice: 3980,
     color: "bg-purple-500",
     clinicFlag: null,
     stripe: {
@@ -73,7 +73,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "meo",
     label: "MEO勝ち上げくん",
-    monthlyPrice: 4980,
+    monthlyPrice: 3980,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
     stripe: {
@@ -86,7 +86,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "sleep",
     label: "睡眠チェック",
-    monthlyPrice: 4980,
+    monthlyPrice: 2200,
     color: "bg-indigo-500",
     clinicFlag: "app_sleep",
     stripe: {

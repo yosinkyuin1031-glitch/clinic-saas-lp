@@ -393,40 +393,45 @@ export default function MeoDetailPage() {
 
       {/* 料金 */}
       <section id="pricing" className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
             料金プラン
           </h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent">
-              <div className="text-accent text-sm font-bold mb-2">月額プラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                4,980<span className="text-lg">円/月</span>
+          <p className="text-center text-gray-500 mb-10">
+            シンプルな1プラン。全機能が使えます。
+          </p>
+          <div className="max-w-md mx-auto">
+            <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-accent relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-white text-xs font-bold rounded-full">
+                全機能込み
               </div>
-              <div className="text-xs text-gray-500 mb-4">初期費用 29,800円</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>AI生成回数無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>順位チェック無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
-              </ul>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <div className="text-gray-500 text-sm font-bold mb-2">買い切りプラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                49,800<span className="text-lg">円</span>
+              <div className="text-center mb-6">
+                <div className="text-3xl font-black text-primary mb-1">
+                  3,980<span className="text-lg font-normal text-gray-500">円/月（税込）</span>
+                </div>
+                <div className="text-sm text-gray-500">初期費用 11,000円（税込）</div>
               </div>
-              <div className="text-xs text-gray-500 mb-4">月額費用なし・永続利用</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>追加費用なし</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>アップデート無料</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
+              <ul className="space-y-3 text-sm text-gray-700 mb-6">
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>AI投稿生成（回数無制限）</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>MEO順位トラッキング</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>自動投稿スケジュール</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>WordPress連携</li>
+                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>導入サポート付き</li>
               </ul>
+              <a
+                href="https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"
+                className="block w-full text-center py-3.5 bg-cta text-white rounded-xl font-bold hover:bg-cta-600 transition-all shadow-md"
+              >
+                今すぐ始める
+              </a>
+              <div className="mt-4 bg-accent/5 rounded-lg p-3 text-center">
+                <p className="text-xs text-gray-500 mb-1">年払いなら2ヶ月分お得</p>
+                <p className="text-sm font-bold text-accent">39,800円/年（月あたり約3,317円）</p>
+              </div>
             </div>
           </div>
           <p className="text-center text-sm text-gray-500 mt-6">
-            まずは無料デモで全機能をお試しいただけます
+            最低契約期間：6ヶ月
           </p>
         </div>
       </section>
@@ -435,17 +440,17 @@ export default function MeoDetailPage() {
       <section className="py-16 bg-primary text-white">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-black mb-4">
-            まずは無料でお試しください
+            MEO対策を始めませんか
           </h2>
           <p className="text-white/70 mb-8">
-            まずはお気軽にご相談ください。個別デモのご案内も可能です。
+            月額3,980円で全機能が使えます。初期費用11,000円。最低契約期間6ヶ月。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/#contact"
+              href="https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
-              お問い合わせ
+              今すぐ始める
             </a>
             <Link
               href="/#contact"

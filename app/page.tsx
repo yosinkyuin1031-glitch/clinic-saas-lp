@@ -7,13 +7,13 @@ import { useState, useMemo } from "react";
 const APPS = [
   {
     id: "kensa",
-    name: "検査シート作成システム",
-    shortName: "検査シート",
+    name: "カラダマップ",
+    shortName: "カラダマップ",
     categories: ["検査＆診断"],
     description: "5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、セルフケア自動提案まで。",
     features: ["5段階検査ウィザード", "原因部位を自動特定", "患者用・施術者用PDF出力", "セルフケア自動提案"],
     monthlyPrice: 3980,
-    initialCost: 0,
+    initialCost: 11000,
     maintenancePrice: 1190,
     badge: "看板商品",
     demoUrl: "https://kensa-sheet-app.vercel.app",
@@ -31,10 +31,10 @@ const APPS = [
     categories: ["開業", "集客", "内製化"],
     description: "患者情報を一元管理。来院履歴・離反アラート・データ分析ダッシュボード搭載。",
     features: ["患者情報を一元管理", "来院履歴・離反アラート", "データ分析ダッシュボード"],
-    monthlyPrice: 4980,
-    initialCost: 29800,
+    monthlyPrice: 5500,
+    initialCost: 33000,
     maintenancePrice: 1490,
-    badge: null,
+    badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/customer",
     icon: (
@@ -50,10 +50,10 @@ const APPS = [
     categories: ["開業", "内製化"],
     description: "カレンダー形式で直感操作。ダブルブッキング防止、LINE通知連携。",
     features: ["カレンダー形式で直感操作", "ダブルブッキング防止", "LINE通知連携"],
-    monthlyPrice: 2980,
-    initialCost: 19800,
+    monthlyPrice: 3980,
+    initialCost: 11000,
     maintenancePrice: 890,
-    badge: null,
+    badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/reservation",
     icon: (
@@ -70,9 +70,9 @@ const APPS = [
     description: "来院前にスマホで問診。自動集計・PDF出力。カスタム問診項目対応。",
     features: ["来院前にスマホで問診", "自動集計・PDF出力", "カスタム問診項目"],
     monthlyPrice: 2980,
-    initialCost: 19800,
+    initialCost: 11000,
     maintenancePrice: 890,
-    badge: null,
+    badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/monshin",
     icon: (
@@ -88,8 +88,8 @@ const APPS = [
     categories: ["集客", "内製化"],
     description: "Googleマップ順位を自動チェック。AI投稿文を自動生成。医療広告ガイドライン自動チェック。",
     features: ["Googleマップ順位を自動チェック", "AI投稿文を自動生成", "医療広告ガイドライン自動チェック"],
-    monthlyPrice: 4980,
-    initialCost: 29800,
+    monthlyPrice: 3980,
+    initialCost: 11000,
     maintenancePrice: 1490,
     badge: "看板商品",
     demoUrl: "",
@@ -108,10 +108,10 @@ const APPS = [
     categories: ["検査＆診断", "体質分析"],
     description: "5軸×30問で睡眠の質を数値化。レーダーチャート・AIセルフケア提案・PDF出力。",
     features: ["5軸スコアリング分析", "AIセルフケア・施術提案", "ビフォーアフター比較"],
-    monthlyPrice: 4980,
-    initialCost: 0,
+    monthlyPrice: 2200,
+    initialCost: 11000,
     maintenancePrice: 1490,
-    badge: "NEW",
+    badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/sleep",
     icon: (
@@ -132,31 +132,31 @@ const COMING_SOON_APPS = [
 
 const SET_EXAMPLES = [
   {
-    name: "開業パック",
-    appIds: ["reservation", "monshin", "customer"],
-    description: "これから開業する先生に必要な3点セット",
-    setMonthly: 9800,
-    setInitial: 49800,
-    label: "10%OFF",
+    name: "顧客管理パック",
+    appIds: ["customer", "reservation"],
+    description: "患者管理と予約管理をまとめて導入",
+    setMonthly: 8800,
+    setInitial: 38500,
+    label: "7%OFF",
     note: null,
   },
   {
     name: "集客パック",
-    appIds: ["meo", "customer", "monshin"],
+    appIds: ["meo", "monshin"],
     description: "新規集客を強化したい先生向け",
-    setMonthly: 11640,
-    setInitial: 49800,
-    label: "10%OFF",
+    setMonthly: 6480,
+    setInitial: 19800,
+    label: "7%OFF",
     note: null,
   },
   {
-    name: "フルパック",
-    appIds: ["kensa", "customer", "reservation", "monshin", "meo", "sleep"],
-    description: "全6システムまとめて導入。圧倒的コスパ",
-    setMonthly: 19800,
-    setInitial: 0,
-    label: "20%OFF",
-    note: "全システムの初期費用が無料",
+    name: "検査パック",
+    appIds: ["kensa", "sleep"],
+    description: "検査・分析をまとめて数値化",
+    setMonthly: 5680,
+    setInitial: 19800,
+    label: "8%OFF",
+    note: null,
   },
 ];
 
@@ -355,10 +355,12 @@ export default function Home() {
             <a href="#faq" className="hover:text-primary transition">FAQ</a>
           </div>
           <a
-            href="#contact"
+            href="https://lin.ee/8P11rM4"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-cta text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-cta-600 hover:shadow-lg transition-all"
           >
-            相談する
+            LINEで相談する
           </a>
         </div>
       </nav>
@@ -379,9 +381,9 @@ export default function Home() {
             </h1>
 
             <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              高くて使いこなせないシステムは、���ういらない。
+              高くて使いこなせないシステムは、もういらない。
               <br className="hidden md:block" />
-              月額2,980円から、初期費用0円のプランも。全9システムを自由に組み合わせ。
+              月額2,200円から、初期費用11,000円〜。全6システムを自由に組み合わせ。
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -393,10 +395,12 @@ export default function Home() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </a>
               <a
-                href="#contact"
+                href="https://lin.ee/8P11rM4"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-base border-2 border-primary/20 hover:border-primary/40 hover:shadow-md transition-all"
               >
-                相談する
+                LINEで相談する
               </a>
             </div>
           </div>
@@ -495,12 +499,16 @@ export default function Home() {
               </thead>
               <tbody>
                 {[
-                  { label: "月額料金", ours: "1,980円〜", a: "22,000円〜", b: "33,000円〜" },
-                  { label: "初期費用", ours: "19,800円〜", a: "110,000円〜", b: "55,000円〜" },
-                  { label: "最低契約期間", ours: "なし", a: "1年", b: "2年" },
+                  { label: "月額料金", ours: "2,200円〜", a: "22,000円〜", b: "33,000円〜" },
+                  { label: "初期費用", ours: "11,000円〜", a: "110,000円〜", b: "55,000円〜" },
+                  { label: "最低契約期間", ours: "6ヶ月", a: "1年", b: "2年" },
                   { label: "治療院特化", ours: "◎", a: "△", b: "×" },
                   { label: "カスタマイズ", ours: "◎", a: "×", b: "△" },
                   { label: "開発者", ours: "現役治療家", a: "IT企業", b: "IT企業" },
+                  { label: "現場で使って改善", ours: "◎ 毎日使用", a: "×", b: "×" },
+                  { label: "アップデート", ours: "◎ 現場の声を反映", a: "△ 年1〜2回", b: "△ 年1回" },
+                  { label: "サポート対応", ours: "◎ LINEで直接", a: "△ メールのみ", b: "△ 電話予約制" },
+                  { label: "業務フロー特化", ours: "◎ 治療院専用設計", a: "× 汎用ツール", b: "△ 医療全般" },
                 ].map((row, i) => (
                   <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
                     <td className="py-3 px-4 font-bold text-primary">{row.label}</td>
@@ -550,7 +558,9 @@ export default function Home() {
                 className="relative bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-lg hover:border-accent/40 transition-all group"
               >
                 {app.badge && (
-                  <span className="absolute -top-3 right-4 bg-cta text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                  <span className={`absolute -top-3 right-4 text-xs font-bold px-3 py-1 rounded-full shadow-md ${
+                    app.badge === "準備中" ? "bg-gray-400 text-white" : "bg-cta text-white"
+                  }`}>
                     {app.badge}
                   </span>
                 )}
@@ -587,26 +597,26 @@ export default function Home() {
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  {app.detailUrl && (
-                    <a
-                      href={app.detailUrl}
-                      className="block w-full text-center bg-primary text-white font-bold py-2.5 px-4 rounded-xl hover:bg-primary-700 transition-all text-sm"
-                    >
-                      詳しく見る
-                    </a>
-                  )}
-                  {app.demoUrl ? (
-                    <a
-                      href={app.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
-                    >
-                      デモを体験する &rarr;
-                    </a>
+                  {["kensa", "meo"].includes(app.id) ? (
+                    <>
+                      {app.detailUrl && (
+                        <a
+                          href={app.detailUrl}
+                          className="block w-full text-center bg-primary text-white font-bold py-2.5 px-4 rounded-xl hover:bg-primary-700 transition-all text-sm"
+                        >
+                          詳しく見る
+                        </a>
+                      )}
+                      <a
+                        href={app.id === "kensa" ? "https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02" : "https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"}
+                        className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
+                      >
+                        今すぐ始める &rarr;
+                      </a>
+                    </>
                   ) : (
-                    <span className="block w-full text-center border-2 border-gray-200 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-sm">
-                      デモ準備中
+                    <span className="block w-full text-center border-2 border-gray-200 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-sm cursor-not-allowed">
+                      準備中
                     </span>
                   )}
                 </div>
@@ -633,7 +643,7 @@ export default function Home() {
             料金プラン
           </h2>
           <p className="text-center text-gray-500 text-sm mb-6">
-            初期費用 + 月額制。最低契約期間なし。いつでも解約OK。大手の1/3以下の料金です。
+            初期費用 + 月額制。最低契約期間6ヶ月。大手の1/3以下の料金です。
           </p>
 
           {/* 月払い / 年払い 切り替えタブ */}
@@ -707,31 +717,32 @@ export default function Home() {
           </div>
 
           {/* セットで買うとお得 */}
-          <div className="bg-accent/5 rounded-2xl border border-accent/20 p-6 md:p-8 mb-10">
-            <h3 className="text-xl font-black text-primary text-center mb-2">セットで買うとお得</h3>
-            <p className="text-center text-gray-500 text-sm mb-6">目的に合わせたパックで、月額も初期費用もお得になります。</p>
+          <div className="bg-gray-100 rounded-2xl border border-gray-200 p-6 md:p-8 mb-10 relative">
+            <span className="absolute -top-3 right-4 bg-gray-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">準備中</span>
+            <h3 className="text-xl font-black text-gray-400 text-center mb-2">セットで買うとお得</h3>
+            <p className="text-center text-gray-400 text-sm mb-6">目的に合わせたパックで、月額も初期費用もお得になります。</p>
           </div>
 
           {/* セットパック */}
-          <h3 className="text-xl font-black text-primary text-center mb-6">おすすめパック</h3>
-          <div className="grid md:grid-cols-2 gap-5 mb-10">
+          <h3 className="text-xl font-black text-gray-400 text-center mb-6">おすすめパック</h3>
+          <div className="grid md:grid-cols-2 gap-5 mb-10 opacity-50 pointer-events-none">
             {SET_EXAMPLES.map((set) => {
               const apps = APPS.filter(a => set.appIds.includes(a.id));
               const monthlyTotal = apps.reduce((s, a) => s + a.monthlyPrice, 0);
               const initialTotal = apps.reduce((s, a) => s + a.initialCost, 0);
               const isSingle = set.appIds.length === 1;
               return (
-                <div key={set.name} className="bg-white rounded-2xl border-2 border-gray-200 p-6 hover:border-accent/40 hover:shadow-lg transition-all">
+                <div key={set.name} className="bg-white rounded-2xl border-2 border-gray-200 p-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <h4 className="text-lg font-black text-primary">{set.name}</h4>
+                    <h4 className="text-lg font-black text-gray-400">{set.name}</h4>
                     {set.label && (
-                      <span className="bg-cta/10 text-cta text-xs font-bold px-2.5 py-0.5 rounded-full">{set.label}</span>
+                      <span className="bg-gray-100 text-gray-400 text-xs font-bold px-2.5 py-0.5 rounded-full">{set.label}</span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-500 mb-4">{set.description}</p>
+                  <p className="text-sm text-gray-400 mb-4">{set.description}</p>
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {apps.map(a => (
-                      <span key={a.id} className="bg-accent/10 text-accent text-xs font-bold px-3 py-1.5 rounded-full">
+                      <span key={a.id} className="bg-gray-100 text-gray-400 text-xs font-bold px-3 py-1.5 rounded-full">
                         {a.shortName}
                       </span>
                     ))}
@@ -741,36 +752,31 @@ export default function Home() {
                   </div>
                   <div className="border-t border-gray-100 pt-4 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">月額</span>
+                      <span className="text-sm text-gray-400">月額</span>
                       <div className="flex items-baseline gap-2">
                         {!isSingle && (
-                          <span className="text-sm text-gray-400 line-through">{monthlyTotal.toLocaleString()}円</span>
+                          <span className="text-sm text-gray-300 line-through">{monthlyTotal.toLocaleString()}円</span>
                         )}
-                        <span className="text-2xl font-black text-primary">{set.setMonthly.toLocaleString()}</span>
+                        <span className="text-2xl font-black text-gray-400">{set.setMonthly.toLocaleString()}</span>
                         <span className="text-sm text-gray-400">円/月</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">初期費用</span>
+                      <span className="text-sm text-gray-400">初期費用</span>
                       <div className="flex items-baseline gap-2">
                         {!isSingle && initialTotal !== set.setInitial && (
-                          <span className="text-sm text-gray-400 line-through">{initialTotal.toLocaleString()}円</span>
+                          <span className="text-sm text-gray-300 line-through">{initialTotal.toLocaleString()}円</span>
                         )}
-                        <span className="text-base font-bold text-gray-700">{set.setInitial.toLocaleString()}円</span>
+                        <span className="text-base font-bold text-gray-400">{set.setInitial.toLocaleString()}円</span>
                       </div>
                     </div>
                   </div>
                   {set.note && (
                     <p className="text-xs text-gray-400 mt-3">{set.note}</p>
                   )}
-                  <button
-                    onClick={() => {
-                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="w-full mt-4 py-3 rounded-xl font-bold text-sm transition bg-accent text-white hover:bg-accent-600 hover:shadow-md"
-                  >
-                    このパックで相談する
-                  </button>
+                  <span className="block w-full mt-4 py-3 rounded-xl font-bold text-sm text-center bg-gray-200 text-gray-400 cursor-not-allowed">
+                    準備中
+                  </span>
                 </div>
               );
             })}
@@ -781,7 +787,7 @@ export default function Home() {
             <h3 className="text-xl font-black text-primary text-center mb-6">カスタム選択</h3>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-              {APPS.map((app) => {
+              {[APPS.find(a => a.id === "meo")!, APPS.find(a => a.id === "kensa")!].map((app) => {
                 const isSelected = selectedApps.includes(app.id);
                 return (
                   <button
@@ -900,32 +906,14 @@ export default function Home() {
                         ? `年払いで申し込む（${calcTotal.yearlyTotal.toLocaleString()}円/年）`
                         : `月払いで申し込む（${calcTotal.monthlyTotal.toLocaleString()}円/月）`}
                     </button>
-                    <button
-                      onClick={() => {
-                        setCheckoutPaymentType("onetime");
-                        setCheckoutModal(true);
-                        setCheckoutError("");
-                      }}
-                      disabled={selectedApps.length === 0}
-                      className="w-full py-3.5 rounded-xl font-bold transition border-2 border-primary/20 text-primary hover:border-primary/40 hover:bg-primary/5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    <a
+                      href="https://lin.ee/8P11rM4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-3.5 rounded-xl font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200 text-center"
                     >
-                      買い切りで申し込む（{calcTotal.initialTotal.toLocaleString()}円）
-                    </button>
-                    {selectedApps.length > 0 && (
-                      <p className="text-xs text-gray-500 text-center">
-                        ※ 買い切りの場合、別途保守料金 {calcTotal.maintenanceSubtotal.toLocaleString()}円/月がかかります
-                        <br />
-                        <span className="text-gray-400">（サーバー運用・アップデート・サポート費用）</span>
-                      </p>
-                    )}
-                    <button
-                      onClick={() => {
-                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      className="w-full py-3.5 rounded-xl font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    >
-                      まずは相談する
-                    </button>
+                      LINEで相談する
+                    </a>
                   </div>
                 </>
               )}
@@ -1001,12 +989,20 @@ export default function Home() {
             </div>
           </div>
 
+          <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm text-center mb-10">
+            <p className="text-sm text-white/70 mb-2">オリジナルアプリ開発</p>
+            <p className="text-3xl font-black text-accent mb-1">88,000<span className="text-base font-normal text-white/60">円〜</span></p>
+            <p className="text-xs text-white/50">※要件により変動します</p>
+          </div>
+
           <div className="text-center">
             <a
-              href="#contact"
+              href="https://lin.ee/8P11rM4"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-cta text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-cta-600 hover:shadow-lg transition-all"
             >
-              まずは無料相談
+              LINEで無料相談する
             </a>
           </div>
         </div>
@@ -1156,7 +1152,20 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-primary mb-2">お問い合わせありがとうございます</h3>
-              <p className="text-gray-600 text-sm">1営業日以内にご連絡させていただきます。</p>
+              <p className="text-gray-600 text-sm mb-6">1営業日以内にご連絡させていただきます。</p>
+              <div className="bg-white rounded-xl border border-gray-200 p-6 max-w-sm mx-auto">
+                <p className="text-sm text-gray-700 font-bold mb-3">LINEでもお気軽にご相談ください</p>
+                <p className="text-xs text-gray-500 mb-4">LINEなら即日対応も可能です。デモのご案内もスムーズに行えます。</p>
+                <a
+                  href="https://lin.ee/8P11rM4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#06C755] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#05b34d] transition-all"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+                  LINEで相談する
+                </a>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-gray-50 rounded-2xl border border-gray-200 p-6 md:p-8 space-y-5">
@@ -1404,7 +1413,7 @@ export default function Home() {
                 <div className="space-y-2">
                   <p className="text-gray-400">大口神経整体院</p>
                   <p className="text-gray-400">AI Solutions</p>
-                  <a href="#contact" className="block hover:text-white transition">お問い合わせ</a>
+                  <a href="https://lin.ee/8P11rM4" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition">LINEで相談</a>
                 </div>
               </div>
             </div>

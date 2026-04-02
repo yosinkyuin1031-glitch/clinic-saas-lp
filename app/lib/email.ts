@@ -15,7 +15,7 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
   const { to, clinicName, clinicId, password, selectedApps, planType } = params
 
   const appNames: Record<string, string> = {
-    kensa: '検査システム',
+    kensa: 'カラダマップ',
     customer: '顧客管理',
     reservation: '予約管理',
     monshin: 'WEB問診',
