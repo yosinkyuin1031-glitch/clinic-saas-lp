@@ -221,7 +221,26 @@ export default function KensaDetailPage() {
           {/* 操作デモ スライドショー */}
           <DemoSlideshow />
 
-          {/* デモ体験ボタン */}
+          {/* インタラクティブデモ */}
+          <div className="mt-12">
+            <h3 className="text-xl font-black text-center text-primary mb-2">
+              デモを体験してみる
+            </h3>
+            <p className="text-center text-gray-500 text-sm mb-6">
+              実際の管理画面をそのまま操作できます（データはサンプルです）
+            </p>
+            <div className="relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white">
+              <iframe
+                src="https://kensa-demo.vercel.app"
+                className="w-full"
+                style={{ height: "600px" }}
+                title="カラダマップ デモ"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* CTA */}
           <div className="text-center mt-8 mb-6">
             <a
               href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
@@ -229,9 +248,6 @@ export default function KensaDetailPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg transition-all"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-              </svg>
               今すぐ始める
             </a>
             <p className="text-xs text-gray-400 mt-2">メールアドレスだけで登録完了・全機能使えます</p>
