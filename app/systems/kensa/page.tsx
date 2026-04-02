@@ -220,38 +220,30 @@ export default function KensaDetailPage() {
 
           {/* 操作デモ スライドショー */}
           <DemoSlideshow />
+        </div>
+      </section>
 
-          {/* インタラクティブデモ */}
-          <div className="mt-12">
-            <h3 className="text-xl font-black text-center text-primary mb-2">
-              デモを体験してみる
-            </h3>
-            <p className="text-center text-gray-500 text-sm mb-6">
-              実際の管理画面をそのまま操作できます（データはサンプルです）
-            </p>
-            <div className="relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-lg bg-white">
-              <iframe
-                src="https://kensa-demo.vercel.app"
-                className="w-full"
-                style={{ height: "600px" }}
-                title="カラダマップ デモ"
-                loading="lazy"
-              />
-            </div>
+      {/* デモ体験セクション（独立） */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-2">
+            デモを体験してみる
+          </h2>
+          <p className="text-center text-gray-500 mb-8">
+            実際の管理画面をそのまま操作できます（データはサンプルです）
+          </p>
+          <div className="relative rounded-2xl overflow-hidden border-2 border-primary/20 shadow-xl bg-white">
+            <iframe
+              src="https://kensa-demo.vercel.app"
+              className="w-full"
+              style={{ height: "700px" }}
+              title="カラダマップ デモ"
+              loading="lazy"
+            />
           </div>
-
-          {/* CTA */}
-          <div className="text-center mt-8 mb-6">
-            <a
-              href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg transition-all"
-            >
-              今すぐ始める
-            </a>
-            <p className="text-xs text-gray-400 mt-2">メールアドレスだけで登録完了・全機能使えます</p>
-          </div>
+          <p className="text-center text-xs text-gray-400 mt-4">
+            上の画面は実際のアプリと同じ操作感です。自由に触ってお試しください。
+          </p>
         </div>
       </section>
 
