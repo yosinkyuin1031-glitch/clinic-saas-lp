@@ -26,7 +26,7 @@ export async function OPTIONS() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { planName, email, clinicName, amount, paymentType, selectedApps } = body;
+    const { planName, email, clinicName, ownerName, amount, paymentType, selectedApps } = body;
 
     if (!email || !clinicName || !selectedApps || selectedApps.length === 0) {
       return NextResponse.json(
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
 
     const metadata = {
       clinicName,
+      ownerName: ownerName || "",
       planName: planName || "",
       paymentType: paymentType || "monthly",
       selectedApps: JSON.stringify(selectedApps),
