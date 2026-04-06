@@ -18,6 +18,8 @@ interface ClinicAccount {
   metadata: Record<string, unknown> | null;
   owner_name?: string;
   phone?: string;
+  is_monitor?: boolean;
+  custom_price?: number | null;
 }
 
 const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
@@ -49,6 +51,7 @@ interface MeoMonitor {
 
 function getMonthlyAmount(account: ClinicAccount): number {
   if (account.plan_type === "onetime") return 0;
+  if (account.custom_price != null) return account.custom_price;
   const apps = account.selected_apps || [];
   const subtotal = apps.reduce((sum, appId) => sum + (APP_MONTHLY_PRICES[appId] || 0), 0);
   const count = apps.length;
@@ -59,6 +62,15 @@ function getMonthlyAmount(account: ClinicAccount): number {
   const monthly = Math.floor(subtotal * (1 - discount));
   if (account.plan_type === "yearly") return Math.floor((monthly * 10) / 12);
   return monthly;
+}
+
+function getMonthlyLabel(account: ClinicAccount): string {
+  if (account.plan_type === "onetime") return "-";
+  const amount = getMonthlyAmount(account);
+  const label = `¥${amount.toLocaleString()}`;
+  if (account.is_monitor) return `${label}（モニター）`;
+  if (account.custom_price != null) return `${label}（特別）`;
+  return label;
 }
 
 export default function AdminPage() {
@@ -87,6 +99,8 @@ export default function AdminPage() {
   const [newEmail, setNewEmail] = useState("");
   const [newPlanType, setNewPlanType] = useState<string>("monthly");
   const [newApps, setNewApps] = useState<string[]>([]);
+  const [newIsMonitor, setNewIsMonitor] = useState(false);
+  const [newCustomPrice, setNewCustomPrice] = useState("");
   const [createResult, setCreateResult] = useState<{ password: string; checkoutUrl: string | null; monthlyAmount: number; warnings: string[] } | null>(null);
 
   const showToast = (message: string, type: "success" | "error" = "success") => {
@@ -198,6 +212,8 @@ export default function AdminPage() {
           email: newEmail,
           plan_type: newPlanType,
           selected_apps: newApps,
+          is_monitor: newIsMonitor,
+          custom_price: newIsMonitor && newCustomPrice ? parseInt(newCustomPrice) : null,
         }),
       });
       const data = await res.json();
@@ -210,6 +226,8 @@ export default function AdminPage() {
       setNewPhone("");
       setNewEmail("");
       setNewApps([]);
+      setNewIsMonitor(false);
+      setNewCustomPrice("");
     } catch (err) {
       showToast(err instanceof Error ? err.message : "作成に失敗しました", "error");
     } finally {
@@ -519,7 +537,7 @@ export default function AdminPage() {
                               <td className="py-2.5 text-gray-400">{a.email}</td>
                               <td className="py-2.5"><span className="bg-gray-800 text-xs px-2 py-0.5 rounded">{PLAN_LABELS[a.plan_type]}</span></td>
                               <td className="py-2.5"><StatusBadge status={a.status} /></td>
-                              <td className="py-2.5 text-right font-bold">{a.plan_type === "onetime" ? "-" : `¥${getMonthlyAmount(a).toLocaleString()}`}</td>
+                              <td className="py-2.5 text-right font-bold">{getMonthlyLabel(a)}</td>
                               <td className="py-2.5 text-gray-500 text-xs">{new Date(a.created_at).toLocaleDateString("ja-JP")}</td>
                             </tr>
                           ))}
@@ -610,7 +628,7 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-3"><StatusBadge status={a.status} /></td>
                             <td className="px-4 py-3 text-right font-bold">
-                              {a.plan_type === "onetime" ? "-" : `¥${getMonthlyAmount(a).toLocaleString()}`}
+                              {getMonthlyLabel(a)}
                             </td>
                           </tr>
                         ))
@@ -654,7 +672,7 @@ export default function AdminPage() {
                     <div>
                       <div className="text-xs text-gray-500 mb-1">月額</div>
                       <div className="font-bold text-blue-400">
-                        {selectedAccount.plan_type === "onetime" ? "買い切り" : `¥${getMonthlyAmount(selectedAccount).toLocaleString()}`}
+                        {selectedAccount.plan_type === "onetime" ? "買い切り" : getMonthlyLabel(selectedAccount)}
                       </div>
                     </div>
                     <div>
@@ -866,6 +884,37 @@ export default function AdminPage() {
                 </button>
               </div>
 
+              {/* モニター設定 */}
+              <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newIsMonitor}
+                    onChange={(e) => {
+                      setNewIsMonitor(e.target.checked);
+                      if (e.target.checked && !newCustomPrice) setNewCustomPrice("4980");
+                    }}
+                    className="w-4 h-4 rounded"
+                  />
+                  <div>
+                    <span className="text-sm font-bold">モニター価格を適用</span>
+                    <span className="text-xs text-gray-500 ml-2">通常料金と異なるカスタム料金を設定</span>
+                  </div>
+                </label>
+                {newIsMonitor && (
+                  <div className="mt-3">
+                    <label className="text-xs font-bold text-gray-400 block mb-1">カスタム月額（円）</label>
+                    <input
+                      type="number"
+                      value={newCustomPrice}
+                      onChange={(e) => setNewCustomPrice(e.target.value)}
+                      className="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-sm focus:border-blue-500 outline-none"
+                      placeholder="4980"
+                    />
+                  </div>
+                )}
+              </div>
+
               {/* 料金プレビュー */}
               {newApps.length > 0 && (
                 <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
@@ -884,8 +933,9 @@ export default function AdminPage() {
                       </div>
                     )}
                     <div className="flex justify-between font-black text-blue-400 border-t border-gray-700 pt-2 mt-2">
-                      <span>月額合計</span>
+                      <span>月額合計{newIsMonitor ? "（モニター）" : ""}</span>
                       <span>¥{(() => {
+                        if (newIsMonitor && newCustomPrice) return parseInt(newCustomPrice).toLocaleString();
                         const sub = newApps.reduce((s, a) => s + (APP_MONTHLY_PRICES[a] || 0), 0);
                         let d = 0;
                         if (newApps.length >= 5) d = 0.2;

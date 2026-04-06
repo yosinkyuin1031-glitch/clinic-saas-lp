@@ -35,10 +35,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "データの取得に失敗しました" }, { status: 500 });
     }
 
-    // clinicsテーブルから代表者名・電話番号を取得して結合
+    // clinicsテーブルから代表者名・電話番号・モニター情報を取得して結合
     const { data: clinics } = await supabase
       .from("clinics")
-      .select("notes, owner_name, phone");
+      .select("notes, owner_name, phone, is_monitor, custom_price");
 
     const enriched = (accounts || []).map((account) => {
       const clinic = clinics?.find((c) => c.notes?.includes(account.clinic_id));
@@ -46,6 +46,8 @@ export async function GET(req: NextRequest) {
         ...account,
         owner_name: clinic?.owner_name || "",
         phone: clinic?.phone || "",
+        is_monitor: clinic?.is_monitor || false,
+        custom_price: clinic?.custom_price ?? null,
       };
     });
 
@@ -63,7 +65,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { clinic_name, email, plan_type, selected_apps, owner_name, phone } = body;
+    const { clinic_name, email, plan_type, selected_apps, owner_name, phone, is_monitor, custom_price } = body;
 
     if (!clinic_name || !email || !selected_apps?.length) {
       return NextResponse.json({ error: "院名、メール、アプリを選択してください" }, { status: 400 });
@@ -286,6 +288,8 @@ export async function POST(req: NextRequest) {
         max_checks_per_month: 9999,
         notes: `管理画面から作成 | ${clinicId}`,
         stripe_customer_id: stripeCustomerId || "",
+        is_monitor: is_monitor || false,
+        custom_price: custom_price || null,
         ...appFlags,
       })
       .select()
