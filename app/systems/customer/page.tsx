@@ -27,6 +27,7 @@ export default function CustomerPage() {
       {/* セクション1: ヒーロー */}
       <section className="max-w-5xl mx-auto px-6 py-24 text-center">
         <p className="text-sm font-medium tracking-widest uppercase mb-4" style={{ color: "#c9a84c" }}>治療院専用 経営管理システム</p>
+        <p className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "#1e3a5f" }}>顧客管理システム <span style={{ color: "#c9a84c" }}>Clinic Core</span></p>
         <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6" style={{ color: "#1e3a5f" }}>
           治療院の経営を、<br />
           <span style={{ color: "#c9a84c" }}>数字で動かせ。</span>
