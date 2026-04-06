@@ -20,6 +20,12 @@
 - カラダマップモニター（月額のみ）：https://buy.stripe.com/bJecN4108blm8jOdhf08g04
 - MEO通常（月額+初期費用）：https://buy.stripe.com/9B6dR824cahi1Vqb9708g03
 - MEOモニター（月額のみ）：https://buy.stripe.com/cNidR81082OQdE83GF08g05
+- 顧客管理通常（月額+初期費用）：https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06
+- 顧客管理モニター（月額のみ）：https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07
+- 予約管理通常（月額+初期費用）：https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08
+- 予約管理モニター（月額のみ）：https://buy.stripe.com/fZuaEW7owahicA4dhf08g09
+- WEB問診通常（月額+初期費用）：https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a
+- WEB問診モニター（月額のみ）：https://buy.stripe.com/fZu3cu38g7561Vqb9708g0b
 
 ## 設定ファイル
 - app/lib/app-config.ts：全アプリの料金・Stripe商品ID・フラグを一元管理

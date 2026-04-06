@@ -26,7 +26,7 @@ const APPS = [
   },
   {
     id: "customer",
-    name: "顧客管理シート",
+    name: "Clinic Core",
     shortName: "顧客管理",
     categories: ["開業", "集客", "内製化"],
     description: "患者情報を一元管理。来院履歴・離反アラート・データ分析ダッシュボード搭載。",
@@ -34,7 +34,7 @@ const APPS = [
     monthlyPrice: 5500,
     initialCost: 33000,
     maintenancePrice: 1490,
-    badge: "準備中",
+    badge: "NEW",
     demoUrl: "",
     detailUrl: "/systems/customer",
     icon: (
@@ -53,7 +53,7 @@ const APPS = [
     monthlyPrice: 3980,
     initialCost: 11000,
     maintenancePrice: 890,
-    badge: "準備中",
+    badge: "NEW",
     demoUrl: "",
     detailUrl: "/systems/reservation",
     icon: (
@@ -72,7 +72,7 @@ const APPS = [
     monthlyPrice: 2980,
     initialCost: 11000,
     maintenancePrice: 890,
-    badge: "準備中",
+    badge: "NEW",
     demoUrl: "",
     detailUrl: "/systems/monshin",
     icon: (
@@ -597,7 +597,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  {["kensa", "meo"].includes(app.id) ? (
+                  {["kensa", "meo", "customer", "reservation", "monshin"].includes(app.id) ? (
                     <>
                       {app.detailUrl && (
                         <a
@@ -608,7 +608,17 @@ export default function Home() {
                         </a>
                       )}
                       <a
-                        href={app.id === "kensa" ? "https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02" : "https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"}
+                        href={
+                          app.id === "kensa"
+                            ? "https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
+                            : app.id === "meo"
+                            ? "https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"
+                            : app.id === "customer"
+                            ? "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06"
+                            : app.id === "reservation"
+                            ? "https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08"
+                            : "https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a"
+                        }
                         className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
                       >
                         今すぐ始める &rarr;
@@ -633,6 +643,69 @@ export default function Home() {
           <p className="text-xs text-gray-400">
             {COMING_SOON_APPS.join(" / ")}
           </p>
+        </div>
+      </section>
+
+      {/* ===== 各システムの詳細を見る ===== */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
+            各システムの詳細を見る
+          </h2>
+          <p className="text-center text-gray-500 text-sm mb-10">
+            気になるシステムの専用ページで、機能・料金・比較表を確認できます
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {[
+              {
+                name: "Clinic Core",
+                desc: "数字で経営を変える分析ツール",
+                price: "5,500",
+                url: "/systems/customer",
+              },
+              {
+                name: "予約管理",
+                desc: "予約の取りこぼしを仕組みで防ぐ",
+                price: "3,980",
+                url: "/systems/reservation",
+              },
+              {
+                name: "WEB問診",
+                desc: "初診の10分をもっと大切に",
+                price: "2,980",
+                url: "/systems/monshin",
+              },
+              {
+                name: "カラダマップ",
+                desc: "検査で原因部位を自動特定",
+                price: "3,980",
+                url: "/systems/kensa",
+              },
+              {
+                name: "MEO勝ち上げくん",
+                desc: "Googleマップ順位を自動管理",
+                price: "3,980",
+                url: "/systems/meo",
+              },
+            ].map((item, i) => (
+              <a
+                key={i}
+                href={item.url}
+                className="bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg hover:border-accent/40 transition-all group block"
+              >
+                <h3 className="font-bold text-primary text-sm mb-1 group-hover:text-accent transition-colors">
+                  {item.name}
+                </h3>
+                <p className="text-xs text-gray-500 mb-3 leading-relaxed">{item.desc}</p>
+                <p className="text-lg font-black text-primary mb-3">
+                  {item.price}<span className="text-xs font-normal text-gray-400">円/月</span>
+                </p>
+                <span className="block w-full text-center bg-primary text-white font-bold py-2 px-3 rounded-lg text-xs group-hover:bg-accent transition-colors">
+                  詳しく見る &rarr;
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

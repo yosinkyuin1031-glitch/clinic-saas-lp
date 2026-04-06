@@ -1,494 +1,168 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "予約管理システム - 治療院専用 予約管理システム | ClinicApps",
-  description:
-    "治療院専用の予約管理システム。カレンダー形式で直感操作、ダブルブッキング防止、LINE通知連携。スマホ対応で外出先からも管理可能。月額2,980円。",
-};
+const YOUTUBE_ID = "";
 
-const FEATURES = [
-  {
-    icon: "M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5",
-    title: "カレンダー形式で直感操作",
-    desc: "週表示・日表示でパッと見て空き状況がわかる。ドラッグ&ドロップで予約変更。",
-  },
-  {
-    icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-    title: "ダブルブッキング防止",
-    desc: "同じ時間枠に複数予約が入らないよう自動制御。ミスゼロに。",
-  },
-  {
-    icon: "M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z",
-    title: "LINE通知連携",
-    desc: "予約確定・リマインド・変更通知をLINEで自動送信。無断キャンセル防止。",
-  },
-  {
-    icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z",
-    title: "患者ごとの予約履歴",
-    desc: "過去の来院パターンを把握。次回予約の提案がしやすい。",
-  },
-  {
-    icon: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z",
-    title: "スタッフ別スケジュール",
-    desc: "複数スタッフの予約枠を一画面で管理。シフト管理も楽に。",
-  },
-  {
-    icon: "M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3",
-    title: "スマホ対応",
-    desc: "スマホからも予約確認・変更OK。外出先でもスケジュール管理。",
-  },
-];
-
-const COMPARISON_ROWS = [
-  { label: "月額料金", type: "price" as const },
-  { label: "初期費用", type: "custom" as const },
-  { label: "カレンダー形式（週/日表示）", type: "check" as const },
-  { label: "ダブルブッキング自動防止", type: "check" as const },
-  { label: "LINE通知（確定/リマインド）", type: "check" as const },
-  { label: "患者ごとの予約履歴", type: "check" as const },
-  { label: "スタッフ別スケジュール", type: "check" as const },
-  { label: "ドラッグ&ドロップ変更", type: "check" as const },
-  { label: "キャンセル待ち管理", type: "check" as const },
-  { label: "スマホ対応（外出先確認）", type: "check" as const },
-  { label: "施術メニュー別の時間設定", type: "check" as const },
-  { label: "治療院専用設計", type: "check" as const },
-  { label: "導入サポート", type: "custom" as const },
-  { label: "最低契約期間", type: "custom" as const },
-];
-
-const COMPETITORS = [
-  {
-    name: "予約管理\nシステム",
-    highlight: true,
-    values: ["2,980円", "19,800円", "○", "○", "○", "○", "○", "○", "○", "○", "○", "○", "Zoom個別", "なし"],
-  },
-  {
-    name: "紙の予約帳",
-    highlight: false,
-    values: ["0円", "0円", "△", "×", "×", "×", "×", "×", "×", "×", "×", "△", "なし", "-"],
-  },
-  {
-    name: "STORES予約",
-    highlight: false,
-    values: ["0円〜", "0円", "○", "○", "×", "△", "○", "×", "×", "○", "○", "×", "メール", "なし"],
-  },
-  {
-    name: "しんきゅう予約",
-    highlight: false,
-    values: ["5,000円〜", "30,000円〜", "○", "○", "△", "○", "○", "×", "△", "○", "○", "○", "電話", "6ヶ月"],
-  },
-];
-
-const ADVANTAGES = [
-  {
-    title: "LINE通知でキャンセル率が激減",
-    desc: "予約確定・前日リマインドをLINEで自動送信。無断キャンセルが多い院では、リマインド導入で当日キャンセルが半減したケースも。STORES予約にはLINE連携がありません。",
-  },
-  {
-    title: "治療院の予約パターンを理解した設計",
-    desc: "施術メニューごとに所要時間が異なる治療院の予約に最適化。30分・60分・90分の施術が混在しても、カレンダー上で自動調整されます。",
-  },
-  {
-    title: "月2,980円は業界最安クラス",
-    desc: "しんきゅう予約は月5,000円＋初期3万円。STORES予約は無料だがLINE連携なし。当システムは月2,980円で全機能が使え、しかも縛り期間なしです。",
-  },
-];
-
-const STEPS = [
-  { num: "01", title: "アカウント作成", desc: "メールアドレスで簡単登録。3分で完了。" },
-  { num: "02", title: "営業時間・枠の設定", desc: "診療時間・1枠の長さ・休診日を設定。" },
-  { num: "03", title: "予約を入力", desc: "カレンダーをクリックして患者名と時間を入力するだけ。" },
-  { num: "04", title: "LINE通知が自動送信", desc: "予約確定・前日リマインドが自動でLINEに届く。" },
-  { num: "05", title: "スマホで確認", desc: "外出先からもスケジュールを確認・変更。" },
-];
-
-export default function ReservationDetailPage() {
+export default function ReservationPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* ヘッダー */}
-      <header className="bg-primary text-white sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="text-sm opacity-80 hover:opacity-100">
-            ← ClinicApps トップ
-          </Link>
-          <a
-            href="/#contact"
-            className="px-4 py-1.5 bg-cta text-white rounded-lg text-sm font-bold hover:bg-cta-600 transition-colors"
-          >
-            お問い合わせ
-          </a>
-        </div>
+    <main className="min-h-screen bg-white">
+      <header className="border-b border-gray-100 px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
+        <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">← ClinicApps トップ</Link>
+        <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="text-sm bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">LINEで相談する</a>
       </header>
 
       {/* ヒーロー */}
-      <section className="bg-gradient-to-br from-primary via-primary-700 to-primary-800 text-white py-16 md:py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-sm mb-6">
-            治療院専用 予約管理システム
-          </div>
-          <h1 className="text-3xl md:text-5xl font-black leading-tight mb-6">
-            予約管理システム
-          </h1>
-          <p className="text-lg md:text-xl text-white/80 mb-4 leading-relaxed">
-            カレンダー形式で直感操作。ダブルブッキングを自動防止。
-          </p>
-          <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
-            LINE通知連携で<span className="text-cta-300 font-bold">無断キャンセルゼロ</span>へ。
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/#contact"
-              className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
-            >
-              お問い合わせ・資料請求
-            </a>
-            <a
-              href="#pricing"
-              className="px-8 py-4 bg-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/20 transition-colors border border-white/20"
-            >
-              料金を見る
-            </a>
-          </div>
+      <section className="max-w-5xl mx-auto px-6 py-20 text-center">
+        <span className="inline-block bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full mb-4">NEW</span>
+        <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 予約管理システム</p>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">予約の取りこぼしを、<br />仕組みで防ぐ。</h1>
+        <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">電話対応に追われていませんか？<br />予約管理を自動化して、<br />施術に集中できる環境を作りましょう。</p>
+        <a href="https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
+        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
+      </section>
+
+      {/* YouTube動画 */}
+      <section className="bg-gray-900 py-14">
+        <div className="max-w-3xl mx-auto px-6">
+          <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-4">操作デモ動画</p>
+          <h2 className="text-2xl font-bold text-white text-center mb-8">実際の使い方を2分で確認</h2>
+          {YOUTUBE_ID ? (
+            <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden">
+              <iframe src={`https://www.youtube.com/embed/${YOUTUBE_ID}?rel=0`} className="absolute inset-0 w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            </div>
+          ) : (
+            <div className="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden bg-gray-800 border border-gray-700">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center"><svg className="w-7 h-7 text-gray-400 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                <p className="text-gray-400 text-sm">操作デモ動画（準備中）</p>
+                <p className="text-gray-600 text-xs">YouTubeにアップ後、自動で表示されます</p>
+              </div>
+            </div>
+          )}
+          <p className="text-center text-gray-500 text-xs mt-4">※ 購入後に詳細な解説動画をすべてお送りします</p>
         </div>
       </section>
 
-      {/* 画面イメージ */}
-      <section className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            実際の画面
-          </h2>
-          <p className="text-center text-gray-500 mb-10">
-            カレンダーで一目で空き状況がわかる
-          </p>
-
-          {/* スクリーンショット */}
-          <div className="rounded-2xl border border-gray-200 shadow-xl overflow-hidden mb-8">
-            <div className="bg-gray-800 px-4 py-2.5 flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
-              <span className="text-xs text-gray-400 ml-2">予約管理システム - 実際の画面</span>
-            </div>
-            <img
-              src="/images/reservation.png"
-              alt="予約管理システムの画面"
-              className="w-full"
-            />
-          </div>
-
-          {/* デモ準備中 */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-500 px-8 py-4 rounded-xl font-bold text-base border border-gray-200">
-              デモサイト準備中
-            </div>
-            <p className="text-xs text-gray-400 mt-2">デモのご要望は<a href="/#contact" className="text-accent underline">お問い合わせ</a>ください</p>
-          </div>
-
-          {/* 画面の特徴 */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* カレンダー画面 */}
-            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span className="text-xs text-gray-400 ml-2">予約カレンダー - 日表示</span>
-              </div>
-              <div className="bg-gray-50 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-sm font-bold text-primary">3月28日（金）</div>
-                  <div className="flex gap-1">
-                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded font-bold">日</span>
-                    <span className="px-2 py-0.5 bg-gray-100 text-gray-400 text-[10px] rounded">週</span>
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  {[
-                    { time: "9:00", name: "山田 太郎", menu: "整体60分", color: "bg-accent/10 border-accent/30" },
-                    { time: "10:00", name: "佐藤 花子", menu: "鍼灸30分", color: "bg-primary/10 border-primary/30" },
-                    { time: "10:30", name: "", menu: "", color: "bg-gray-50 border-dashed border-gray-200" },
-                    { time: "11:00", name: "鈴木 一郎", menu: "整体90分", color: "bg-accent/10 border-accent/30" },
-                    { time: "13:00", name: "田中 美咲", menu: "整体60分", color: "bg-accent/10 border-accent/30" },
-                    { time: "14:00", name: "", menu: "", color: "bg-gray-50 border-dashed border-gray-200" },
-                  ].map((slot, i) => (
-                    <div key={i} className={`flex items-center gap-3 rounded-lg p-2 border ${slot.color}`}>
-                      <span className="text-xs text-gray-500 w-10 shrink-0">{slot.time}</span>
-                      {slot.name ? (
-                        <div>
-                          <span className="text-xs text-gray-700 font-medium">{slot.name}</span>
-                          <span className="text-[10px] text-gray-400 ml-1">{slot.menu}</span>
-                        </div>
-                      ) : (
-                        <span className="text-[10px] text-gray-300">空き</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {/* LINE通知画面 */}
-            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span className="text-xs text-gray-400 ml-2">LINE自動通知イメージ</span>
-              </div>
-              <div className="bg-[#7494C0] p-6">
-                <div className="space-y-3">
-                  <div className="flex justify-start">
-                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%] shadow-sm">
-                      <div className="text-xs text-gray-700 leading-relaxed">
-                        <div className="font-bold text-green-700 mb-1">予約確定のお知らせ</div>
-                        <div>山田 太郎 様</div>
-                        <div className="mt-1">日時: 3/28（金）9:00</div>
-                        <div>メニュー: 整体60分</div>
-                        <div className="mt-1 text-gray-500">ご来院お待ちしております。</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-start">
-                    <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%] shadow-sm">
-                      <div className="text-xs text-gray-700 leading-relaxed">
-                        <div className="font-bold text-accent mb-1">明日のご予約リマインド</div>
-                        <div>山田 太郎 様</div>
-                        <div className="mt-1">明日 3/28（金）9:00 にご予約が入っています。</div>
-                        <div className="mt-1 text-gray-500">変更・キャンセルはお電話ください。</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p className="text-center text-xs text-gray-400 mt-6">
-            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
-          </p>
-        </div>
-      </section>
-
-      {/* こんな悩みありませんか？ */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
-            こんな悩みはありませんか？
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
+      {/* 課題提起 */}
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">こんな状態になっていませんか？</h2>
+          <div className="grid md:grid-cols-3 gap-6">
             {[
-              "予約帳が紙で、ダブルブッキングが起きたことがある",
-              "電話予約の対応で施術が中断される",
-              "無断キャンセルが多くて売上が安定しない",
-              "患者の予約履歴を確認するのに時間がかかる",
-              "受付スタッフがいないと予約管理が回らない",
-              "予約表を見るためにわざわざ院に戻らないといけない",
-            ].map((pain, i) => (
-              <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <span className="text-red-500 text-lg mt-0.5">&#10007;</span>
-                <span className="text-sm text-gray-700">{pain}</span>
+              {title:"電話が多くて施術に集中できない",body:"施術中に電話が鳴るたびに手を止める。集中力が途切れて、施術の質が下がっていませんか？"},
+              {title:"予約のダブルブッキングが怖い",body:"紙の予約帳では見落としが起きる。同じ時間に2人入れてしまった経験、ありませんか？"},
+              {title:"キャンセルの連絡が来ない",body:"当日になって空き枠が発生。無断キャンセルの損失は月にいくらになっていますか？"},
+            ].map(item=>(
+              <div key={item.title} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="font-bold text-gray-900 mb-3 text-lg">{item.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{item.body}</p>
               </div>
             ))}
           </div>
-          <p className="text-center mt-8 text-primary font-bold text-lg">
-            全て、予約管理システムで解決できます。
-          </p>
+          <p className="text-center mt-10 text-gray-700 font-medium text-lg">予約管理を仕組み化すれば、全て解決できます。</p>
         </div>
       </section>
 
       {/* 機能紹介 */}
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            主な機能
-          </h2>
-          <p className="text-center text-gray-500 mb-12">
-            治療院の予約管理に必要な機能を全て搭載
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FEATURES.map((f, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-accent-50 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d={f.icon} />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-primary mb-2">{f.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">5つの管理機能</h2>
+        <p className="text-center text-gray-500 mb-12">治療院の予約管理に必要な機能を全て搭載</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[
+            {icon:"📅",title:"予約カレンダー",body:"一目でわかる予約状況。日・週・月表示を切り替えて、空き枠と埋まり具合がひと目で把握できます。"},
+            {icon:"🛏️",title:"リソース管理",body:"ベッド・スタッフの稼働管理。誰がどのベッドで施術中かをリアルタイムで確認できます。"},
+            {icon:"📋",title:"予約メニュー設定",body:"メニュー別の所要時間・料金設定。施術内容ごとに枠の長さが自動で変わるので、ダブルブッキングを防げます。"},
+            {icon:"🗓️",title:"休日・不定休設定",body:"定休日・臨時休業の管理。祝日や研修日をカレンダーに反映し、予約枠を自動で閉じます。"},
+            {icon:"🔗",title:"顧客管理連携",body:"予約データが自動で患者カルテに反映。来院回数・売上が手入力なしで蓄積されます。"},
+          ].map(f=>(
+            <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+              <span className="text-3xl flex-shrink-0">{f.icon}</span>
+              <div><h3 className="font-bold text-gray-900 mb-2">{f.title}</h3><p className="text-gray-600 text-sm leading-relaxed">{f.body}</p></div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* 他社との違い */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            他社ツールとの徹底比較
-          </h2>
-          <p className="text-center text-gray-500 mb-10">
-            治療院に必要な予約管理機能を全て備えているのは、このシステムだけ
-          </p>
+      {/* 比較表 */}
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他の管理方法との比較</h2>
+          <p className="text-center text-gray-500 mb-10">治療院に必要な予約管理機能を全て備えているのは、このシステムだけ</p>
           <div className="overflow-x-auto">
-            <table className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-sm">
-              <thead>
-                <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-bold min-w-[180px]">比較項目</th>
-                  {COMPETITORS.map((c, i) => (
-                    <th key={i} className={`px-3 py-3 text-center font-bold min-w-[120px] whitespace-pre-line ${c.highlight ? "bg-cta" : ""}`}>
-                      {c.highlight && <span className="block text-[10px] text-cta-200 mb-0.5">当サービス</span>}
-                      {c.name}
-                    </th>
-                  ))}
+            <table className="w-full text-sm border-collapse">
+              <thead><tr className="bg-blue-600 text-white"><th className="text-left p-4 rounded-tl-xl">比較項目</th><th className="p-4 text-center">紙の予約帳</th><th className="p-4 text-center">Googleカレンダー</th><th className="p-4 text-center">汎用予約システム</th><th className="p-4 text-center rounded-tr-xl font-bold">予約管理システム</th></tr></thead>
+              <tbody>{[
+                ["予約カレンダー","▲","●","●","●"],
+                ["ダブルブッキング防止","－","▲","●","●"],
+                ["リソース（ベッド/スタッフ）管理","－","－","▲","●"],
+                ["メニュー別時間設定","－","－","●","●"],
+                ["顧客管理連携","－","－","－","●"],
+                ["料金","0円","0円","0円〜","3,980円/月"],
+              ].map(([item,a,b,c,d],i)=>(
+                <tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}>
+                  <td className="p-4 font-medium text-gray-700">{item}</td>
+                  <td className="p-4 text-center text-gray-500">{a}</td>
+                  <td className="p-4 text-center text-gray-500">{b}</td>
+                  <td className="p-4 text-center text-gray-500">{c}</td>
+                  <td className="p-4 text-center font-bold text-blue-600">{d}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_ROWS.map((row, ri) => (
-                  <tr key={ri} className="border-t border-gray-100">
-                    <td className="px-4 py-3 font-medium text-gray-800">{row.label}</td>
-                    {COMPETITORS.map((c, ci) => {
-                      const val = c.values[ri];
-                      const isHighlight = c.highlight;
-                      if (val === "○") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-green-600 font-bold text-lg">&#9679;</span></td>;
-                      if (val === "×") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-gray-300">-</span></td>;
-                      if (val === "△") return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "bg-cta-50" : ""}`}><span className="text-yellow-500 font-bold">&#9650;</span></td>;
-                      return <td key={ci} className={`px-3 py-3 text-center ${isHighlight ? "font-bold text-cta bg-cta-50" : "text-gray-700"}`}>{val}</td>;
-                    })}
-                  </tr>
-                ))}
-              </tbody>
+              ))}</tbody>
             </table>
           </div>
-
-          {/* 治療院特化の強み解説 */}
-          <div className="mt-12">
-            <h3 className="text-xl font-black text-primary mb-6 text-center">
-              治療院特化だから、ここが違う
-            </h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {ADVANTAGES.map((a, i) => (
-                <div key={i} className="bg-white rounded-2xl p-6 border-2 border-accent/20 shadow-sm">
-                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
-                    <span className="text-accent font-black text-sm">{String(i + 1).padStart(2, "0")}</span>
-                  </div>
-                  <h4 className="font-bold text-primary mb-2 text-sm">{a.title}</h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">{a.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* 導入の流れ */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-12">
-            導入の流れ
-          </h2>
-          <div className="space-y-6">
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">
-                  {s.num}
-                </div>
-                <div>
-                  <h3 className="font-bold text-primary">{s.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{s.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* 連携 */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他システムとの連携</h2>
+        <p className="text-center text-gray-500 mb-10">単体でも使える。連携すればさらに強力に。</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">Clinic Coreと連携</h3><p className="text-gray-600 text-sm leading-relaxed">予約データが自動で患者カルテに反映。来院回数・売上推移が手入力なしで蓄積されます。</p></div>
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">WEB問診と連携</h3><p className="text-gray-600 text-sm leading-relaxed">予約と同時に問診URLを自動案内。患者は来院前にスマホで問診を完了できます。</p></div>
         </div>
+        <p className="text-center mt-8 text-sm text-gray-400">連携は後から追加可能。まずは予約管理単体でお使いいただけます。</p>
       </section>
 
       {/* 料金 */}
-      <section id="pricing" className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
-            料金プラン
-          </h2>
+      <section className="bg-gray-50 py-16" id="pricing">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">料金プラン</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent">
-              <div className="text-accent text-sm font-bold mb-2">月額プラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                2,980<span className="text-lg">円/月</span>
-              </div>
-              <div className="text-xs text-gray-500 mb-4">初期費用 19,800円</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>LINE通知連携</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>スタッフ数無制限</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
-              </ul>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
-              <div className="text-gray-500 text-sm font-bold mb-2">買い切りプラン</div>
-              <div className="text-3xl font-black text-primary mb-1">
-                39,800<span className="text-lg">円</span>
-              </div>
-              <div className="text-xs text-gray-500 mb-4">月額費用なし・永続利用</div>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>全機能利用可能</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>追加費用なし</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>アップデート無料</li>
-                <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>サポート付き</li>
-              </ul>
-            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,980<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">39,800<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用 11,000円（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 約3,317円 → 年間7,960円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
           </div>
-          <p className="text-center text-sm text-gray-500 mt-6">
-            まずは無料デモで全機能をお試しいただけます
-          </p>
+          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">よくある質問</h2>
+        <div className="space-y-6 max-w-2xl mx-auto">
+          {[
+            {q:"患者がオンラインで予約できますか？",a:"現在はスタッフ側の予約管理に特化しています。患者向けのオンライン予約機能は今後追加予定です。"},
+            {q:"Clinic Coreがなくても使えますか？",a:"はい。予約管理単体でご利用いただけます。後からClinic Coreを追加して連携することも可能です。"},
+            {q:"スタッフが複数いても使えますか？",a:"はい。スタッフごとに予約枠を分けて管理できます。追加料金はかかりません。"},
+          ].map(({q,a})=>(
+            <div key={q} className="border border-gray-100 rounded-2xl p-6 bg-white shadow-sm"><p className="font-bold text-gray-900 mb-2">Q. {q}</p><p className="text-gray-600 text-sm leading-relaxed">A. {a}</p></div>
+          ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-primary text-white">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-black mb-4">
-            まずは無料でお試しください
-          </h2>
-          <p className="text-white/70 mb-8">
-            まずはお気軽にご相談ください。個別デモのご案内も可能です。
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/#contact"
-              className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
-            >
-              お問い合わせ
-            </a>
-            <Link
-              href="/#contact"
-              className="px-8 py-4 bg-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/20 transition-colors border border-white/20"
-            >
-              お問い合わせ
-            </Link>
-          </div>
+      <section className="bg-blue-600 py-16 text-white text-center">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">予約管理を仕組み化して、施術に集中する。</h2>
+        <p className="text-blue-100 mb-8">月額3,980円で、予約の取りこぼしをゼロにする。</p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08" target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
+          <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
         </div>
       </section>
 
-      {/* フッター */}
-      <footer className="bg-gray-900 text-gray-400 py-8">
-        <div className="max-w-4xl mx-auto px-4 text-center text-sm">
-          <Link href="/" className="text-white hover:text-accent transition-colors">
-            ClinicApps
-          </Link>
-          <span className="mx-2">|</span>
-          <Link href="/legal/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
-          <span className="mx-2">|</span>
-          <Link href="/legal/terms" className="hover:text-white transition-colors">利用規約</Link>
-          <span className="mx-2">|</span>
-          <Link href="/legal/tokushoho" className="hover:text-white transition-colors">特定商取引法</Link>
+      <footer className="border-t border-gray-100 py-8 text-center text-sm text-gray-400">
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link href="/">ClinicApps</Link><span>|</span><Link href="/legal/privacy">プライバシーポリシー</Link><span>|</span><Link href="/legal/terms">利用規約</Link><span>|</span><Link href="/legal/tokushoho">特定商取引法</Link>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
