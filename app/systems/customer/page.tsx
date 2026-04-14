@@ -32,7 +32,7 @@ export default function CustomerPage() {
           <span style={{ color: "#c9a84c" }}>数字で動かせ。</span>
         </h1>
         <p className="text-lg mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: "#666666" }}>
-          LTV・ROAS・リピート率・エリア分布。<br />
+          LTV・ROAS・純新規売上・リピート率・エリア×媒体分析。<br />
           経営に必要な数字が、全部見える。月額5,500円から。
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -96,12 +96,12 @@ export default function CustomerPage() {
           <p className="text-center mb-14" style={{ color: "#999999" }}>治療院経営に必要な6つの分析機能</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告1円あたりの費用対効果をリアルタイムで把握。どの媒体が効いているか一目でわかる。" },
-              { icon: "📍", title: "エリア別患者分布マップ", body: "どの地域から患者が来ているか地図上で可視化。次の集客エリアの判断に使える。" },
-              { icon: "🔔", title: "離反アラート・リピート分析", body: "来なくなった患者を自動検出。フォローのタイミングを逃さない。" },
+              { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告費と来院動機を自動マッチング。反応率・CV率・CPAがリアルタイムで見える。WEB広告もチラシも一元管理。" },
+              { icon: "💰", title: "純新規売上 / 既存売上分析", body: "その月・その年に初来院した患者の全売上を「純新規売上」として自動分離。年間の新規獲得効果が数字で見える。" },
+              { icon: "📍", title: "エリア × 媒体クロス分析", body: "どの地域から・どの媒体で患者が来ているか一目で把握。エリア別LTVと媒体別集客内訳を同時に確認。" },
+              { icon: "🔔", title: "リピート分析・年代別クロス集計", body: "2回〜10回の回数別リピート率、年代別（10歳未満〜90代）×性別・症状・経路のクロス集計。" },
               { icon: "📈", title: "月別売上・稼働率グラフ", body: "時間帯別・曜日別の稼働率まで自動集計。数字で経営判断ができる。" },
-              { icon: "📮", title: "はがきDM宛名印刷", body: "離反患者リストをそのまま印刷。オフライン集客もこれ一つで完結。" },
-              { icon: "📱", title: "SMS送信・CSVインポート", body: "既存データをそのまま移行。患者へのSMS送信にも対応。" },
+              { icon: "📮", title: "はがきDM宛名印刷・CSV出力", body: "離反患者リストをそのままDM印刷。患者データCSV出力にも対応。" },
             ].map((f) => (
               <div key={f.title} className="bg-white rounded-2xl p-6 shadow-sm transition hover:shadow-md" style={{ border: "1px solid #e5e5e5" }}>
                 <span className="text-3xl block mb-4">{f.icon}</span>
@@ -133,18 +133,19 @@ export default function CustomerPage() {
               <tbody>
                 {[
                   ["月額料金", "5,500円", "要問合せ", "要問合せ", "0円"],
-                  ["LTV・ROAS自動計算", "●", "－", "△", "－"],
-                  ["エリア別患者マップ", "●", "－", "－", "－"],
-                  ["離反アラート", "●", "●", "●", "－"],
-                  ["はがきDM印刷", "●", "－", "－", "－"],
-                  ["広告費対効果分析", "●", "－", "△", "－"],
-                  ["SMS送信", "●", "－", "△", "－"],
+                  ["LTV・ROAS・CPA自動計算", "●", "－", "△", "－"],
+                  ["純新規売上/既存売上分析", "●", "－", "－", "－"],
+                  ["エリア×媒体クロス分析", "●", "－", "－", "－"],
+                  ["年代別クロス集計", "●", "－", "△", "－"],
+                  ["リピート率（2〜10回）", "●", "△", "△", "－"],
+                  ["広告費→来院動機の自動連動", "●", "－", "－", "－"],
+                  ["はがきDM宛名印刷", "●", "－", "－", "－"],
                   ["治療院経営者が開発", "●", "－", "－", "－"],
                   ["最低契約期間", "6ヶ月", "要確認", "要確認", "－"],
                 ].map(([item, core, repicle, threez, excel], i) => (
                   <tr key={item} style={{ borderBottom: "1px solid #e5e5e5" }}>
                     <td className="p-4 font-medium" style={{ color: "#444444" }}>{item}</td>
-                    <td className="p-4 text-center font-bold" style={{ color: "#1e3a5f", backgroundColor: "rgba(30,58,95,0.04)", borderLeft: "2px solid #1e3a5f", borderRight: "2px solid #1e3a5f", ...(i === 8 ? { borderBottom: "2px solid #1e3a5f", borderRadius: "0 0 8px 8px" } : {}) }}>{core}</td>
+                    <td className="p-4 text-center font-bold" style={{ color: "#1e3a5f", backgroundColor: "rgba(30,58,95,0.04)", borderLeft: "2px solid #1e3a5f", borderRight: "2px solid #1e3a5f", ...(i === 9 ? { borderBottom: "2px solid #1e3a5f", borderRadius: "0 0 8px 8px" } : {}) }}>{core}</td>
                     <td className="p-4 text-center" style={{ color: "#999999" }}>{repicle}</td>
                     <td className="p-4 text-center" style={{ color: "#999999" }}>{threez}</td>
                     <td className="p-4 text-center" style={{ color: "#999999" }}>{excel}</td>

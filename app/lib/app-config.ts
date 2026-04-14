@@ -96,6 +96,19 @@ export const APP_CONFIGS: AppConfig[] = [
       maintenance_price_id: "price_1TGhZ3CORfdwaD8CB1yMXt2e",
     },
   },
+  {
+    id: "point",
+    label: "サブスク管理",
+    monthlyPrice: 4980,
+    color: "bg-teal-500",
+    clinicFlag: "app_point",
+    stripe: {
+      product_id: "prod_UJi6RNz61HGBcC",
+      monthly_price_id: "price_1TL4gCCORfdwaD8C9rluVvKb",
+      onetime_price_id: null,
+      maintenance_price_id: "price_1TL4gDCORfdwaD8CrHvYKRE7",
+    },
+  },
 ];
 
 // === 以下は他ファイルからインポートして使うヘルパー ===

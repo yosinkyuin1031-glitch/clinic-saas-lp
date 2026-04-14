@@ -88,7 +88,7 @@ export default function KensaPage() {
     <main className="min-h-screen bg-white">
       <header className="border-b border-gray-100 px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
         <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">← ClinicApps トップ</Link>
-        <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="text-sm bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">LINEで相談する</a>
+        <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="text-sm bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">LINEで相談する</a>
       </header>
       <section className="max-w-5xl mx-auto px-6 py-20 text-center">
         <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full mb-4">看板商品</span>
@@ -96,7 +96,7 @@ export default function KensaPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">検査結果を、<br />患者と共有する。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">5段階の検査ウィザードで原因部位を自動特定。<br />検査 → 診断 → セルフケア提案 → PDF出力まで全自動で完結。</p>
         <a href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
+        <p className="mt-4 text-sm text-gray-400">Lite 月額3,980円〜 / Pro 月額9,800円〜（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
       </section>
       <section className="bg-gray-900 py-14">
         <div className="max-w-3xl mx-auto px-6">
@@ -163,10 +163,28 @@ export default function KensaPage() {
       </section>
       <section className="bg-gray-50 py-16" id="pricing">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">料金プラン</h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,980<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全機能利用可能","✓ 患者数無制限","✓ PDF出力無制限","✓ AIセルフケア提案","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
-            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">39,800<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用 11,000円（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 約3,317円 → 年間7,960円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全機能利用可能","✓ 患者数無制限","✓ PDF出力無制限","✓ AIセルフケア提案","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">料金プラン</h2>
+          <p className="text-center text-gray-500 mb-12">院の規模や使い方に合わせて選べる2プラン</p>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
+              <p className="text-sm font-bold text-blue-600 mb-2">Lite プラン</p>
+              <p className="text-4xl font-bold text-gray-900 mb-1">3,980<span className="text-lg font-normal text-gray-500">円/月</span></p>
+              <p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p>
+              <ul className="space-y-3 text-sm text-gray-600">
+                {["5段階検査ウィザード","段階的原因特定ロジック","患者用・施術者用PDF出力","テキスト版セルフケア提案","経過比較・改善度トラッキング","患者数無制限","導入サポート付き"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-blue-500 flex-shrink-0">✓</span>{t}</li>)}
+              </ul>
+              <a href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02" target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl border-2 border-blue-600 hover:bg-blue-50 transition">Liteで始める</a>
+            </div>
+            <div className="bg-blue-600 rounded-2xl p-8 shadow-lg text-white relative">
+              <span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">おすすめ</span>
+              <p className="text-sm font-bold text-blue-200 mb-2">Pro プラン</p>
+              <p className="text-4xl font-bold mb-1">9,800<span className="text-lg font-normal text-blue-200">円/月</span></p>
+              <p className="text-sm text-blue-200 mb-6">初期費用 11,000円（税込）</p>
+              <ul className="space-y-3 text-sm text-blue-100">
+                {["Liteの全機能","イラスト付きセルフケア提案","詳細な施術プロトコル表示","AI姿勢分析（カメラ撮影）","ダッシュボード・統計分析","優先サポート","新機能の先行アクセス"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-yellow-300 flex-shrink-0">✓</span>{t}</li>)}
+              </ul>
+              <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-50 transition">Proについて相談する</a>
+            </div>
           </div>
           <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
         </div>
@@ -179,10 +197,10 @@ export default function KensaPage() {
       </section>
       <section className="bg-blue-600 py-16 text-white text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">検査の質を上げて、紹介を増やしませんか。</h2>
-        <p className="text-blue-100 mb-8">月額3,980円で全機能が使えます。初期費用11,000円。最低契約期間6ヶ月。</p>
+        <p className="text-blue-100 mb-8">Lite 月額3,980円から。Pro 月額9,800円で全機能解放。初期費用11,000円。最低契約期間6ヶ月。</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02" target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
-          <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
+          <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
         </div>
       </section>
       <footer className="border-t border-gray-100 py-8 text-center text-sm text-gray-400">
