@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendLINENotify } from "@/app/lib/line-notify";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -41,6 +42,19 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    // LINE通知（問い合わせが来たら即通知）
+    const lineMsg = [
+      "【新規問い合わせ】",
+      `院名: ${clinicName}`,
+      `名前: ${name}`,
+      `メール: ${email}`,
+      phone ? `電話: ${phone}` : null,
+      plan ? `プラン: ${plan}` : null,
+      message ? `メッセージ: ${message}` : null,
+    ].filter(Boolean).join("\n");
+
+    sendLINENotify(lineMsg).catch(err => console.error("LINE通知エラー:", err));
 
     return NextResponse.json({ success: true });
   } catch (error) {

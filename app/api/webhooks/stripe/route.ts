@@ -133,6 +133,7 @@ async function createMaintenanceSubscriptionSchedule(
 }
 
 import { APP_FLAG_MAP, APP_CONFIGS } from "@/app/lib/app-config";
+import { sendLINENotify } from "@/app/lib/line-notify";
 
 // Stripe Price ID → アプリID のマッピング（Payment Link対応用）
 const PRICE_TO_APP: Record<string, string> = {};
@@ -571,6 +572,21 @@ export async function POST(req: NextRequest) {
           })
         }
 
+        // LINE通知（新規契約）
+        const appLabelsForLine = selectedApps.map(id => {
+          const cfg = APP_CONFIGS.find(a => a.id === id);
+          return cfg?.label || id;
+        });
+        const contractLineMsg = [
+          "【新規契約】",
+          `院名: ${clinicName}`,
+          `メール: ${email}`,
+          `プラン: ${planName} (${planType})`,
+          `アプリ: ${appLabelsForLine.join(", ")}`,
+          `院ID: ${clinicId}`,
+        ].join("\n");
+        sendLINENotify(contractLineMsg).catch(err => console.error("LINE通知エラー:", err));
+
         break;
       }
 
@@ -651,6 +667,11 @@ export async function POST(req: NextRequest) {
             },
             "success"
           );
+
+          // LINE通知（解約）
+          sendLINENotify(
+            `【解約】\n院ID: ${account.clinic_id}\nメール: ${account.email}`
+          ).catch(err => console.error("LINE通知エラー:", err));
         }
 
         break;
@@ -825,6 +846,11 @@ export async function POST(req: NextRequest) {
             clinicName: account.clinic_name,
           })
         }
+
+        // LINE通知（決済失敗）
+        sendLINENotify(
+          `【決済失敗】\n院名: ${account.clinic_name}\nメール: ${account.email}\n院ID: ${account.clinic_id}`
+        ).catch(err => console.error("LINE通知エラー:", err));
 
         break;
       }
