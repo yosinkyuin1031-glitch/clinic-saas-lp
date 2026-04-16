@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { STRIPE_PRODUCTS } from "@/app/lib/app-config";
+import { STRIPE_PRODUCTS, calculateAmount } from "@/app/lib/app-config";
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -26,11 +26,23 @@ export async function OPTIONS() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { planName, email, clinicName, ownerName, amount, paymentType, selectedApps } = body;
+    const { planName, email, clinicName, ownerName, paymentType, selectedApps } = body;
 
     if (!email || !clinicName || !selectedApps || selectedApps.length === 0) {
       return NextResponse.json(
         { error: "メールアドレス・院名・選択システムは必須です" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    const normalizedPaymentType: "monthly" | "yearly" | "onetime" =
+      paymentType === "yearly" || paymentType === "onetime" ? paymentType : "monthly";
+
+    // サーバー側で金額を計算（クライアントから受け取った amount は信用しない）
+    const amount = calculateAmount(selectedApps, normalizedPaymentType);
+    if (amount < 0 || (normalizedPaymentType !== "onetime" && amount === 0)) {
+      return NextResponse.json(
+        { error: "金額計算エラー。選択内容を確認してください。" },
         { status: 400, headers: corsHeaders }
       );
     }

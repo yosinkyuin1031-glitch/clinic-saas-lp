@@ -7,6 +7,7 @@ export interface AppConfig {
   id: string;
   label: string;            // 表示名
   monthlyPrice: number;     // 月額料金
+  initialCost: number;      // 買い切り時の初期費用
   color: string;            // Tailwind色クラス
   clinicFlag: string | null; // clinicsテーブルのフラグ名（null=フラグなし）
   stripe: {
@@ -22,6 +23,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "kensa",
     label: "カラダマップ",
     monthlyPrice: 3980,
+    initialCost: 11000,
     color: "bg-blue-500",
     clinicFlag: "app_kensa",
     stripe: {
@@ -35,6 +37,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "customer",
     label: "顧客管理",
     monthlyPrice: 5500,
+    initialCost: 33000,
     color: "bg-emerald-500",
     clinicFlag: "app_crm",
     stripe: {
@@ -48,6 +51,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "reservation",
     label: "予約管理",
     monthlyPrice: 3980,
+    initialCost: 11000,
     color: "bg-purple-500",
     clinicFlag: null,
     stripe: {
@@ -61,6 +65,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "monshin",
     label: "WEB問診",
     monthlyPrice: 2980,
+    initialCost: 11000,
     color: "bg-amber-500",
     clinicFlag: null,
     stripe: {
@@ -74,6 +79,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "meo",
     label: "MEO勝ち上げくん",
     monthlyPrice: 3980,
+    initialCost: 11000,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
     stripe: {
@@ -87,6 +93,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "sleep",
     label: "睡眠チェック",
     monthlyPrice: 2200,
+    initialCost: 11000,
     color: "bg-indigo-500",
     clinicFlag: "app_sleep",
     stripe: {
@@ -100,6 +107,7 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "point",
     label: "サブスク管理",
     monthlyPrice: 4980,
+    initialCost: 11000,
     color: "bg-teal-500",
     clinicFlag: "app_point",
     stripe: {
@@ -140,3 +148,20 @@ export const APP_FLAG_MAP: Record<string, string> = Object.fromEntries(
 export const STRIPE_PRODUCTS = Object.fromEntries(
   APP_CONFIGS.map((a) => [a.id, a.stripe])
 ) as Record<string, AppConfig["stripe"]>;
+
+/**
+ * 選択アプリIDから合計金額をサーバー側で計算
+ * paymentType: "monthly" | "yearly"(月額×10) | "onetime"(初期費用合計)
+ * 不正なIDは無視
+ */
+export function calculateAmount(
+  selectedAppIds: string[],
+  paymentType: "monthly" | "yearly" | "onetime"
+): number {
+  const selected = APP_CONFIGS.filter((a) => selectedAppIds.includes(a.id));
+  if (paymentType === "onetime") {
+    return selected.reduce((sum, a) => sum + a.initialCost, 0);
+  }
+  const monthly = selected.reduce((sum, a) => sum + a.monthlyPrice, 0);
+  return paymentType === "yearly" ? monthly * 10 : monthly;
+}
