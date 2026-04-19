@@ -275,21 +275,46 @@ export async function POST(req: NextRequest) {
         }
 
         // 管理画面で事前作成されたpending_paymentアカウントがあるか確認
-        const { data: pendingAccount } = await supabase
+        // まずstripe_customer_idで検索、なければemailでフォールバック
+        let pendingAccount = null;
+        const { data: pendingByStripe } = await supabase
           .from("clinic_accounts")
-          .select("id, clinic_id, email, clinic_name")
+          .select("id, clinic_id, email, clinic_name, selected_apps")
           .eq("stripe_customer_id", stripeCustomerId)
           .eq("status", "pending_payment")
           .maybeSingle();
 
+        if (pendingByStripe) {
+          pendingAccount = pendingByStripe;
+        } else if (email) {
+          // emailでフォールバック検索（/add-clinicで作成した場合stripe_customer_idが未設定）
+          const { data: pendingByEmail } = await supabase
+            .from("clinic_accounts")
+            .select("id, clinic_id, email, clinic_name, selected_apps")
+            .eq("email", email)
+            .eq("status", "pending_payment")
+            .maybeSingle();
+          pendingAccount = pendingByEmail;
+        }
+
         if (pendingAccount) {
           // pending_payment → active に切り替え
+          // selected_appsがない場合はPayment Linkから解決したアプリで埋める
+          const updateData: Record<string, unknown> = {
+            status: "active",
+            stripe_customer_id: stripeCustomerId,
+            stripe_subscription_id: stripeSubscriptionId,
+          };
+          if (!pendingAccount.selected_apps || (Array.isArray(pendingAccount.selected_apps) && pendingAccount.selected_apps.length === 0)) {
+            try {
+              updateData.selected_apps = JSON.parse(selectedAppsRaw);
+            } catch {
+              // パース失敗時はスキップ
+            }
+          }
           await supabase
             .from("clinic_accounts")
-            .update({
-              status: "active",
-              stripe_subscription_id: stripeSubscriptionId,
-            })
+            .update(updateData)
             .eq("id", pendingAccount.id);
 
           // clinicsテーブルも有効化
