@@ -36,7 +36,7 @@ const PLAN_LABELS: Record<string, string> = {
   onetime: "買い切り",
 };
 
-type Tab = "dashboard" | "apps" | "accounts" | "create" | "meo";
+type Tab = "dashboard" | "apps" | "accounts" | "create" | "meo" | "revenue";
 
 interface MeoMonitor {
   user_id: string;
@@ -269,6 +269,50 @@ export default function AdminPage() {
     };
   }, [accounts]);
 
+  // 月次収益データ
+  const revenueData = useMemo(() => {
+    const months: string[] = [];
+    const now = new Date();
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`);
+    }
+
+    const monthlyData = months.map((month) => {
+      const [y, m] = month.split("-").map(Number);
+      const monthStart = new Date(y, m - 1, 1);
+      const monthEnd = new Date(y, m, 0, 23, 59, 59);
+
+      const activeInMonth = accounts.filter((a) => {
+        if (a.plan_type === "onetime") return false;
+        const created = new Date(a.created_at);
+        if (created > monthEnd) return false;
+        if (a.status === "cancelled" && a.cancelled_at) {
+          const cancelled = new Date(a.cancelled_at);
+          if (cancelled < monthStart) return false;
+        }
+        if (a.status === "active" || a.status === "cancelled") return true;
+        return false;
+      });
+
+      const byApp: Record<string, number> = {};
+      APP_LIST.forEach((app) => {
+        byApp[app] = activeInMonth
+          .filter((a) => a.selected_apps?.includes(app))
+          .reduce((sum, a) => {
+            const perApp = getMonthlyAmount(a) / (a.selected_apps?.length || 1);
+            return sum + Math.floor(perApp);
+          }, 0);
+      });
+
+      const total = Object.values(byApp).reduce((s, v) => s + v, 0);
+      return { month, byApp, total, accountCount: activeInMonth.length };
+    });
+
+    const maxTotal = Math.max(...monthlyData.map((d) => d.total), 1);
+    return { months, monthlyData, maxTotal };
+  }, [accounts]);
+
   // 検索・フィルター
   const filteredAccounts = useMemo(() => {
     return accounts.filter((a) => {
@@ -353,6 +397,7 @@ export default function AdminPage() {
             { key: "accounts", label: "アカウント管理" },
             { key: "create", label: "新規作成" },
             { key: "meo", label: "MEOモニター" },
+            { key: "revenue", label: "月次収益" },
           ] as { key: Tab; label: string }[]).map((tab) => (
             <button
               key={tab.key}
@@ -1221,6 +1266,148 @@ export default function AdminPage() {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {/* 月次収益タブ */}
+        {activeTab === "revenue" && (
+          <div className="space-y-8">
+            {/* KPIカード */}
+            {(() => {
+              const current = revenueData.monthlyData[revenueData.monthlyData.length - 1];
+              const prev = revenueData.monthlyData[revenueData.monthlyData.length - 2];
+              const diff = prev && prev.total > 0 ? Math.round(((current.total - prev.total) / prev.total) * 100) : 0;
+              return (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <KpiCard label="当月MRR" value={`¥${current.total.toLocaleString()}`} color="text-blue-400" large />
+                  <KpiCard label="前月MRR" value={`¥${(prev?.total || 0).toLocaleString()}`} color="text-gray-300" />
+                  <KpiCard label="前月比" value={`${diff >= 0 ? "+" : ""}${diff}%`} color={diff >= 0 ? "text-green-400" : "text-red-400"} />
+                  <KpiCard label="当月契約数" value={current.accountCount} color="text-emerald-400" />
+                </div>
+              );
+            })()}
+
+            {/* 棒グラフ */}
+            <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+              <h2 className="text-base font-black mb-6">月次MRR推移</h2>
+              {/* 凡例 */}
+              <div className="flex flex-wrap gap-4 mb-6">
+                {APP_LIST.map((app) => (
+                  <div key={app} className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-sm ${APP_COLORS[app]}`} />
+                    <span className="text-xs text-gray-400">{APP_LABELS[app]}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-end gap-2" style={{ height: "320px" }}>
+                {revenueData.monthlyData.map((d) => (
+                  <div key={d.month} className="flex-1 flex flex-col items-center justify-end h-full">
+                    <div className="text-xs text-gray-400 mb-1 whitespace-nowrap">
+                      {d.total > 0 ? `¥${(d.total / 1000).toFixed(0)}k` : ""}
+                    </div>
+                    <div
+                      className="w-full flex flex-col-reverse rounded-t-md overflow-hidden"
+                      style={{ height: `${(d.total / revenueData.maxTotal) * 260}px`, minHeight: d.total > 0 ? "4px" : "0" }}
+                    >
+                      {APP_LIST.map((app) => {
+                        const ratio = d.total > 0 ? d.byApp[app] / d.total : 0;
+                        if (ratio === 0) return null;
+                        return (
+                          <div
+                            key={app}
+                            className={`w-full ${APP_COLORS[app]}`}
+                            style={{ height: `${ratio * 100}%` }}
+                            title={`${APP_LABELS[app]}: ¥${d.byApp[app].toLocaleString()}`}
+                          />
+                        );
+                      })}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">
+                      {parseInt(d.month.split("-")[1])}月
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* アプリ別月次テーブル */}
+            <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+              <h2 className="text-base font-black mb-4">アプリ別 月次収益詳細</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-800">
+                      <th className="text-left py-3 px-3 text-gray-500 font-bold sticky left-0 bg-gray-900 min-w-[140px]">アプリ</th>
+                      {revenueData.monthlyData.map((d) => (
+                        <th key={d.month} className="text-right py-3 px-3 text-gray-500 font-bold whitespace-nowrap">
+                          {parseInt(d.month.split("-")[1])}月
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {APP_LIST.map((app) => {
+                      const hasAny = revenueData.monthlyData.some((d) => d.byApp[app] > 0);
+                      if (!hasAny) return null;
+                      return (
+                        <tr key={app} className="border-b border-gray-800/50 hover:bg-gray-800/30">
+                          <td className="py-3 px-3 sticky left-0 bg-gray-900">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-2.5 h-2.5 rounded-sm ${APP_COLORS[app]}`} />
+                              <span className="font-bold text-gray-300">{APP_LABELS[app]}</span>
+                            </div>
+                          </td>
+                          {revenueData.monthlyData.map((d) => (
+                            <td key={d.month} className="text-right py-3 px-3 text-gray-400 whitespace-nowrap">
+                              {d.byApp[app] > 0 ? `¥${d.byApp[app].toLocaleString()}` : "-"}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                    <tr className="border-t-2 border-gray-700">
+                      <td className="py-3 px-3 sticky left-0 bg-gray-900 font-black text-white">合計</td>
+                      {revenueData.monthlyData.map((d) => (
+                        <td key={d.month} className="text-right py-3 px-3 font-black text-blue-400 whitespace-nowrap">
+                          ¥{d.total.toLocaleString()}
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* 顧客別収益一覧 */}
+            <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+              <h2 className="text-base font-black mb-4">顧客別 月額収益</h2>
+              <div className="space-y-2">
+                {accounts
+                  .filter((a) => a.status === "active" && a.plan_type !== "onetime")
+                  .sort((a, b) => getMonthlyAmount(b) - getMonthlyAmount(a))
+                  .map((a) => (
+                    <div key={a.id} className="flex items-center justify-between bg-gray-800 rounded-xl px-4 py-3 border border-gray-700">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1">
+                          {(a.selected_apps || []).map((app) => (
+                            <div key={app} className={`w-2.5 h-2.5 rounded-sm ${APP_COLORS[app] || "bg-gray-600"}`} title={APP_LABELS[app]} />
+                          ))}
+                        </div>
+                        <div>
+                          <span className="font-bold text-sm">{a.clinic_name}</span>
+                          {a.is_monitor && <span className="ml-2 text-xs text-yellow-400">(モニター)</span>}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-black text-blue-400">{getMonthlyLabel(a)}</div>
+                        <div className="text-xs text-gray-500">
+                          {(a.selected_apps || []).map((app) => APP_LABELS[app]).join(" + ")}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         )}
 
