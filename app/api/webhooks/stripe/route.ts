@@ -561,7 +561,7 @@ export async function POST(req: NextRequest) {
 
         // ウェルカムメール送信
         if (process.env.RESEND_API_KEY) {
-          const { sendWelcomeEmail } = await import('@/app/lib/email')
+          const { sendWelcomeEmail, sendAdminNotification } = await import('@/app/lib/email')
           await sendWelcomeEmail({
             to: email,
             clinicName,
@@ -570,6 +570,14 @@ export async function POST(req: NextRequest) {
             selectedApps,
             planType,
           })
+
+          // 管理者への決済通知メール
+          sendAdminNotification({
+            clinicName,
+            email,
+            planType,
+            selectedApps,
+          }).catch(err => console.error('管理者通知メールエラー:', err))
         }
 
         // LINE通知（新規契約）
@@ -601,7 +609,7 @@ export async function POST(req: NextRequest) {
         // stripe_subscription_id または stripe_customer_id で検索
         const { data: account } = await supabase
           .from("clinic_accounts")
-          .select("id, clinic_id, email")
+          .select("id, clinic_id, clinic_name, email")
           .or(
             `stripe_subscription_id.eq.${subscriptionId},stripe_customer_id.eq.${customerId}`
           )
@@ -672,6 +680,16 @@ export async function POST(req: NextRequest) {
           sendLINENotify(
             `【解約】\n院ID: ${account.clinic_id}\nメール: ${account.email}`
           ).catch(err => console.error("LINE通知エラー:", err));
+
+          // 管理者への解約通知メール
+          if (process.env.RESEND_API_KEY) {
+            import('@/app/lib/email').then(({ sendAdminCancellationNotification }) => {
+              sendAdminCancellationNotification({
+                clinicName: account.clinic_name || account.clinic_id,
+                email: account.email,
+              }).catch(err => console.error('管理者解約通知メールエラー:', err))
+            }).catch(err => console.error('管理者解約通知メールインポートエラー:', err))
+          }
         }
 
         break;

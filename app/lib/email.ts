@@ -89,6 +89,107 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
   }
 }
 
+// 管理者への決済通知メール
+interface AdminNotificationParams {
+  clinicName: string
+  email: string
+  planType: string
+  selectedApps: string[]
+  amount?: number
+}
+
+export async function sendAdminNotification(params: AdminNotificationParams) {
+  const { clinicName, email, planType, selectedApps } = params
+
+  const appNames: Record<string, string> = {
+    kensa: 'カラダマップ',
+    customer: '顧客管理',
+    reservation: '予約管理',
+    monshin: 'WEB問診',
+    meo: 'MEO勝ち上げくん',
+    sleep: '睡眠チェック',
+  }
+
+  const appList = selectedApps.map(id => appNames[id] || id).join('、')
+  const planLabel = planType === 'monthly' ? '月額プラン' : planType === 'yearly' ? '年額プラン' : '買い切りプラン'
+  const now = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })
+
+  try {
+    await resend.emails.send({
+      from: 'ClinicApps <noreply@resend.dev>',
+      to: [process.env.ADMIN_EMAIL || 'oguchiseitai@gmail.com'],
+      subject: `【決済通知】${clinicName} が申し込みました`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: #14252A; color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px;">ClinicDX</h1>
+            <p style="margin: 4px 0 0; opacity: 0.8; font-size: 14px;">決済通知</p>
+          </div>
+          <div style="background: white; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+            <h2 style="color: #14252A; font-size: 18px; margin: 0 0 16px;">新規申し込みがありました</h2>
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 16px 0;">
+              <table style="width: 100%; font-size: 14px;">
+                <tr><td style="padding: 6px 0; color: #666; width: 120px;">院名</td><td style="font-weight: bold;">${clinicName}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">メール</td><td>${email}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">プラン</td><td>${planLabel}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">選択アプリ</td><td>${appList}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">日時</td><td>${now}</td></tr>
+              </table>
+            </div>
+          </div>
+          <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
+            &copy; 2026 ClinicDX / AI Solutions
+          </p>
+        </div>
+      `,
+    })
+    console.log('管理者決済通知メール送信完了')
+    return { success: true }
+  } catch (err) {
+    console.error('管理者決済通知メール送信エラー:', err)
+    return { success: false }
+  }
+}
+
+// 管理者への解約通知メール
+export async function sendAdminCancellationNotification(params: { clinicName: string; email: string }) {
+  const now = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })
+
+  try {
+    await resend.emails.send({
+      from: 'ClinicApps <noreply@resend.dev>',
+      to: [process.env.ADMIN_EMAIL || 'oguchiseitai@gmail.com'],
+      subject: `【解約通知】${params.clinicName} が解約しました`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: #14252A; color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px;">ClinicDX</h1>
+            <p style="margin: 4px 0 0; opacity: 0.8; font-size: 14px;">解約通知</p>
+          </div>
+          <div style="background: white; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+            <h2 style="color: #e74c3c; font-size: 18px; margin: 0 0 16px;">解約がありました</h2>
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 16px 0;">
+              <table style="width: 100%; font-size: 14px;">
+                <tr><td style="padding: 6px 0; color: #666; width: 120px;">院名</td><td style="font-weight: bold;">${params.clinicName}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">メール</td><td>${params.email}</td></tr>
+                <tr><td style="padding: 6px 0; color: #666;">解約日時</td><td>${now}</td></tr>
+              </table>
+            </div>
+          </div>
+          <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
+            &copy; 2026 ClinicDX / AI Solutions
+          </p>
+        </div>
+      `,
+    })
+    console.log('管理者解約通知メール送信完了')
+    return { success: true }
+  } catch (err) {
+    console.error('管理者解約通知メール送信エラー:', err)
+    return { success: false }
+  }
+}
+
 // 決済失敗通知メール
 export async function sendPaymentFailedEmail(params: { to: string; clinicName: string }) {
   try {
