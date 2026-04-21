@@ -10,6 +10,7 @@ export interface AppConfig {
   initialCost: number;      // 買い切り時の初期費用
   color: string;            // Tailwind色クラス
   clinicFlag: string | null; // clinicsテーブルのフラグ名（null=フラグなし）
+  forSale: boolean;         // 現在販売中かどうか
   stripe: {
     product_id: string;
     monthly_price_id: string;
@@ -26,6 +27,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-blue-500",
     clinicFlag: "app_kensa",
+    forSale: true,
     stripe: {
       product_id: "prod_UFBwJHP8jALL4b",
       monthly_price_id: "price_1TGhYvCORfdwaD8CHnlOS7Bu",
@@ -40,6 +42,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 33000,
     color: "bg-emerald-500",
     clinicFlag: "app_crm",
+    forSale: true,
     stripe: {
       product_id: "prod_UGVglRbCwKWJIy",
       monthly_price_id: "price_1THyf7CORfdwaD8C9LQim27s",
@@ -54,6 +57,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-purple-500",
     clinicFlag: null,
+    forSale: false,
     stripe: {
       product_id: "prod_UGVoucf5IGiliu",
       monthly_price_id: "price_1THymhCORfdwaD8C1Q1qdDBc",
@@ -68,6 +72,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-amber-500",
     clinicFlag: null,
+    forSale: false,
     stripe: {
       product_id: "prod_UGVoZjYnEYQh23",
       monthly_price_id: "price_1THymlCORfdwaD8CoSJ89cSZ",
@@ -82,6 +87,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
+    forSale: false,
     stripe: {
       product_id: "prod_UFBw6XVaolhrNd",
       monthly_price_id: "price_1TGhZ1CORfdwaD8CPA6i7VRA",
@@ -96,6 +102,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-indigo-500",
     clinicFlag: "app_sleep",
+    forSale: false,
     stripe: {
       product_id: "prod_UFBwgJMEJoGGA1",
       monthly_price_id: "price_1TGhZ3CORfdwaD8CkQ0yvyTa",
@@ -110,6 +117,7 @@ export const APP_CONFIGS: AppConfig[] = [
     initialCost: 11000,
     color: "bg-teal-500",
     clinicFlag: "app_point",
+    forSale: false,
     stripe: {
       product_id: "prod_UJi6RNz61HGBcC",
       monthly_price_id: "price_1TL4gCCORfdwaD8C9rluVvKb",
@@ -121,8 +129,12 @@ export const APP_CONFIGS: AppConfig[] = [
 
 // === 以下は他ファイルからインポートして使うヘルパー ===
 
-/** アプリIDの配列 */
+/** アプリIDの配列（全アプリ） */
 export const APP_LIST = APP_CONFIGS.map((a) => a.id);
+
+/** 販売中アプリのみ */
+export const APP_CONFIGS_FOR_SALE = APP_CONFIGS.filter((a) => a.forSale);
+export const APP_LIST_FOR_SALE = APP_CONFIGS_FOR_SALE.map((a) => a.id);
 
 /** id→表示名 */
 export const APP_LABELS: Record<string, string> = Object.fromEntries(

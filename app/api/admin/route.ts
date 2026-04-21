@@ -42,12 +42,15 @@ export async function GET(req: NextRequest) {
 
     const enriched = (accounts || []).map((account) => {
       const clinic = clinics?.find((c) => c.notes?.includes(account.clinic_id));
+      // custom_price: clinicsテーブル → metadata.monthly_override の優先順で取得
+      const metaOverride = account.metadata?.monthly_override;
+      const customPrice = clinic?.custom_price ?? (metaOverride != null ? metaOverride : null);
       return {
         ...account,
         owner_name: clinic?.owner_name || "",
         phone: clinic?.phone || "",
-        is_monitor: clinic?.is_monitor || false,
-        custom_price: clinic?.custom_price ?? null,
+        is_monitor: clinic?.is_monitor || account.metadata?.is_monitor || false,
+        custom_price: customPrice,
       };
     });
 

@@ -36,7 +36,7 @@ const PLAN_LABELS: Record<string, string> = {
   onetime: "買い切り",
 };
 
-type Tab = "dashboard" | "apps" | "accounts" | "create" | "meo" | "revenue";
+type Tab = "dashboard" | "apps" | "accounts" | "meo" | "revenue";
 
 interface MeoMonitor {
   user_id: string;
@@ -65,10 +65,11 @@ function getMonthlyAmount(account: ClinicAccount): number {
 }
 
 function getMonthlyLabel(account: ClinicAccount): string {
-  if (account.plan_type === "onetime") return "-";
+  if (account.plan_type === "onetime") return "買い切り";
   const amount = getMonthlyAmount(account);
-  const label = `¥${amount.toLocaleString()}`;
+  const label = `¥${amount.toLocaleString()}/月`;
   if (account.is_monitor) return `${label}（モニター）`;
+  if (account.custom_price != null && !account.selected_apps?.some(a => APP_MONTHLY_PRICES[a])) return `${label}（管理費）`;
   if (account.custom_price != null) return `${label}（特別）`;
   return label;
 }
@@ -92,16 +93,16 @@ export default function AdminPage() {
   const [meoLoading, setMeoLoading] = useState(false);
   const [selectedMonitor, setSelectedMonitor] = useState<MeoMonitor | null>(null);
 
-  // 新規作成フォーム
-  const [newClinicName, setNewClinicName] = useState("");
-  const [newOwnerName, setNewOwnerName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newPlanType, setNewPlanType] = useState<string>("monthly");
-  const [newApps, setNewApps] = useState<string[]>([]);
-  const [newIsMonitor, setNewIsMonitor] = useState(false);
-  const [newCustomPrice, setNewCustomPrice] = useState("");
-  const [createResult, setCreateResult] = useState<{ password: string; checkoutUrl: string | null; monthlyAmount: number; warnings: string[] } | null>(null);
+  // Stripeデータ
+  interface StripeData {
+    subscriptions: { id: string; customer_id: string; customer_email: string; customer_name: string; monthly_amount: number; items: { product_id: string; amount: number }[]; metadata: Record<string, string> }[];
+    monthly_charges: Record<string, { total: number; count: number; succeeded: number }>;
+    stripe_mrr: number;
+    subscription_count: number;
+  }
+  const [stripeData, setStripeData] = useState<StripeData | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(false);
+
 
   const showToast = (message: string, type: "success" | "error" = "success") => {
     setToast({ message, type });
@@ -118,6 +119,7 @@ export default function AdminPage() {
       setAccounts(data.accounts);
       setAuthenticated(true);
       fetchMeoMonitors(pw);
+      fetchStripeData(pw);
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -133,6 +135,16 @@ export default function AdminPage() {
       if (res.ok) setMeoMonitors(data.monitors || []);
     } catch { /* ignore */ }
     finally { setMeoLoading(false); }
+  }, []);
+
+  const fetchStripeData = useCallback(async (pw: string) => {
+    setStripeLoading(true);
+    try {
+      const res = await fetch("/api/admin-stripe", { headers: { "x-admin-password": pw } });
+      const data = await res.json();
+      if (res.ok) setStripeData(data);
+    } catch { /* ignore */ }
+    finally { setStripeLoading(false); }
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -195,46 +207,6 @@ export default function AdminPage() {
   };
 
   // アカウント作成
-  const createAccount = async () => {
-    if (!newClinicName || !newEmail || newApps.length === 0) {
-      showToast("院名、メール、アプリを選択してください", "error");
-      return;
-    }
-    setActionLoading(true);
-    try {
-      const res = await fetch("/api/admin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-admin-password": password },
-        body: JSON.stringify({
-          clinic_name: newClinicName,
-          owner_name: newOwnerName,
-          phone: newPhone,
-          email: newEmail,
-          plan_type: newPlanType,
-          selected_apps: newApps,
-          is_monitor: newIsMonitor,
-          custom_price: newIsMonitor && newCustomPrice ? parseInt(newCustomPrice) : null,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setCreateResult({ password: data.temp_password, checkoutUrl: data.checkout_url, monthlyAmount: data.monthly_amount, warnings: data.warnings || [] });
-      showToast("アカウント作成完了");
-      setAccounts((prev) => [data.account, ...prev]);
-      setNewClinicName("");
-      setNewOwnerName("");
-      setNewPhone("");
-      setNewEmail("");
-      setNewApps([]);
-      setNewIsMonitor(false);
-      setNewCustomPrice("");
-    } catch (err) {
-      showToast(err instanceof Error ? err.message : "作成に失敗しました", "error");
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
   // 集計
   const summary = useMemo(() => {
     const active = accounts.filter((a) => a.status === "active");
@@ -261,6 +233,7 @@ export default function AdminPage() {
     return {
       total: accounts.length,
       active: active.length,
+      pendingPayment: accounts.filter((a) => a.status === "pending_payment").length,
       cancelled: accounts.filter((a) => a.status === "cancelled").length,
       paymentFailed: accounts.filter((a) => a.status === "payment_failed").length,
       mrr,
@@ -304,6 +277,11 @@ export default function AdminPage() {
             return sum + Math.floor(perApp);
           }, 0);
       });
+
+      // APP_LISTに含まれないアプリ（受託管理費など）を「管理費」として集計
+      byApp["maintenance"] = activeInMonth
+        .filter((a) => !a.selected_apps?.some((app) => APP_LIST.includes(app)))
+        .reduce((sum, a) => sum + getMonthlyAmount(a), 0);
 
       const total = Object.values(byApp).reduce((s, v) => s + v, 0);
       return { month, byApp, total, accountCount: activeInMonth.length };
@@ -395,7 +373,6 @@ export default function AdminPage() {
             { key: "dashboard", label: "ダッシュボード" },
             { key: "apps", label: "アプリ別" },
             { key: "accounts", label: "アカウント管理" },
-            { key: "create", label: "新規作成" },
             { key: "meo", label: "MEOモニター" },
             { key: "revenue", label: "月次収益" },
           ] as { key: Tab; label: string }[]).map((tab) => (
@@ -423,6 +400,7 @@ export default function AdminPage() {
               <KpiCard label="月間売上 (MRR)" value={`¥${summary.mrr.toLocaleString()}`} color="text-blue-400" large />
               <KpiCard label="アクティブ契約" value={summary.active} color="text-green-400" />
               <KpiCard label="総顧客数" value={summary.total} />
+              <KpiCard label="決済待ち" value={summary.pendingPayment} color="text-yellow-400" />
               <KpiCard label="解約数" value={summary.cancelled} color="text-gray-400" />
               <KpiCard label="支払い失敗" value={summary.paymentFailed} color="text-red-400" />
             </div>
@@ -831,231 +809,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* 新規作成 */}
-        {activeTab === "create" && (
-          <div className="max-w-xl mx-auto">
-            <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 space-y-5">
-              <h2 className="text-lg font-black">新規アカウント作成</h2>
-              <p className="text-sm text-gray-500">手動でアカウントを発行します。仮パスワードが自動生成されます。</p>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-1.5">院名 *</label>
-                <input
-                  type="text"
-                  value={newClinicName}
-                  onChange={(e) => setNewClinicName(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:border-blue-500 outline-none"
-                  placeholder="院名を入力"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-1.5">代表者名</label>
-                <input
-                  type="text"
-                  value={newOwnerName}
-                  onChange={(e) => setNewOwnerName(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:border-blue-500 outline-none"
-                  placeholder="代表者名を入力"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-1.5">電話番号</label>
-                <input
-                  type="tel"
-                  value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:border-blue-500 outline-none"
-                  placeholder="06-1234-5678"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-1.5">メールアドレス *</label>
-                <input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:border-blue-500 outline-none"
-                  placeholder="example@clinic.com"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-1.5">プランタイプ</label>
-                <div className="flex gap-2">
-                  {Object.entries(PLAN_LABELS).map(([key, label]) => (
-                    <button
-                      key={key}
-                      onClick={() => setNewPlanType(key)}
-                      className={`px-4 py-2 rounded-lg text-sm font-bold transition ${
-                        newPlanType === key ? "bg-blue-600 text-white" : "bg-gray-800 text-gray-400 border border-gray-700"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-gray-400 block mb-2">利用アプリ *</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {APP_LIST.map((app) => {
-                    const selected = newApps.includes(app);
-                    return (
-                      <button
-                        key={app}
-                        onClick={() => setNewApps((prev) => selected ? prev.filter((a) => a !== app) : [...prev, app])}
-                        className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition ${
-                          selected
-                            ? "bg-blue-600/20 border-2 border-blue-500 text-blue-400"
-                            : "bg-gray-800 border-2 border-gray-700 text-gray-400"
-                        }`}
-                      >
-                        <div className={`w-3 h-3 rounded-full ${APP_COLORS[app]}`} />
-                        {APP_LABELS[app]}
-                        {selected && <span className="ml-auto text-blue-400">&#10003;</span>}
-                      </button>
-                    );
-                  })}
-                </div>
-                <button
-                  onClick={() => setNewApps(newApps.length === APP_LIST.length ? [] : [...APP_LIST])}
-                  className="mt-2 text-xs text-gray-500 hover:text-gray-300"
-                >
-                  {newApps.length === APP_LIST.length ? "全解除" : "全選択"}
-                </button>
-              </div>
-
-              {/* モニター設定 */}
-              <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={newIsMonitor}
-                    onChange={(e) => {
-                      setNewIsMonitor(e.target.checked);
-                      if (e.target.checked && !newCustomPrice) setNewCustomPrice("4980");
-                    }}
-                    className="w-4 h-4 rounded"
-                  />
-                  <div>
-                    <span className="text-sm font-bold">モニター価格を適用</span>
-                    <span className="text-xs text-gray-500 ml-2">通常料金と異なるカスタム料金を設定</span>
-                  </div>
-                </label>
-                {newIsMonitor && (
-                  <div className="mt-3">
-                    <label className="text-xs font-bold text-gray-400 block mb-1">カスタム月額（円）</label>
-                    <input
-                      type="number"
-                      value={newCustomPrice}
-                      onChange={(e) => setNewCustomPrice(e.target.value)}
-                      className="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg text-sm focus:border-blue-500 outline-none"
-                      placeholder="4980"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* 料金プレビュー */}
-              {newApps.length > 0 && (
-                <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                  <div className="text-xs text-gray-500 mb-2">料金プレビュー</div>
-                  <div className="space-y-1 text-sm">
-                    {newApps.map((app) => (
-                      <div key={app} className="flex justify-between">
-                        <span className="text-gray-400">{APP_LABELS[app]}</span>
-                        <span>¥{APP_MONTHLY_PRICES[app].toLocaleString()}</span>
-                      </div>
-                    ))}
-                    {newApps.length >= 2 && (
-                      <div className="flex justify-between text-green-400 text-xs pt-1">
-                        <span>セット割引</span>
-                        <span>-{newApps.length >= 5 ? "20" : newApps.length >= 3 ? "10" : "5"}%</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between font-black text-blue-400 border-t border-gray-700 pt-2 mt-2">
-                      <span>月額合計{newIsMonitor ? "（モニター）" : ""}</span>
-                      <span>¥{(() => {
-                        if (newIsMonitor && newCustomPrice) return parseInt(newCustomPrice).toLocaleString();
-                        const sub = newApps.reduce((s, a) => s + (APP_MONTHLY_PRICES[a] || 0), 0);
-                        let d = 0;
-                        if (newApps.length >= 5) d = 0.2;
-                        else if (newApps.length >= 3) d = 0.1;
-                        else if (newApps.length >= 2) d = 0.05;
-                        return Math.floor(sub * (1 - d)).toLocaleString();
-                      })()}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <button
-                onClick={createAccount}
-                disabled={actionLoading || !newClinicName || !newEmail || newApps.length === 0}
-                className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500 transition disabled:opacity-50"
-              >
-                {actionLoading ? "作成中..." : "アカウントを作成"}
-              </button>
-
-              {/* 作成結果 */}
-              {createResult && (
-                <div className="bg-green-900/30 border border-green-700/50 rounded-xl p-4 space-y-4">
-                  <h4 className="text-sm font-bold text-green-400">アカウント作成完了</h4>
-
-                  {/* 決済リンク */}
-                  {createResult.checkoutUrl && (
-                    <div className="bg-blue-900/30 border border-blue-700/50 rounded-xl p-4 space-y-2">
-                      <div className="text-xs font-bold text-blue-400">決済リンク（お客様に送信してください）</div>
-                      <div className="bg-gray-800 px-3 py-2 rounded-lg">
-                        <a href={createResult.checkoutUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-sm break-all hover:underline">
-                          {createResult.checkoutUrl}
-                        </a>
-                      </div>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(createResult.checkoutUrl!);
-                          showToast("リンクをコピーしました");
-                        }}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition"
-                      >
-                        リンクをコピー
-                      </button>
-                      <p className="text-xs text-gray-500">
-                        月額 ¥{createResult.monthlyAmount.toLocaleString()} / お客様が決済完了するとアプリが自動的に有効になります
-                      </p>
-                    </div>
-                  )}
-
-                  {/* ログイン情報 */}
-                  <div>
-                    <div className="text-xs text-gray-400 mb-1">仮パスワード（決済完了後にお伝えください）</div>
-                    <div className="font-mono text-lg text-green-400 bg-gray-800 px-3 py-2 rounded-lg select-all">
-                      {createResult.password}
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    {createResult.checkoutUrl
-                      ? "お客様が決済を完了すると、各アプリにこのメール+パスワードでログインできるようになります。"
-                      : "各アプリ（検査シート・顧客管理等）にこのメールアドレスとパスワードでログインできます。"}
-                  </p>
-
-                  {createResult.warnings.length > 0 && (
-                    <div className="bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-3">
-                      <div className="text-xs text-yellow-500 font-bold mb-1">注意</div>
-                      {createResult.warnings.map((w, i) => (
-                        <div key={i} className="text-xs text-yellow-400">{w}</div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
         {/* MEOモニター */}
         {activeTab === "meo" && (
           <div className="space-y-6">
@@ -1272,14 +1025,96 @@ export default function AdminPage() {
         {/* 月次収益タブ */}
         {activeTab === "revenue" && (
           <div className="space-y-8">
-            {/* KPIカード */}
+            {/* Stripe実績 KPI */}
+            {stripeData && (
+              <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl border border-purple-700/30 p-6">
+                <h2 className="text-base font-black mb-4 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-purple-500" />
+                  Stripe実績（実際の決済データ）
+                </h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <KpiCard label="Stripe MRR" value={`¥${stripeData.stripe_mrr.toLocaleString()}`} color="text-purple-400" large />
+                  <KpiCard label="アクティブ契約" value={stripeData.subscription_count} color="text-purple-300" />
+                  {(() => {
+                    const now = new Date();
+                    const currentKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+                    const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                    const prevKey = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, "0")}`;
+                    const currentCharges = stripeData.monthly_charges[currentKey]?.total || 0;
+                    const prevCharges = stripeData.monthly_charges[prevKey]?.total || 0;
+                    return (
+                      <>
+                        <KpiCard label="当月入金額" value={`¥${currentCharges.toLocaleString()}`} color="text-green-400" />
+                        <KpiCard label="前月入金額" value={`¥${prevCharges.toLocaleString()}`} color="text-gray-300" />
+                      </>
+                    );
+                  })()}
+                </div>
+
+                {/* 月別入金推移 */}
+                <h3 className="text-sm font-bold text-gray-400 mb-3">月別入金実績</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-700">
+                        <th className="text-left py-2 px-3 text-gray-500">月</th>
+                        <th className="text-right py-2 px-3 text-gray-500">入金額</th>
+                        <th className="text-right py-2 px-3 text-gray-500">決済件数</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(stripeData.monthly_charges)
+                        .sort(([a], [b]) => b.localeCompare(a))
+                        .map(([month, data]) => (
+                          <tr key={month} className="border-b border-gray-800/50">
+                            <td className="py-2 px-3 text-gray-300 font-bold">{month}</td>
+                            <td className="text-right py-2 px-3 text-green-400 font-black">¥{data.total.toLocaleString()}</td>
+                            <td className="text-right py-2 px-3 text-gray-400">{data.count}件</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Stripeサブスクリプション一覧 */}
+                {stripeData.subscriptions.length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-sm font-bold text-gray-400 mb-3">アクティブなサブスクリプション</h3>
+                    <div className="space-y-2">
+                      {stripeData.subscriptions.map((sub) => (
+                        <div key={sub.id} className="flex items-center justify-between bg-gray-800/50 rounded-xl px-4 py-3 border border-gray-700/50">
+                          <div>
+                            <span className="font-bold text-sm">{sub.customer_name || sub.customer_email || "不明"}</span>
+                            {sub.customer_email && <span className="text-xs text-gray-500 ml-2">{sub.customer_email}</span>}
+                          </div>
+                          <div className="text-right">
+                            <div className="font-black text-purple-400">¥{sub.monthly_amount.toLocaleString()}/月</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            {stripeLoading && (
+              <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 text-center text-gray-500">
+                Stripeデータ読み込み中...
+              </div>
+            )}
+
+            {/* 管理画面データ KPIカード */}
+            <h2 className="text-base font-black flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              管理画面データ（推定MRR）
+            </h2>
             {(() => {
               const current = revenueData.monthlyData[revenueData.monthlyData.length - 1];
               const prev = revenueData.monthlyData[revenueData.monthlyData.length - 2];
               const diff = prev && prev.total > 0 ? Math.round(((current.total - prev.total) / prev.total) * 100) : 0;
               return (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <KpiCard label="当月MRR" value={`¥${current.total.toLocaleString()}`} color="text-blue-400" large />
+                  <KpiCard label="当月MRR（推定）" value={`¥${current.total.toLocaleString()}`} color="text-blue-400" large />
                   <KpiCard label="前月MRR" value={`¥${(prev?.total || 0).toLocaleString()}`} color="text-gray-300" />
                   <KpiCard label="前月比" value={`${diff >= 0 ? "+" : ""}${diff}%`} color={diff >= 0 ? "text-green-400" : "text-red-400"} />
                   <KpiCard label="当月契約数" value={current.accountCount} color="text-emerald-400" />
@@ -1292,10 +1127,10 @@ export default function AdminPage() {
               <h2 className="text-base font-black mb-6">月次MRR推移</h2>
               {/* 凡例 */}
               <div className="flex flex-wrap gap-4 mb-6">
-                {APP_LIST.map((app) => (
+                {[...APP_LIST, "maintenance"].map((app) => (
                   <div key={app} className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-sm ${APP_COLORS[app]}`} />
-                    <span className="text-xs text-gray-400">{APP_LABELS[app]}</span>
+                    <div className={`w-3 h-3 rounded-sm ${app === "maintenance" ? "bg-orange-500" : APP_COLORS[app]}`} />
+                    <span className="text-xs text-gray-400">{app === "maintenance" ? "管理費" : APP_LABELS[app]}</span>
                   </div>
                 ))}
               </div>
@@ -1309,15 +1144,15 @@ export default function AdminPage() {
                       className="w-full flex flex-col-reverse rounded-t-md overflow-hidden"
                       style={{ height: `${(d.total / revenueData.maxTotal) * 260}px`, minHeight: d.total > 0 ? "4px" : "0" }}
                     >
-                      {APP_LIST.map((app) => {
-                        const ratio = d.total > 0 ? d.byApp[app] / d.total : 0;
+                      {[...APP_LIST, "maintenance"].map((app) => {
+                        const ratio = d.total > 0 ? (d.byApp[app] || 0) / d.total : 0;
                         if (ratio === 0) return null;
                         return (
                           <div
                             key={app}
-                            className={`w-full ${APP_COLORS[app]}`}
+                            className={`w-full ${app === "maintenance" ? "bg-orange-500" : APP_COLORS[app]}`}
                             style={{ height: `${ratio * 100}%` }}
-                            title={`${APP_LABELS[app]}: ¥${d.byApp[app].toLocaleString()}`}
+                            title={`${app === "maintenance" ? "管理費" : APP_LABELS[app]}: ¥${(d.byApp[app] || 0).toLocaleString()}`}
                           />
                         );
                       })}
@@ -1346,20 +1181,20 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {APP_LIST.map((app) => {
-                      const hasAny = revenueData.monthlyData.some((d) => d.byApp[app] > 0);
+                    {[...APP_LIST, "maintenance"].map((app) => {
+                      const hasAny = revenueData.monthlyData.some((d) => (d.byApp[app] || 0) > 0);
                       if (!hasAny) return null;
                       return (
                         <tr key={app} className="border-b border-gray-800/50 hover:bg-gray-800/30">
                           <td className="py-3 px-3 sticky left-0 bg-gray-900">
                             <div className="flex items-center gap-2">
-                              <div className={`w-2.5 h-2.5 rounded-sm ${APP_COLORS[app]}`} />
-                              <span className="font-bold text-gray-300">{APP_LABELS[app]}</span>
+                              <div className={`w-2.5 h-2.5 rounded-sm ${app === "maintenance" ? "bg-orange-500" : APP_COLORS[app]}`} />
+                              <span className="font-bold text-gray-300">{app === "maintenance" ? "管理費" : APP_LABELS[app]}</span>
                             </div>
                           </td>
                           {revenueData.monthlyData.map((d) => (
                             <td key={d.month} className="text-right py-3 px-3 text-gray-400 whitespace-nowrap">
-                              {d.byApp[app] > 0 ? `¥${d.byApp[app].toLocaleString()}` : "-"}
+                              {(d.byApp[app] || 0) > 0 ? `¥${(d.byApp[app] || 0).toLocaleString()}` : "-"}
                             </td>
                           ))}
                         </tr>
@@ -1377,6 +1212,40 @@ export default function AdminPage() {
                 </table>
               </div>
             </div>
+
+            {/* 管理費用セクション */}
+            {(() => {
+              const maintenanceAccounts = accounts.filter(
+                (a) => a.status === "active" && a.plan_type !== "onetime" && getMonthlyAmount(a) > 0 && !a.selected_apps?.some((app) => APP_LIST.includes(app))
+              );
+              if (maintenanceAccounts.length === 0) return null;
+              const totalMaintenance = maintenanceAccounts.reduce((sum, a) => sum + getMonthlyAmount(a), 0);
+              return (
+                <div className="bg-gradient-to-r from-orange-900/20 to-gray-900 rounded-2xl border border-orange-700/30 p-6">
+                  <h2 className="text-base font-black mb-4 flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-sm bg-orange-500" />
+                    管理費用（受託アプリ）
+                  </h2>
+                  <div className="space-y-2 mb-4">
+                    {maintenanceAccounts.map((a) => (
+                      <div key={a.id} className="flex items-center justify-between bg-gray-800/70 rounded-xl px-4 py-3 border border-orange-700/20">
+                        <div>
+                          <span className="font-bold text-sm">{a.clinic_name}</span>
+                          {a.metadata?.note ? <span className="text-xs text-gray-500 ml-2">{String(a.metadata.note)}</span> : null}
+                        </div>
+                        <div className="text-right">
+                          <div className="font-black text-orange-400">¥{getMonthlyAmount(a).toLocaleString()}/月</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center pt-3 border-t border-orange-700/30">
+                    <span className="text-sm font-bold text-gray-400">管理費 合計</span>
+                    <span className="text-lg font-black text-orange-400">¥{totalMaintenance.toLocaleString()}/月</span>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* 顧客別収益一覧 */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
