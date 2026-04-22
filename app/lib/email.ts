@@ -2,6 +2,9 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+const FROM_CUSTOMER = process.env.EMAIL_FROM_CUSTOMER || 'ClinicDX <onboarding@resend.dev>'
+const FROM_ADMIN = process.env.EMAIL_FROM_ADMIN || 'ClinicApps <noreply@resend.dev>'
+
 interface WelcomeEmailParams {
   to: string
   clinicName: string
@@ -28,7 +31,7 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'ClinicDX <onboarding@resend.dev>',
+      from: FROM_CUSTOMER,
       to: [to],
       subject: `【ClinicDX】アカウント発行のお知らせ - ${clinicName}様`,
       html: `
@@ -116,7 +119,7 @@ export async function sendAdminNotification(params: AdminNotificationParams) {
 
   try {
     await resend.emails.send({
-      from: 'ClinicApps <noreply@resend.dev>',
+      from: FROM_ADMIN,
       to: [process.env.ADMIN_EMAIL || 'yosinkyuin1031@gmail.com'],
       subject: `【決済通知】${clinicName} が申し込みました`,
       html: `
@@ -157,7 +160,7 @@ export async function sendAdminCancellationNotification(params: { clinicName: st
 
   try {
     await resend.emails.send({
-      from: 'ClinicApps <noreply@resend.dev>',
+      from: FROM_ADMIN,
       to: [process.env.ADMIN_EMAIL || 'yosinkyuin1031@gmail.com'],
       subject: `【解約通知】${params.clinicName} が解約しました`,
       html: `
@@ -194,7 +197,7 @@ export async function sendAdminCancellationNotification(params: { clinicName: st
 export async function sendPaymentFailedEmail(params: { to: string; clinicName: string }) {
   try {
     await resend.emails.send({
-      from: 'ClinicDX <onboarding@resend.dev>',
+      from: FROM_CUSTOMER,
       to: [params.to],
       subject: `【ClinicDX】お支払いに関するお知らせ - ${params.clinicName}様`,
       html: `
