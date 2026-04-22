@@ -41,37 +41,34 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // 全priceを一括取得（1回のAPI call）
+    const priceMap = new Map<string, number | null>();
+    try {
+      let hasMore = true;
+      let startingAfter: string | undefined;
+      while (hasMore) {
+        const batch: Stripe.ApiListPromise<Stripe.Price> = stripe.prices.list({
+          limit: 100,
+          active: true,
+          starting_after: startingAfter,
+        });
+        const result = await batch;
+        for (const p of result.data) {
+          priceMap.set(p.id, typeof p.unit_amount === "number" ? p.unit_amount : null);
+        }
+        hasMore = result.has_more;
+        if (result.data.length > 0) startingAfter = result.data[result.data.length - 1].id;
+      }
+    } catch (e) {
+      console.error("Stripe prices取得失敗:", e);
+    }
+
     const catalog: CatalogItem[] = [];
 
     for (const app of APP_CONFIGS) {
-      let stripeMonthly: number | null = null;
-      let stripeInitial: number | null = null;
-      let stripeMaintenance: number | null = null;
-
-      try {
-        if (app.stripe.monthly_price_id) {
-          const p = await stripe.prices.retrieve(app.stripe.monthly_price_id);
-          stripeMonthly = typeof p.unit_amount === "number" ? p.unit_amount : null;
-        }
-      } catch (e) {
-        console.error(`monthly price取得失敗 ${app.id}:`, e);
-      }
-      try {
-        if (app.stripe.onetime_price_id) {
-          const p = await stripe.prices.retrieve(app.stripe.onetime_price_id);
-          stripeInitial = typeof p.unit_amount === "number" ? p.unit_amount : null;
-        }
-      } catch (e) {
-        console.error(`onetime price取得失敗 ${app.id}:`, e);
-      }
-      try {
-        if (app.stripe.maintenance_price_id) {
-          const p = await stripe.prices.retrieve(app.stripe.maintenance_price_id);
-          stripeMaintenance = typeof p.unit_amount === "number" ? p.unit_amount : null;
-        }
-      } catch (e) {
-        console.error(`maintenance price取得失敗 ${app.id}:`, e);
-      }
+      const stripeMonthly = app.stripe.monthly_price_id ? (priceMap.get(app.stripe.monthly_price_id) ?? null) : null;
+      const stripeInitial = app.stripe.onetime_price_id ? (priceMap.get(app.stripe.onetime_price_id) ?? null) : null;
+      const stripeMaintenance = app.stripe.maintenance_price_id ? (priceMap.get(app.stripe.maintenance_price_id) ?? null) : null;
 
       catalog.push({
         id: app.id,
