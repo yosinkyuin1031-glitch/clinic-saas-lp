@@ -144,7 +144,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "meo",
     label: "MEO勝ち上げくん",
-    monthlyPrice: 3980,
+    monthlyPrice: 2980,
     initialCost: 11000,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
