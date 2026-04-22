@@ -41,26 +41,24 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // 全priceを一括取得（1回のAPI call）
+    // 必要なprice IDだけを並列取得
+    const allPriceIds = new Set<string>();
+    for (const app of APP_CONFIGS) {
+      if (app.stripe.monthly_price_id) allPriceIds.add(app.stripe.monthly_price_id);
+      if (app.stripe.onetime_price_id) allPriceIds.add(app.stripe.onetime_price_id);
+      if (app.stripe.maintenance_price_id) allPriceIds.add(app.stripe.maintenance_price_id);
+    }
+
     const priceMap = new Map<string, number | null>();
-    try {
-      let hasMore = true;
-      let startingAfter: string | undefined;
-      while (hasMore) {
-        const batch: Stripe.ApiListPromise<Stripe.Price> = stripe.prices.list({
-          limit: 100,
-          active: true,
-          starting_after: startingAfter,
-        });
-        const result = await batch;
-        for (const p of result.data) {
-          priceMap.set(p.id, typeof p.unit_amount === "number" ? p.unit_amount : null);
-        }
-        hasMore = result.has_more;
-        if (result.data.length > 0) startingAfter = result.data[result.data.length - 1].id;
+    const results = await Promise.allSettled(
+      Array.from(allPriceIds).map((id) => stripe.prices.retrieve(id))
+    );
+    for (const r of results) {
+      if (r.status === "fulfilled") {
+        priceMap.set(r.value.id, typeof r.value.unit_amount === "number" ? r.value.unit_amount : null);
+      } else {
+        console.error("price取得失敗:", r.reason);
       }
-    } catch (e) {
-      console.error("Stripe prices取得失敗:", e);
     }
 
     const catalog: CatalogItem[] = [];
