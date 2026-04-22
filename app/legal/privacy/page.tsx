@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー | ClinicDX",
-  description: "ClinicDXのプライバシーポリシー（個人情報保護方針）です。",
+  title: "プライバシーポリシー | ClinicApps",
+  description: "ClinicAppsのプライバシーポリシー（個人情報保護方針）です。",
 };
 
 export default function PrivacyPage() {
@@ -16,14 +16,14 @@ export default function PrivacyPage() {
             &larr; トップに戻る
           </Link>
           <p className="mt-6 text-sm font-semibold text-blue-600 tracking-widest">
-            ClinicDX
+            ClinicApps
           </p>
           <h1 className="mt-2 text-3xl font-bold text-gray-900">
             プライバシーポリシー
           </h1>
           <p className="mt-2 text-base text-gray-600">個人情報保護方針</p>
           <p className="mt-4 text-sm text-gray-500">
-            最終更新日：2026年3月25日
+            制定日：2026年3月25日 / 最終改定日：2026年4月22日
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
           {/* 前文 */}
           <section>
             <p>
-              AI Solutions（以下「当社」といいます）は、「ClinicDX」（以下「本サービス」といいます）の提供にあたり、お客様の個人情報の保護を重要な責務と認識し、個人情報の保護に関する法律（個人情報保護法）その他関連法令を遵守いたします。本プライバシーポリシーは、当社における個人情報の取り扱いについて定めるものです。
+              AI Solutions（以下「当社」といいます）は、「ClinicApps」（以下「本サービス」といいます）の提供にあたり、お客様の個人情報の保護を重要な責務と認識し、個人情報の保護に関する法律（個人情報保護法）その他関連法令を遵守いたします。本プライバシーポリシーは、当社における個人情報の取り扱いについて定めるものです。
             </p>
           </section>
 
@@ -86,12 +86,12 @@ export default function PrivacyPage() {
             </h3>
             <ul className="list-disc pl-5 space-y-1">
               <li>氏名、連絡先、生年月日等の基本情報</li>
-              <li>問診内容、検査結果、施術記録等の健康関連情報</li>
+              <li>問診内容、検査結果、施術記録等の健康関連情報（<span className="font-bold">個人情報保護法上の要配慮個人情報</span>に該当）</li>
               <li>予約情報、来院履歴</li>
               <li>その他、契約者が本サービスに入力した情報</li>
             </ul>
             <p className="mt-3 text-xs text-gray-500">
-              ※エンドユーザーデータは、契約者が個人情報の管理者として適法に取得し、本サービスに入力するものです。当社は、契約者の委託を受けてデータを処理する立場（処理者）となります。
+              ※エンドユーザーデータは、契約者が個人情報取扱事業者として適法に取得し、本サービスに入力するものです。当社は、契約者の委託を受けてデータを処理する「委託先」の立場となります。要配慮個人情報については、契約者がエンドユーザーから明示的な同意を取得のうえ登録するものとします。
             </p>
           </section>
 
@@ -188,20 +188,36 @@ export default function PrivacyPage() {
             <p>
               当社は、個人情報の漏洩、滅失、毀損を防止するため、以下の安全管理措置を講じています。
             </p>
-            <ul className="list-disc pl-5 space-y-1 mt-2">
-              <li>
-                <span className="font-medium">技術的措置：</span>
-                SSL/TLSによる通信の暗号化、データベースのアクセス制御、定期的なセキュリティアップデート
-              </li>
-              <li>
-                <span className="font-medium">組織的措置：</span>
-                個人情報へのアクセス権限の限定、従業者への教育・監督
-              </li>
-              <li>
-                <span className="font-medium">物理的措置：</span>
-                クラウド基盤（AWS）のセキュリティ機能を活用したデータ保護
-              </li>
-            </ul>
+            <div className="space-y-3 mt-3">
+              <div>
+                <p className="font-medium">技術的安全管理措置</p>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-gray-600">
+                  <li>SSL/TLSによる通信経路の暗号化</li>
+                  <li>Supabase Row Level Security（RLS）による契約者ごとのデータ分離</li>
+                  <li>パスワードのbcryptハッシュ化</li>
+                  <li>役割ベースアクセス制御（RBAC）</li>
+                  <li>ログイン失敗回数制限（ブルートフォース対策）</li>
+                  <li>アクセスログの記録・監視</li>
+                  <li>決済カード情報はStripe（PCI DSS Level 1準拠）に直接送信、当社では保持しない</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium">物理的・組織的安全管理措置</p>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-gray-600">
+                  <li>データは<span className="font-bold">東京リージョン（日本国内）</span>のデータセンターに保管</li>
+                  <li>Supabaseによる自動バックアップ</li>
+                  <li>管理者・委託先へのアクセス権限の必要最小限化</li>
+                  <li>定期的なセキュリティレビュー</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium">人的安全管理措置</p>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-gray-600">
+                  <li>従業者に対する個人情報取扱いの教育</li>
+                  <li>守秘義務の徹底</li>
+                </ul>
+              </div>
+            </div>
           </section>
 
           {/* 6. データの保管場所 */}
@@ -211,15 +227,25 @@ export default function PrivacyPage() {
             </h2>
             <ol className="list-decimal pl-5 space-y-2">
               <li>
-                本サービスのデータは、Supabase（Amazon Web Services のクラウド基盤）上に保管されます。
+                本サービスのデータは、Supabase（基盤：Amazon Web Services）の<span className="font-bold">東京リージョン（日本国内）</span>に保管されます。
               </li>
               <li>
-                データの保管先サーバーは、主に米国リージョンまたはアジアリージョンに所在します。これにより、個人情報が国外で処理される場合があります。
+                外部サービス（Stripe・Vercel等）を経由する一部処理において、米国等の外国で情報処理が行われる場合があります。
               </li>
               <li>
-                当社は、外国にある第三者への個人情報の提供にあたり、個人情報保護法が求める適切な措置を講じます。
+                当社は、外国にある第三者への個人情報の提供にあたり、個人情報保護法が求める情報提供・同意取得等の適切な措置を講じます。
               </li>
             </ol>
+          </section>
+
+          {/* 6-2. 漏洩時の対応 */}
+          <section>
+            <h2 className="text-lg font-bold text-gray-900 mb-3">
+              6-2. 漏洩等発生時の対応
+            </h2>
+            <p>
+              個人情報の漏洩、滅失または毀損が発生し、かつ個人の権利利益を害するおそれが大きいと認められる場合、当社は個人情報保護委員会への報告および影響を受ける本人・契約者への通知を、<span className="font-bold">事故認知後速やかに（原則72時間以内を目安に）</span>行います。
+            </p>
           </section>
 
           {/* 7. 開示・訂正・削除の請求 */}
@@ -316,7 +342,7 @@ export default function PrivacyPage() {
 
           {/* 施行日 */}
           <section className="pt-6 border-t border-gray-200">
-            <p className="text-gray-600">2026年3月25日 制定・施行</p>
+            <p className="text-gray-600">2026年3月25日 制定 / 2026年4月22日 改定</p>
           </section>
         </div>
 

@@ -584,19 +584,18 @@ export async function POST(req: NextRequest) {
           "success"
         );
 
-        // ウェルカムメール送信
+        // ウェルカムメール送信（メール失敗でもwebhook全体は成功扱い）
         if (process.env.RESEND_API_KEY) {
           const { sendWelcomeEmail, sendAdminNotification } = await import('@/app/lib/email')
-          await sendWelcomeEmail({
+          sendWelcomeEmail({
             to: email,
             clinicName,
             clinicId,
             password,
             selectedApps,
             planType,
-          })
+          }).catch(err => console.error('ウェルカムメールエラー:', err))
 
-          // 管理者への決済通知メール
           sendAdminNotification({
             clinicName,
             email,

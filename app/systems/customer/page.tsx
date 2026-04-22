@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PurchaseButton from "../../components/PurchaseButton";
 
 export const metadata: Metadata = {
   title: "Clinic Core（クリニックコア）| 治療院専用 顧客管理・経営分析システム",
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 const STRIPE_MONITOR_URL = "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07";
 const STRIPE_NORMAL_URL = "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06";
 const LINE_URL = "https://lin.ee/qvChhK3";
+const DEMO_URL = "https://clinic-core-demo.vercel.app";
 
 export default function CustomerPage() {
   return (
@@ -37,11 +39,15 @@ export default function CustomerPage() {
           LTV・ROAS・純新規売上・リピート率・エリア分析。<br />
           経営に必要な数字が、全部見える。月額5,500円から。
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
           <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める（初期費用0円） →</a>
+          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">デモを触ってみる（ログイン不要）</a>
           <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-blue-600 text-blue-600 hover:bg-blue-50">LINEで相談する</a>
         </div>
         <p className="mt-4 text-sm text-gray-400">モニター価格：月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
+        <p className="mt-2 text-xs text-gray-400">
+          購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
+        </p>
       </section>
 
       {/* モニター募集バナー */}
@@ -240,7 +246,54 @@ export default function CustomerPage() {
         </div>
       </section>
 
-      {/* セクション8: 料金プラン */}
+      {/* セクション8: 導入事例 */}
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Case Study</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">導入事例</h2>
+          <div className="max-w-2xl mx-auto">
+            {[
+              {
+                name: "山口先生",
+                clinic: "やまぐち鍼灸接骨院",
+                background: "以前は別の顧客管理システムを使っていたが、打ち込みが面倒で負担になっていた。Clinic Coreに乗り換えて変わったこと：",
+                points: [
+                  "AIが離反しそうな方やリピート率、前月比を自動計算して常に表示",
+                  "音声による一括入力でめちゃくちゃ時短",
+                  "過去のデータも移行できた",
+                ],
+                quote: "顧客管理に手間がかかると感じている方や、数字をすぐに把握したい先生におすすめです。",
+              },
+            ].map((caseItem) => (
+              <div key={caseItem.name} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                    {caseItem.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg text-gray-900">{caseItem.name}</p>
+                    <p className="text-sm text-gray-500">{caseItem.clinic}</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">{caseItem.background}</p>
+                <ul className="space-y-2 mb-6">
+                  {caseItem.points.map((point) => (
+                    <li key={point} className="flex items-start gap-2 text-sm text-gray-700">
+                      <span className="text-blue-500 flex-shrink-0 mt-0.5">&#x2713;</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <div className="bg-blue-50 border-l-4 border-blue-400 rounded-r-xl p-4">
+                  <p className="text-gray-700 text-sm leading-relaxed italic">&ldquo;{caseItem.quote}&rdquo;</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* セクション9: 料金プラン */}
       <section className="bg-gray-50 py-16" id="pricing">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">料金プラン</h2>
@@ -266,7 +319,9 @@ export default function CustomerPage() {
                   </li>
                 ))}
               </ul>
-              <a href={STRIPE_NORMAL_URL} target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl border-2 border-blue-600 hover:bg-blue-50 transition">通常プランで始める</a>
+              <div className="mt-8">
+                <PurchaseButton href={STRIPE_NORMAL_URL} label="通常プランで始める" variant="secondary" className="w-full" />
+              </div>
             </div>
             {/* モニタープラン */}
             <div className="bg-blue-600 rounded-2xl p-8 shadow-lg text-white relative">
@@ -290,10 +345,12 @@ export default function CustomerPage() {
                   </li>
                 ))}
               </ul>
-              <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-50 transition">モニター価格で始める →</a>
+              <div className="mt-8">
+                <PurchaseButton href={STRIPE_MONITOR_URL} label="モニター価格で始める →" variant="primary" className="w-full" />
+              </div>
             </div>
           </div>
-          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
+          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。6ヶ月未満で解約された場合、残存月数分の早期解約金を申し受けます。</p>
         </div>
       </section>
 
@@ -323,8 +380,9 @@ export default function CustomerPage() {
           <span className="inline-block bg-white/20 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">モニター5名限定 / 初期費用0円</span>
           <h2 className="text-2xl md:text-4xl font-bold mb-4">数字を見る院だけが、生き残る。</h2>
           <p className="text-blue-100 mb-8">月額5,500円で、治療院経営に必要な数字が全て手に入る。<br />モニター期間中は初期費用0円。</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow">モニター価格で始める →</a>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">デモを試す（ログイン不要）</a>
             <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
           </div>
         </div>

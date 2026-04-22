@@ -23,14 +23,18 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "kensa",
     label: "カラダマップ",
-    monthlyPrice: 3980,
+    // 通常プラン月額（Lite/Pro統合版）: 5,500円
+    // モニター枠は月額3,980円で継続（旧Price ID price_1TGhYv...を流用）
+    monthlyPrice: 5500,
     initialCost: 11000,
     color: "bg-blue-500",
     clinicFlag: "app_kensa",
     forSale: true,
     stripe: {
       product_id: "prod_UFBwJHP8jALL4b",
-      monthly_price_id: "price_1TGhYvCORfdwaD8CHnlOS7Bu",
+      // 通常プラン5,500円の新規Price（2026-04-22作成）
+      // Payment Link: https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k
+      monthly_price_id: "price_1TOrRiCORfdwaD8CcnvNFSgA",
       onetime_price_id: null,
       maintenance_price_id: "price_1TGhYwCORfdwaD8Co2irSJ6u",
     },
