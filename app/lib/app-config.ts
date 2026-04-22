@@ -155,9 +155,10 @@ export const APP_CONFIGS: AppConfig[] = [
     forSale: false,
     stripe: {
       product_id: "prod_UFBw6XVaolhrNd",
-      monthly_price_id: "price_1TGhZ1CORfdwaD8CPA6i7VRA",
+      monthly_price_id: "price_1TP6fMCORfdwaD8CUM3GSW7w",
       onetime_price_id: "price_1TGhZ2CORfdwaD8CdR4HrCK1",
       maintenance_price_id: "price_1TGhZ2CORfdwaD8CuMEkZlFE",
+      extra_price_ids: ["price_1TGhZ1CORfdwaD8CPA6i7VRA"],
     },
     email: {
       loginUrl: "https://meo-app.vercel.app/login",
