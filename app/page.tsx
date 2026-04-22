@@ -35,7 +35,7 @@ const APPS = [
     initialCost: 33000,
     maintenancePrice: 1490,
     badge: "NEW",
-    demoUrl: "",
+    demoUrl: "https://clinic-core-demo.vercel.app",
     detailUrl: "/systems/customer",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
