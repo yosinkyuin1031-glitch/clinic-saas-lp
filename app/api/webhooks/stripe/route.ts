@@ -140,7 +140,15 @@ const PRICE_TO_APP: Record<string, string> = {};
 for (const app of APP_CONFIGS) {
   if (app.stripe.monthly_price_id) PRICE_TO_APP[app.stripe.monthly_price_id] = app.id;
   if (app.stripe.onetime_price_id) PRICE_TO_APP[app.stripe.onetime_price_id] = app.id;
+  if (app.stripe.extra_price_ids) {
+    for (const extra of app.stripe.extra_price_ids) {
+      PRICE_TO_APP[extra] = app.id;
+    }
+  }
 }
+// 旧Price IDの手動登録（app-config.tsの通常価格から切り替え後も継続契約用）
+// カラダマップ モニター枠 月額3,980円（旧Lite用Price）
+PRICE_TO_APP["price_1TGhYvCORfdwaD8CHnlOS7Bu"] = "kensa";
 
 // Payment Link経由の場合、line_itemsから購入アプリを判別する
 async function resolveAppsFromLineItems(

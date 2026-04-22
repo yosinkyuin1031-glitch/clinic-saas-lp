@@ -11,11 +11,13 @@ export interface AppConfig {
   color: string;            // Tailwind色クラス
   clinicFlag: string | null; // clinicsテーブルのフラグ名（null=フラグなし）
   forSale: boolean;         // 現在販売中かどうか
+  hiddenFromCatalog?: boolean; // カタログから非表示（開発中アプリ用）
   stripe: {
     product_id: string;
     monthly_price_id: string;
     onetime_price_id: string | null;
     maintenance_price_id: string;
+    extra_price_ids?: string[];
   };
   /** アプリ別ウェルカムメール設定 */
   email: {
@@ -62,7 +64,7 @@ export const APP_CONFIGS: AppConfig[] = [
   },
   {
     id: "customer",
-    label: "顧客管理",
+    label: "Clinic Core",
     monthlyPrice: 5500,
     initialCost: 33000,
     color: "bg-emerald-500",
@@ -95,6 +97,7 @@ export const APP_CONFIGS: AppConfig[] = [
     color: "bg-purple-500",
     clinicFlag: null,
     forSale: false,
+    hiddenFromCatalog: true,
     stripe: {
       product_id: "prod_UGVoucf5IGiliu",
       monthly_price_id: "price_1THymhCORfdwaD8C1Q1qdDBc",
@@ -122,6 +125,7 @@ export const APP_CONFIGS: AppConfig[] = [
     color: "bg-amber-500",
     clinicFlag: null,
     forSale: false,
+    hiddenFromCatalog: true,
     stripe: {
       product_id: "prod_UGVoZjYnEYQh23",
       monthly_price_id: "price_1THymlCORfdwaD8CoSJ89cSZ",
@@ -144,7 +148,7 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "meo",
     label: "MEO勝ち上げくん",
-    monthlyPrice: 2980,
+    monthlyPrice: 3980,
     initialCost: 11000,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
@@ -176,6 +180,7 @@ export const APP_CONFIGS: AppConfig[] = [
     color: "bg-indigo-500",
     clinicFlag: "app_sleep",
     forSale: false,
+    hiddenFromCatalog: true,
     stripe: {
       product_id: "prod_UFBwgJMEJoGGA1",
       monthly_price_id: "price_1TGhZ3CORfdwaD8CkQ0yvyTa",

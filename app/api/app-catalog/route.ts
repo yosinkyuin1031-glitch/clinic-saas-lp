@@ -60,8 +60,9 @@ export async function GET(req: NextRequest) {
     }
 
     const catalog: CatalogItem[] = [];
+    const visibleApps = APP_CONFIGS.filter((a) => !a.hiddenFromCatalog);
 
-    for (const app of APP_CONFIGS) {
+    for (const app of visibleApps) {
       const stripeMonthly = app.stripe.monthly_price_id ? (priceMap.get(app.stripe.monthly_price_id) ?? null) : null;
       const stripeInitial = app.stripe.onetime_price_id ? (priceMap.get(app.stripe.onetime_price_id) ?? null) : null;
       const stripeMaintenance = app.stripe.maintenance_price_id ? (priceMap.get(app.stripe.maintenance_price_id) ?? null) : null;

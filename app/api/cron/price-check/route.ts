@@ -17,8 +17,9 @@ export async function GET(req: NextRequest) {
   }
 
   const mismatches: string[] = [];
+  const visibleApps = APP_CONFIGS.filter((a) => !a.hiddenFromCatalog);
 
-  for (const app of APP_CONFIGS) {
+  for (const app of visibleApps) {
     try {
       if (app.stripe.monthly_price_id) {
         const p = await stripe.prices.retrieve(app.stripe.monthly_price_id);
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.json({
-    checked: APP_CONFIGS.length,
+    checked: visibleApps.length,
     mismatchCount: mismatches.length,
     mismatches,
   });
