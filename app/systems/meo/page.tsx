@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import PurchaseButton from "../../components/PurchaseButton";
 
 const YOUTUBE_ID = "";
 
@@ -17,7 +19,10 @@ export default function MeoPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">Googleマップで、<br />選ばれる院になる。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">順位チェック・投稿作成・口コミ返信・SEO記事。<br />MEO対策に必要な全てを、AIが自動で実行します。</p>
         <a href="https://buy.stripe.com/9B6dR824cahi1Vqb9708g03" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
+        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月（6ヶ月未満解約時は残存月数分の早期解約金）</p>
+        <p className="mt-2 text-xs text-gray-400">
+          購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
+        </p>
       </section>
 
       {/* YouTube動画 */}
@@ -132,7 +137,10 @@ export default function MeoPage() {
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,980<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全機能利用可能","✓ キーワード数無制限","✓ AI生成無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
             <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">39,800<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用 11,000円（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 約3,317円 → 年間7,960円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全機能利用可能","✓ キーワード数無制限","✓ AI生成無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
           </div>
-          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
+          <div className="mt-8 flex justify-center">
+            <PurchaseButton href="https://buy.stripe.com/9B6dR824cahi1Vqb9708g03" label="月額プランで始める →" variant="primary" />
+          </div>
+          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。6ヶ月未満で解約された場合、残存月数分の早期解約金を申し受けます。</p>
         </div>
       </section>
 

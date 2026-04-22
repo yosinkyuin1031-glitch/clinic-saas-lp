@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import PurchaseButton from "../../components/PurchaseButton";
 
 const YOUTUBE_ID = "";
 
@@ -96,7 +97,10 @@ export default function KensaPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">検査結果を、<br />患者と共有する。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">5段階の検査ウィザードで原因部位を自動特定。<br />検査 → 診断 → セルフケア提案 → PDF出力まで全自動で完結。</p>
         <a href="https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">通常 月額5,500円（税込）/ モニター枠 月額3,980円 / 初期費用11,000円 / 最低契約期間6ヶ月</p>
+        <p className="mt-4 text-sm text-gray-400">通常 月額5,500円（税込）/ モニター枠 月額3,980円 / 初期費用0円 / 最低契約期間6ヶ月</p>
+        <p className="mt-2 text-xs text-gray-400">
+          購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
+        </p>
       </section>
       <section className="bg-gray-900 py-14">
         <div className="max-w-3xl mx-auto px-6">
@@ -147,7 +151,7 @@ export default function KensaPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead><tr className="bg-blue-600 text-white"><th className="text-left p-4 rounded-tl-xl">比較項目</th><th className="p-4 text-center">紙カルテ</th><th className="p-4 text-center">汎用電子カルテ</th><th className="p-4 text-center">大手レセコン</th><th className="p-4 text-center rounded-tr-xl font-bold">カラダマップ</th></tr></thead>
-              <tbody>{[["月額料金","0円","10,000円〜","20,000円〜","3,980〜5,500円"],["初期費用","0円","50,000円〜","100,000円〜","11,000円"],["段階的原因特定ロジック","－","－","－","●"],["PDF出力（患者用＋施術者用）","－","●","●","●"],["AIセルフケア自動提案","－","－","－","●"],["経過比較・前回データ並列","－","▲","●","●"],["オフライン対応（PWA）","－","－","－","●"],["最低契約期間","－","12ヶ月","12ヶ月","6ヶ月"]].map(([item,a,b,c,d],i)=><tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}><td className="p-4 font-medium text-gray-700">{item}</td><td className="p-4 text-center text-gray-500">{a}</td><td className="p-4 text-center text-gray-500">{b}</td><td className="p-4 text-center text-gray-500">{c}</td><td className="p-4 text-center font-bold text-blue-600">{d}</td></tr>)}</tbody>
+              <tbody>{[["月額料金","0円","10,000円〜","20,000円〜","3,980〜5,500円"],["初期費用","0円","50,000円〜","100,000円〜","0円"],["段階的原因特定ロジック","－","－","－","●"],["PDF出力（患者用＋施術者用）","－","●","●","●"],["AIセルフケア自動提案","－","－","－","●"],["経過比較・前回データ並列","－","▲","●","●"],["オフライン対応（PWA）","－","－","－","●"],["最低契約期間","－","12ヶ月","12ヶ月","6ヶ月"]].map(([item,a,b,c,d],i)=><tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}><td className="p-4 font-medium text-gray-700">{item}</td><td className="p-4 text-center text-gray-500">{a}</td><td className="p-4 text-center text-gray-500">{b}</td><td className="p-4 text-center text-gray-500">{c}</td><td className="p-4 text-center font-bold text-blue-600">{d}</td></tr>)}</tbody>
             </table>
           </div>
         </div>
@@ -169,24 +173,26 @@ export default function KensaPage() {
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
               <p className="text-sm font-bold text-gray-600 mb-2">通常プラン</p>
               <p className="text-4xl font-bold text-gray-900 mb-1">5,500<span className="text-lg font-normal text-gray-500">円/月</span></p>
-              <p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p>
+              <p className="text-sm text-gray-500 mb-6">初期費用 0円</p>
               <ul className="space-y-3 text-sm text-gray-600">
                 {["5段階検査ウィザード","段階的原因特定ロジック","患者用・施術者用PDF出力","セルフケア自動提案","経過比較・改善度トラッキング","患者数無制限","導入サポート付き","今後追加される機能も全て込み"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-blue-500 flex-shrink-0">✓</span>{t}</li>)}
               </ul>
-              <a href="https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k" target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl border-2 border-blue-600 hover:bg-blue-50 transition">通常プランで始める</a>
+              <div className="mt-8">
+                <PurchaseButton href="https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k" label="通常プランで始める" variant="secondary" className="w-full" />
+              </div>
             </div>
             <div className="bg-blue-600 rounded-2xl p-8 shadow-lg text-white relative">
               <span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">モニター枠</span>
               <p className="text-sm font-bold text-blue-200 mb-2">モニター価格（先着枠限定）</p>
               <p className="text-4xl font-bold mb-1">3,980<span className="text-lg font-normal text-blue-200">円/月</span></p>
-              <p className="text-sm text-blue-200 mb-6">初期費用 0円（モニター特典）</p>
+              <p className="text-sm text-blue-200 mb-6">初期費用 0円</p>
               <ul className="space-y-3 text-sm text-blue-100">
                 {["通常プランと同一機能","今後追加される機能も自動開放","導入サポート付き","フィードバック協力が条件","枠が埋まり次第、モニター募集は終了"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-yellow-300 flex-shrink-0">✓</span>{t}</li>)}
               </ul>
               <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-50 transition">モニター枠を相談する</a>
             </div>
           </div>
-          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
+          <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。6ヶ月未満で解約された場合、残存月数分の早期解約金を申し受けます。</p>
         </div>
       </section>
       <section className="py-16 max-w-5xl mx-auto px-6">
@@ -197,7 +203,7 @@ export default function KensaPage() {
       </section>
       <section className="bg-blue-600 py-16 text-white text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">検査の質を上げて、紹介を増やしませんか。</h2>
-        <p className="text-blue-100 mb-8">通常プラン 月額5,500円。モニター枠は月額3,980円・初期費用0円。最低契約期間6ヶ月。</p>
+        <p className="text-blue-100 mb-8">通常プラン 月額5,500円。モニター枠は月額3,980円。初期費用なし・最低契約期間6ヶ月。</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k" target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
           <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>

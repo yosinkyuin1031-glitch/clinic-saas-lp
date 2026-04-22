@@ -17,7 +17,10 @@ export default function ReservationPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">予約の取りこぼしを、<br />仕組みで防ぐ。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">電話対応に追われていませんか？<br />予約管理を自動化して、<br />施術に集中できる環境を作りましょう。</p>
         <a href="https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
+        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月（6ヶ月未満解約時は残存月数分の早期解約金）</p>
+        <p className="mt-2 text-xs text-gray-400">
+          購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
+        </p>
       </section>
 
       {/* YouTube動画 */}

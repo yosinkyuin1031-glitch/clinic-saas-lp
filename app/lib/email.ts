@@ -1,9 +1,110 @@
 import { Resend } from 'resend'
+import { APP_CONFIGS, AppConfig } from './app-config'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM_CUSTOMER = process.env.EMAIL_FROM_CUSTOMER || 'ClinicDX <onboarding@resend.dev>'
 const FROM_ADMIN = process.env.EMAIL_FROM_ADMIN || 'ClinicApps <noreply@resend.dev>'
+const ADMIN_CONTACT_EMAIL = process.env.ADMIN_EMAIL || 'yosinkyuin1031@gmail.com'
+
+// アプリ別ウェルカムメール
+interface AppWelcomeParams {
+  to: string
+  clinicName: string
+  clinicId: string
+  password: string
+  appId: string
+  planType: 'monthly' | 'yearly' | 'onetime'
+}
+
+export async function sendAppWelcomeEmail(params: AppWelcomeParams) {
+  const { to, clinicName, clinicId, password, appId, planType } = params
+  const app: AppConfig | undefined = APP_CONFIGS.find(a => a.id === appId)
+  if (!app) {
+    console.error(`sendAppWelcomeEmail: unknown appId=${appId}`)
+    return { success: false, error: 'unknown appId' }
+  }
+
+  const planLabel = planType === 'monthly' ? '月額プラン' : planType === 'yearly' ? '年額プラン' : '買い切りプラン'
+  const featuresHtml = app.email.features.map(f => `<li style="margin: 4px 0;">${f}</li>`).join('')
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_CUSTOMER,
+      to: [to],
+      subject: `【${app.label}】アカウント発行のお知らせ - ${clinicName}様`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: ${app.email.headerBg}; color: white; padding: 24px; border-radius: 12px 12px 0 0; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px;">${app.label}</h1>
+            <p style="margin: 6px 0 0; opacity: 0.9; font-size: 14px;">${app.email.tagline}</p>
+          </div>
+
+          <div style="background: white; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 12px 12px;">
+            <p style="font-size: 16px; color: #333;">${clinicName} 様</p>
+            <p style="color: #555; line-height: 1.7;">
+              この度は${app.label}をお申し込みいただき、誠にありがとうございます。<br>
+              アカウントの発行が完了しましたので、ログイン情報をお知らせいたします。
+            </p>
+
+            <p style="color: #555; line-height: 1.7; margin-top: 16px;">${app.email.intro}</p>
+
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 20px 0;">
+              <h3 style="margin: 0 0 12px; color: #14252A; font-size: 16px;">ログイン情報</h3>
+              <table style="width: 100%; font-size: 14px;">
+                <tr><td style="padding: 4px 0; color: #666; width: 140px;">ログインURL</td><td style="font-weight: bold;"><a href="${app.email.loginUrl}" style="color: ${app.email.headerBg};">${app.email.loginUrl}</a></td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">メールアドレス</td><td style="font-weight: bold;">${to}</td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">初期パスワード</td><td style="font-weight: bold; color: #e74c3c;">${password}</td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">院ID</td><td>${clinicId}</td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">プラン</td><td>${planLabel}</td></tr>
+              </table>
+            </div>
+
+            <div style="background: #fff8e1; border-radius: 8px; padding: 12px; margin: 16px 0; font-size: 13px; color: #6b4f00;">
+              セキュリティのため、初回ログイン後にパスワードを変更してください。
+            </div>
+
+            <div style="margin: 20px 0 0;">
+              <h4 style="margin: 0 0 8px; color: #14252A; font-size: 14px;">${app.label}でできること</h4>
+              <ul style="margin: 0; padding-left: 20px; color: #555; font-size: 14px;">
+                ${featuresHtml}
+              </ul>
+            </div>
+
+            <div style="background: #f0fdf4; border-left: 4px solid ${app.email.headerBg}; padding: 12px 16px; margin: 20px 0; font-size: 13px; color: #333;">
+              <strong>最初の一歩：</strong> ${app.email.firstStep}
+            </div>
+
+            <div style="text-align: center; margin: 24px 0;">
+              <a href="${app.email.loginUrl}" style="background: ${app.email.headerBg}; color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">ログインする</a>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+
+            <p style="font-size: 13px; color: #999;">
+              ご不明な点がございましたら、お気軽にお問い合わせください。<br>
+              メール: ${ADMIN_CONTACT_EMAIL}
+            </p>
+          </div>
+
+          <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
+            &copy; 2026 ${app.label} / 大口神経整体院
+          </p>
+        </div>
+      `,
+    })
+
+    if (error) {
+      console.error(`${app.label}メール送信エラー:`, error)
+      return { success: false, error: error.message }
+    }
+    console.log(`${app.label}ウェルカムメール送信完了:`, data?.id)
+    return { success: true, id: data?.id }
+  } catch (err) {
+    console.error(`${app.label}メール送信例外:`, err)
+    return { success: false, error: err instanceof Error ? err.message : 'Unknown error' }
+  }
+}
 
 interface WelcomeEmailParams {
   to: string
