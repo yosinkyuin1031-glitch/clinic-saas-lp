@@ -308,44 +308,229 @@ export async function POST(req: NextRequest) {
         if (pendingAccount) {
           // pending_payment → active に切り替え
           // selected_appsがない場合はPayment Linkから解決したアプリで埋める
+          let finalSelectedApps: string[] = Array.isArray(pendingAccount.selected_apps)
+            ? (pendingAccount.selected_apps as string[])
+            : [];
+          if (finalSelectedApps.length === 0) {
+            try {
+              finalSelectedApps = JSON.parse(selectedAppsRaw);
+            } catch {
+              finalSelectedApps = [];
+            }
+          }
+
+          const planTypePending: "monthly" | "yearly" | "onetime" =
+            paymentType === "yearly" ? "yearly" : paymentType === "onetime" ? "onetime" : "monthly";
+
           const updateData: Record<string, unknown> = {
             status: "active",
             stripe_customer_id: stripeCustomerId,
             stripe_subscription_id: stripeSubscriptionId,
+            selected_apps: finalSelectedApps,
+            plan_type: planTypePending,
           };
-          if (!pendingAccount.selected_apps || (Array.isArray(pendingAccount.selected_apps) && pendingAccount.selected_apps.length === 0)) {
-            try {
-              updateData.selected_apps = JSON.parse(selectedAppsRaw);
-            } catch {
-              // パース失敗時はスキップ
-            }
-          }
           await supabase
             .from("clinic_accounts")
             .update(updateData)
             .eq("id", pendingAccount.id);
 
-          // clinicsテーブルも有効化
-          const { data: clinicRows } = await supabase
+          const finalClinicName = pendingAccount.clinic_name || clinicName || "";
+          const finalEmail = pendingAccount.email || email!;
+          const finalClinicId = pendingAccount.clinic_id;
+
+          // === Auth ユーザー確保（idempotent） ===
+          let pendingUserId: string | null = null;
+          let pendingNewPassword: string | null = null;
+
+          // 既存ユーザーをemailで検索（admin.listUsersは1ページ最大1000件、運用上充分）
+          const { data: existingUserList } = await supabase.auth.admin.listUsers();
+          const existingUser = existingUserList?.users?.find(u => u.email === finalEmail);
+
+          if (existingUser) {
+            pendingUserId = existingUser.id;
+          } else {
+            pendingNewPassword = generatePassword();
+            const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+              email: finalEmail,
+              password: pendingNewPassword,
+              email_confirm: true,
+              user_metadata: {
+                clinic_id: finalClinicId,
+                clinic_name: finalClinicName,
+              },
+            });
+            if (authError) {
+              console.error("pending_payment branch Auth作成エラー:", authError);
+            } else if (authData?.user) {
+              pendingUserId = authData.user.id;
+            }
+          }
+
+          if (pendingUserId) {
+            await supabase
+              .from("clinic_accounts")
+              .update({ user_id: pendingUserId })
+              .eq("id", pendingAccount.id);
+          }
+
+          // === clinics 確保（idempotent） ===
+          let pendingClinicRowId: string | null = null;
+          const { data: existingClinics } = await supabase
             .from("clinics")
             .select("id")
-            .like("notes", `%${pendingAccount.clinic_id}%`);
+            .like("notes", `%${finalClinicId}%`);
 
-          if (clinicRows && clinicRows.length > 0) {
+          if (existingClinics && existingClinics.length > 0) {
+            pendingClinicRowId = existingClinics[0].id;
             await supabase
               .from("clinics")
               .update({ is_active: true })
-              .eq("id", clinicRows[0].id);
+              .eq("id", pendingClinicRowId);
+          } else {
+            const pendingAppFlags: Record<string, boolean> = {};
+            for (const app of finalSelectedApps) {
+              const flag = APP_FLAG_MAP[app];
+              if (flag) pendingAppFlags[flag] = true;
+            }
+            const pendingClinicCode =
+              finalClinicName
+                .replace(/[^\w　-鿿]/g, "")
+                .slice(0, 20)
+                .toLowerCase() || `clinic-${Date.now()}`;
+
+            const { data: newClinic, error: newClinicError } = await supabase
+              .from("clinics")
+              .insert({
+                name: finalClinicName,
+                code: pendingClinicCode,
+                owner_name: "",
+                phone: "",
+                email: finalEmail,
+                plan: finalSelectedApps.includes("kensa") ? "basic" : "active",
+                is_active: true,
+                theme_color: "#2563eb",
+                max_staff: 5,
+                max_exams_per_month: 9999,
+                max_patients: 9999,
+                max_checks_per_month: 9999,
+                notes: `Stripe購入から自動作成 | ${finalClinicId}`,
+                stripe_customer_id: stripeCustomerId || "",
+                ...pendingAppFlags,
+              })
+              .select()
+              .single();
+            if (newClinicError) {
+              console.error("pending_payment branch clinics作成エラー:", newClinicError);
+            } else if (newClinic) {
+              pendingClinicRowId = newClinic.id;
+            }
           }
 
-          console.log(`管理画面アカウント有効化: clinic_id=${pendingAccount.clinic_id}, email=${pendingAccount.email}`);
+          // === clinic_members 確保（idempotent） ===
+          if (pendingUserId && pendingClinicRowId) {
+            const { data: existingMember } = await supabase
+              .from("clinic_members")
+              .select("id")
+              .eq("clinic_id", pendingClinicRowId)
+              .eq("user_id", pendingUserId)
+              .maybeSingle();
+            if (!existingMember) {
+              const { error: memberInsertError } = await supabase
+                .from("clinic_members")
+                .insert({
+                  clinic_id: pendingClinicRowId,
+                  user_id: pendingUserId,
+                  role: "owner",
+                  display_name: finalClinicName,
+                  is_active: true,
+                });
+              if (memberInsertError) {
+                console.error("pending_payment branch clinic_members挿入エラー:", memberInsertError);
+              }
+            }
+          }
+
+          // === MEO自動セットアップ ===
+          if (finalSelectedApps.includes("meo") && pendingUserId) {
+            const pendingMeoClinicId = `clinic-${Date.now().toString(36)}`;
+            await supabase
+              .from("meo_user_settings")
+              .upsert(
+                {
+                  user_id: pendingUserId,
+                  anthropic_key: "",
+                  active_clinic_id: pendingMeoClinicId,
+                  serp_api_key: "",
+                },
+                { onConflict: "user_id" }
+              );
+            await supabase
+              .from("meo_clinics")
+              .upsert(
+                {
+                  id: pendingMeoClinicId,
+                  user_id: pendingUserId,
+                  name: finalClinicName,
+                  area: "",
+                  keywords: [],
+                  category: "整体院",
+                  owner_name: "",
+                },
+                { onConflict: "id,user_id" }
+              );
+          }
+
+          // === ウェルカムメール送信（新規Auth作成時のみ。既存ユーザー再登録時は重複送信回避） ===
+          if (pendingNewPassword && process.env.RESEND_API_KEY) {
+            const { sendAppWelcomeEmail, sendAdminNotification } = await import("@/app/lib/email");
+            for (const appId of finalSelectedApps) {
+              sendAppWelcomeEmail({
+                to: finalEmail,
+                clinicName: finalClinicName,
+                clinicId: finalClinicId,
+                password: pendingNewPassword,
+                appId,
+                planType: planTypePending,
+              }).catch(err => console.error(`${appId}ウェルカムメールエラー:`, err));
+            }
+            sendAdminNotification({
+              clinicName: finalClinicName,
+              email: finalEmail,
+              planType: planTypePending,
+              selectedApps: finalSelectedApps,
+            }).catch(err => console.error("管理者通知メールエラー:", err));
+          }
+
+          // === LINE通知 ===
+          const pendingAppLabels = finalSelectedApps.map(id => {
+            const cfg = APP_CONFIGS.find(a => a.id === id);
+            return cfg?.label || id;
+          });
+          const pendingLineMsg = [
+            "【新規契約（事前登録分有効化）】",
+            `院名: ${finalClinicName}`,
+            `メール: ${finalEmail}`,
+            `プラン: ${planName} (${planTypePending})`,
+            `アプリ: ${pendingAppLabels.join(", ")}`,
+            `院ID: ${finalClinicId}`,
+          ].join("\n");
+          sendLINENotify(pendingLineMsg).catch(err => console.error("LINE通知エラー:", err));
+
+          console.log(
+            `管理画面アカウント有効化＋プロビジョニング完了: clinic_id=${finalClinicId}, email=${finalEmail}, provisioned=${!!pendingNewPassword}`
+          );
           await logWebhookEvent(
             supabase,
             event.type,
             event.id,
-            { clinic_id: pendingAccount.clinic_id, email: pendingAccount.email },
+            {
+              clinic_id: finalClinicId,
+              email: finalEmail,
+              provisioned: !!pendingNewPassword,
+              selected_apps: finalSelectedApps,
+            },
             "success",
-            "管理画面作成アカウントを有効化"
+            "pending_payment 有効化＋プロビジョニング"
           );
           break;
         }
