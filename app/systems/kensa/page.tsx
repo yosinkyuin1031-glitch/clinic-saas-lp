@@ -168,14 +168,14 @@ export default function KensaPage() {
       <section className="bg-gray-50 py-16" id="pricing">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">料金プラン</h2>
-          <p className="text-center text-gray-500 mb-12">モニター枠は通常価格より割安。追加機能は完成次第、全員に自動開放します。</p>
+          <p className="text-center text-gray-500 mb-12">モニター枠は通常価格より割安。高度な検査機能は今後オプションとして追加予定です。</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
               <p className="text-sm font-bold text-gray-600 mb-2">通常プラン</p>
               <p className="text-4xl font-bold text-gray-900 mb-1">5,500<span className="text-lg font-normal text-gray-500">円/月</span></p>
               <p className="text-sm text-gray-500 mb-6">初期費用 0円</p>
               <ul className="space-y-3 text-sm text-gray-600">
-                {["5段階検査ウィザード","段階的原因特定ロジック","患者用・施術者用PDF出力","セルフケア自動提案","経過比較・改善度トラッキング","患者数無制限","導入サポート付き","今後追加される機能も全て込み"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-blue-500 flex-shrink-0">✓</span>{t}</li>)}
+                {["5段階検査ウィザード","段階的原因特定ロジック","患者用・施術者用PDF出力","セルフケア自動提案","経過比較・改善度トラッキング","患者数無制限","導入サポート付き","高度な検査機能はオプションで追加可能"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-blue-500 flex-shrink-0">✓</span>{t}</li>)}
               </ul>
               <div className="mt-8">
                 <PurchaseButton href="https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k" label="通常プランで始める" variant="secondary" className="w-full" />
@@ -187,7 +187,7 @@ export default function KensaPage() {
               <p className="text-4xl font-bold mb-1">3,980<span className="text-lg font-normal text-blue-200">円/月</span></p>
               <p className="text-sm text-blue-200 mb-6">初期費用 0円</p>
               <ul className="space-y-3 text-sm text-blue-100">
-                {["通常プランと同一機能","今後追加される機能も自動開放","導入サポート付き","フィードバック協力が条件","枠が埋まり次第、モニター募集は終了"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-yellow-300 flex-shrink-0">✓</span>{t}</li>)}
+                {["通常プランと同一機能","3,980円で据え置き（オプション追加しない限り）","オプション追加時は通常プラン5,500円に","導入サポート付き","フィードバック協力が条件"].map(t=><li key={t} className="flex items-start gap-2"><span className="text-yellow-300 flex-shrink-0">✓</span>{t}</li>)}
               </ul>
               <a href="https://lin.ee/qvChhK3" target="_blank" rel="noopener noreferrer" className="block mt-8 text-center bg-white text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-50 transition">モニター枠を相談する</a>
             </div>
