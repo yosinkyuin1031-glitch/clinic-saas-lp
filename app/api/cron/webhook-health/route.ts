@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import { sendLINENotify } from "@/app/lib/line-notify";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-18.acacia" as Stripe.LatestApiVersion,
+  apiVersion: "2026-02-25.clover" as Stripe.LatestApiVersion,
 });
 
 // Stripe Webhookの死活監視
