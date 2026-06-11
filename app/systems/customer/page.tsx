@@ -31,26 +31,46 @@ export default function CustomerPage() {
       </header>
 
       {/* セクション1: ヒーロー（モニター募集） */}
-      <section className="max-w-5xl mx-auto px-6 py-20 text-center">
-        <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">モニター5名限定 / 初期費用0円</span>
-        <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 顧客管理・経営分析システム</p>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-          治療院の経営を、<br />
-          <span className="text-blue-600">数字で動かせ。</span>
-        </h1>
-        <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">
-          LTV・ROAS・純新規売上・リピート率・エリア分析。<br />
-          経営に必要な数字が、全部見える。月額5,500円から。
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-          <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める（初期費用0円） →</a>
-          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">本物の管理画面を触ってみる</a>
-          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-blue-600 text-blue-600 hover:bg-blue-50">LINEで相談する</a>
+      <section className="max-w-6xl mx-auto px-6 pt-16 pb-24 md:pt-20 md:pb-32">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* 左: テキスト・CTA */}
+          <div className="text-center lg:text-left">
+            <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">モニター5名限定 / 初期費用0円</span>
+            <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 顧客管理・経営分析システム</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+              治療院の経営を、<br />
+              <span className="text-blue-600">数字で動かせ。</span>
+            </h1>
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              LTV・ROAS・純新規売上・リピート率・エリア分析。<br />
+              経営に必要な数字が、全部見える。月額5,500円から。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
+              <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める →</a>
+              <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-base font-bold px-8 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">本物の管理画面を触る</a>
+            </div>
+            <p className="mt-4 text-sm text-gray-400">月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
+            <p className="mt-2 text-xs text-gray-400">
+              購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
+            </p>
+          </div>
+          {/* 右: 管理画面プレビュー（メイン+装飾2枚） */}
+          <div className="relative">
+            <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
+              <Image src="/screens/clinic-core/home.png" alt="Clinic Core ホーム画面" width={1440} height={900} className="w-full h-auto" priority />
+            </div>
+            <div className="absolute -bottom-10 -right-3 md:-right-8 w-40 md:w-56 hidden sm:block">
+              <div className="rounded-xl overflow-hidden shadow-2xl border-4 border-white">
+                <Image src="/screens/clinic-core/roas.png" alt="ROAS分析" width={800} height={500} className="w-full h-auto" />
+              </div>
+            </div>
+            <div className="absolute -top-8 -left-3 md:-left-8 w-36 md:w-48 hidden sm:block">
+              <div className="rounded-xl overflow-hidden shadow-xl border-4 border-white">
+                <Image src="/screens/clinic-core/ltv.png" alt="LTV分析" width={800} height={500} className="w-full h-auto" />
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="mt-4 text-sm text-gray-400">モニター価格：月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
-        <p className="mt-2 text-xs text-gray-400">
-          購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
-        </p>
       </section>
 
       {/* モニター募集バナー */}
@@ -134,24 +154,29 @@ export default function CustomerPage() {
           <p className="text-center text-gray-500 mb-12">治療院経営に必要な12の機能</p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告費と来院動機を自動マッチング。反応率・CV率・CPAがリアルタイムで見える。WEB広告もチラシも一元管理。" },
+              { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告費と来院動機を自動マッチング。反応率・CV率・CPAがリアルタイムで見える。WEB広告もチラシも一元管理。", img: "roas" },
               { icon: "💰", title: "純新規売上 / 既存売上分析", body: "その月・その年に初来院した患者の全売上を「純新規売上」として自動分離。年間の新規獲得効果が数字で見える。" },
               { icon: "📍", title: "エリア × 媒体クロス分析", body: "どの地域から・どの媒体で患者が来ているか一目で把握。エリア別LTVと媒体別集客内訳を同時に確認。" },
-              { icon: "🔔", title: "リピート分析・離反アラート", body: "2回〜10回の回数別リピート率、年代別×性別・症状・経路のクロス集計。来院が止まった患者を自動検知。離反判定の日数は院ごとにカスタマイズ可。" },
-              { icon: "📈", title: "月別売上・稼働率グラフ", body: "時間帯別・曜日別の稼働率まで自動集計。1日の稼働枠の埋まり具合がひと目で分かる。" },
+              { icon: "🔔", title: "リピート分析・離反アラート", body: "2回〜10回の回数別リピート率、年代別×性別・症状・経路のクロス集計。来院が止まった患者を自動検知。離反判定の日数は院ごとにカスタマイズ可。", img: "ltv" },
+              { icon: "📈", title: "月別売上・稼働率グラフ", body: "時間帯別・曜日別の稼働率まで自動集計。1日の稼働枠の埋まり具合がひと目で分かる。", img: "stats" },
               { icon: "📮", title: "はがきDM宛名印刷・CSV出力", body: "離反患者リストをそのままDM印刷。患者データCSV出力にも対応。" },
-              { icon: "👥", title: "スタッフ別売上・日報・金種管理", body: "複数スタッフの院に対応。施術スタッフ別の売上ランキング、1日単位の日報、金種(現金/カード/QR等)を院ごとにカスタマイズ。一括入力でシフトと金種を一括適用も可能。" },
+              { icon: "👥", title: "スタッフ別売上・日報・金種管理", body: "複数スタッフの院に対応。施術スタッフ別の売上ランキング、1日単位の日報、金種(現金/カード/QR等)を院ごとにカスタマイズ。一括入力でシフトと金種を一括適用も可能。", img: "by-staff" },
               { icon: "🎫", title: "回数券・サブスク管理", body: "発行・残回数・有効期限を自動管理。残りわずか・期限切れを通知し、再販タイミングを逃さない。" },
-              { icon: "📱", title: "SMS送信・予約リマインド", body: "離反予兆の患者・予約前日の患者へ一斉SMS。テンプレで院長の手間を最小化。送信履歴も残る。" },
+              { icon: "📱", title: "SMS送信・予約リマインド", body: "離反予兆の患者・予約前日の患者へ一斉SMS。テンプレで院長の手間を最小化。送信履歴も残る。", img: "reservation" },
               { icon: "🤖", title: "AI経営アドバイス", body: "離反リスク・リピート率低下・LTV高い動機など、数字の異変をAIが文章で示唆。次に取るべき手が分かる。" },
               { icon: "🎯", title: "売上シミュレーター", body: "月商目標から逆算して、必要な患者数・単価・リピート率を試算。値上げや稼働率改善のシナリオを並べて検討できる。" },
               { icon: "🎤", title: "来院一括入力（音声・テキスト）", body: "閉院後に1日分の伝票を音声orテキストでまとめて入力。AIが解析してスタッフ・金種を一括適用、2タップで保存完了。" },
             ].map((f) => (
               <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
                 <span className="text-3xl flex-shrink-0">{f.icon}</span>
-                <div>
+                <div className="flex-1">
                   <h3 className="font-bold text-gray-900 mb-2">{f.title}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">{f.body}</p>
+                  {f.img && (
+                    <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
+                      <Image src={`/screens/clinic-core/${f.img}.png`} alt={f.title} width={800} height={500} className="w-full h-auto" />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
