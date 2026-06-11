@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PurchaseButton from "../../components/PurchaseButton";
 
 export const metadata: Metadata = {
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
 const STRIPE_MONITOR_URL = "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07";
 const STRIPE_NORMAL_URL = "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06";
 const LINE_URL = "https://lin.ee/qvChhK3";
-const DEMO_URL = "https://clinic-core-demo.vercel.app";
+const DEMO_URL = "https://customer-mgmt.vercel.app/login";
+const DEMO_EMAIL = "oguchi.demo@gmail.com";
+const DEMO_PASSWORD = "DemoPass2026";
 
 export default function CustomerPage() {
   return (
@@ -41,7 +44,7 @@ export default function CustomerPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
           <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める（初期費用0円） →</a>
-          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">デモを触ってみる（ログイン不要）</a>
+          <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">本物の管理画面を触ってみる</a>
           <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl transition border-2 border-blue-600 text-blue-600 hover:bg-blue-50">LINEで相談する</a>
         </div>
         <p className="mt-4 text-sm text-gray-400">モニター価格：月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
@@ -128,15 +131,21 @@ export default function CustomerPage() {
         <div className="max-w-5xl mx-auto px-6">
           <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Features</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">Clinic Coreでできること</h2>
-          <p className="text-center text-gray-500 mb-12">治療院経営に必要な6つの分析機能</p>
+          <p className="text-center text-gray-500 mb-12">治療院経営に必要な12の機能</p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告費と来院動機を自動マッチング。反応率・CV率・CPAがリアルタイムで見える。WEB広告もチラシも一元管理。" },
               { icon: "💰", title: "純新規売上 / 既存売上分析", body: "その月・その年に初来院した患者の全売上を「純新規売上」として自動分離。年間の新規獲得効果が数字で見える。" },
               { icon: "📍", title: "エリア × 媒体クロス分析", body: "どの地域から・どの媒体で患者が来ているか一目で把握。エリア別LTVと媒体別集客内訳を同時に確認。" },
-              { icon: "🔔", title: "リピート分析・離反アラート", body: "2回〜10回の回数別リピート率、年代別×性別・症状・経路のクロス集計。来院が止まった患者を自動検知。" },
-              { icon: "📈", title: "月別売上・稼働率グラフ", body: "時間帯別・曜日別の稼働率まで自動集計。数字で経営判断ができる。" },
+              { icon: "🔔", title: "リピート分析・離反アラート", body: "2回〜10回の回数別リピート率、年代別×性別・症状・経路のクロス集計。来院が止まった患者を自動検知。離反判定の日数は院ごとにカスタマイズ可。" },
+              { icon: "📈", title: "月別売上・稼働率グラフ", body: "時間帯別・曜日別の稼働率まで自動集計。1日の稼働枠の埋まり具合がひと目で分かる。" },
               { icon: "📮", title: "はがきDM宛名印刷・CSV出力", body: "離反患者リストをそのままDM印刷。患者データCSV出力にも対応。" },
+              { icon: "👥", title: "スタッフ別売上・日報・金種管理", body: "複数スタッフの院に対応。施術スタッフ別の売上ランキング、1日単位の日報、金種(現金/カード/QR等)を院ごとにカスタマイズ。一括入力でシフトと金種を一括適用も可能。" },
+              { icon: "🎫", title: "回数券・サブスク管理", body: "発行・残回数・有効期限を自動管理。残りわずか・期限切れを通知し、再販タイミングを逃さない。" },
+              { icon: "📱", title: "SMS送信・予約リマインド", body: "離反予兆の患者・予約前日の患者へ一斉SMS。テンプレで院長の手間を最小化。送信履歴も残る。" },
+              { icon: "🤖", title: "AI経営アドバイス", body: "離反リスク・リピート率低下・LTV高い動機など、数字の異変をAIが文章で示唆。次に取るべき手が分かる。" },
+              { icon: "🎯", title: "売上シミュレーター", body: "月商目標から逆算して、必要な患者数・単価・リピート率を試算。値上げや稼働率改善のシナリオを並べて検討できる。" },
+              { icon: "🎤", title: "来院一括入力（音声・テキスト）", body: "閉院後に1日分の伝票を音声orテキストでまとめて入力。AIが解析してスタッフ・金種を一括適用、2タップで保存完了。" },
             ].map((f) => (
               <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
                 <span className="text-3xl flex-shrink-0">{f.icon}</span>
@@ -146,6 +155,58 @@ export default function CustomerPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* セクション4.5: 本物の管理画面を体験できるデモ */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-emerald-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Live Demo</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">本物の管理画面を、そのまま触れます</h2>
+          <p className="text-center text-gray-600 mb-10 leading-relaxed">これはモック画面ではありません。本番システムに「デモ整骨院」アカウントを用意してあり、<br/>テスト用患者80名・伝票2,600件・24ヶ月分の売上データ・予約データ入りで全画面そのまま触れます。</p>
+
+          {/* スクリーンショットギャラリー */}
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              { img: 'home',     title: 'ホーム画面', desc: '今月の売上・新規・リピート率を一目で把握' },
+              { img: 'patients', title: '患者管理', desc: 'カルテ・来院履歴・LTV・主訴・エリアを一元管理' },
+              { img: 'roas',     title: 'ROAS分析', desc: '来店動機別の広告費対効果を可視化' },
+              { img: 'ltv',      title: 'LTV分析', desc: '患者ごとの生涯売上を自動算出・離反予兆を検知' },
+              { img: 'by-staff', title: 'スタッフ別売上', desc: '施術者ごとの売上・指名率を見える化' },
+              { img: 'stats',    title: '月間統計', desc: '24ヶ月の売上推移をグラフで把握' },
+              { img: 'master',   title: 'マスター管理', desc: 'メニュー・症状・職業・来店動機を院ごとに設定' },
+              { img: 'reservation', title: '予約管理', desc: 'スタッフ別・時間帯別の予約を1画面で管理' },
+            ].map((g) => (
+              <div key={g.img} className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition">
+                <div className="relative w-full aspect-[16/10] bg-gray-50 border-b border-gray-100">
+                  <Image
+                    src={`/screens/clinic-core/${g.img}.png`}
+                    alt={g.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-sm text-gray-900 mb-1">{g.title}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">{g.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 text-center">
+            <p className="text-sm text-gray-700 mb-4 font-medium">👇 上の画面は全部、いまから触れます</p>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition shadow-md">
+              デモ版にログインして触る
+            </a>
+            <div className="mt-4 inline-block text-left bg-gray-50 border border-gray-200 rounded-lg px-5 py-3 text-sm">
+              <p className="text-gray-500 text-xs mb-2">テスト用ログイン情報（コピペで使えます）</p>
+              <p className="font-mono text-gray-800">メール: <span className="select-all">{DEMO_EMAIL}</span></p>
+              <p className="font-mono text-gray-800">パスワード: <span className="select-all">{DEMO_PASSWORD}</span></p>
+            </div>
+            <p className="text-xs text-gray-500 mt-3">スマホ・PCどちらでも触れます</p>
           </div>
         </div>
       </section>
@@ -382,7 +443,7 @@ export default function CustomerPage() {
           <p className="text-blue-100 mb-8">月額5,500円で、治療院経営に必要な数字が全て手に入る。<br />モニター期間中は初期費用0円。</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow">モニター価格で始める →</a>
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">デモを試す（ログイン不要）</a>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">本物の管理画面を試す</a>
             <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
           </div>
         </div>
