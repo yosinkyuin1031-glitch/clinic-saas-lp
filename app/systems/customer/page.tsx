@@ -17,9 +17,7 @@ export const metadata: Metadata = {
 const STRIPE_MONITOR_URL = "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07";
 const STRIPE_NORMAL_URL = "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06";
 const LINE_URL = "https://lin.ee/qvChhK3";
-const DEMO_URL = "https://customer-mgmt.vercel.app/login";
-const DEMO_EMAIL = "oguchi.demo@gmail.com";
-const DEMO_PASSWORD = "DemoPass2026";
+const DEMO_URL = "https://clinic-core-demo.vercel.app";
 
 export default function CustomerPage() {
   return (
@@ -224,14 +222,9 @@ export default function CustomerPage() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 text-center">
             <p className="text-sm text-gray-700 mb-4 font-medium">👇 上の画面は全部、いまから触れます</p>
             <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-lg font-bold px-10 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition shadow-md">
-              デモ版にログインして触る
+              デモ版を開く（ログイン不要）
             </a>
-            <div className="mt-4 inline-block text-left bg-gray-50 border border-gray-200 rounded-lg px-5 py-3 text-sm">
-              <p className="text-gray-500 text-xs mb-2">テスト用ログイン情報（コピペで使えます）</p>
-              <p className="font-mono text-gray-800">メール: <span className="select-all">{DEMO_EMAIL}</span></p>
-              <p className="font-mono text-gray-800">パスワード: <span className="select-all">{DEMO_PASSWORD}</span></p>
-            </div>
-            <p className="text-xs text-gray-500 mt-3">スマホ・PCどちらでも触れます</p>
+            <p className="text-xs text-gray-500 mt-3">ボタンを押すと自動でデモアカウントにログインします・スマホ/PC両対応</p>
           </div>
         </div>
       </section>
