@@ -423,6 +423,17 @@ export default function CustomerPage() {
                 ],
                 quote: "顧客管理に手間がかかると感じている方や、数字をすぐに把握したい先生におすすめです。",
               },
+              {
+                name: "中庄谷先生",
+                clinic: "治療家（院名・地域は非公開）",
+                background: "以前は有料の月14,000円の顧客管理システムを利用していたが、毎月の固定費負担と『見たい数字を一瞬で出せない』ことが課題だった。Clinic Coreに乗り換えて変わったこと：",
+                points: [
+                  "月14,000円から5,500円に固定費を大幅削減",
+                  "見たい数字が一瞬で出せて、分析の時短ができる",
+                  "毎月の数字統計を見ながら自己分析を回せている",
+                ],
+                quote: "自院の経営設計がどんぶり勘定になっている先生で、数字分析をしっかりして理想の治療院経営をしたい方におすすめです。",
+              },
             ].map((caseItem) => (
               <div key={caseItem.name} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                 <div className="flex items-center gap-4 mb-6">
