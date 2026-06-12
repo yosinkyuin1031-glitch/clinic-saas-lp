@@ -1482,10 +1482,10 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <p className="text-white font-bold mb-3">運営会社</p>
+                <p className="text-white font-bold mb-3">運営</p>
                 <div className="space-y-2">
-                  <p className="text-gray-400">大口神経整体院</p>
-                  <p className="text-gray-400">AI Solutions</p>
+                  <p className="text-gray-400">大口アプリラボ</p>
+                  <p className="text-gray-400 text-xs">代表 大口 陽平 / 大口神経整体院 院長</p>
                   <a href="https://lin.ee/8P11rM4" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition">LINEで相談</a>
                 </div>
               </div>

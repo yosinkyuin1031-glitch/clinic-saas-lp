@@ -32,7 +32,7 @@ export default function PrivacyPage() {
           {/* 前文 */}
           <section>
             <p>
-              AI Solutions（以下「当社」といいます）は、「ClinicApps」（以下「本サービス」といいます）の提供にあたり、お客様の個人情報の保護を重要な責務と認識し、個人情報の保護に関する法律（個人情報保護法）その他関連法令を遵守いたします。本プライバシーポリシーは、当社における個人情報の取り扱いについて定めるものです。
+              大口アプリラボ（以下「当社」といいます）は、「ClinicApps」（以下「本サービス」といいます）の提供にあたり、お客様の個人情報の保護を重要な責務と認識し、個人情報の保護に関する法律（個人情報保護法）その他関連法令を遵守いたします。本プライバシーポリシーは、当社における個人情報の取り扱いについて定めるものです。
             </p>
           </section>
 
@@ -323,7 +323,7 @@ export default function PrivacyPage() {
             </p>
             <div className="bg-gray-50 rounded-lg p-4 space-y-1 text-sm">
               <p>
-                <span className="font-medium">事業者名：</span>AI Solutions
+                <span className="font-medium">事業者名：</span>大口アプリラボ
               </p>
               <p>
                 <span className="font-medium">個人情報取扱責任者：</span>

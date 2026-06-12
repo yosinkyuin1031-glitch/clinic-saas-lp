@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "特定商取引法に基づく表記 | ClinicDX",
-  description: "ClinicDXの特定商取引法に基づく表記ページです。",
+  title: "特定商取引法に基づく表記 | ClinicApps",
+  description: "ClinicApps（大口アプリラボ）の特定商取引法に基づく表記ページです。",
 };
 
 export default function TokushohoPage() {
@@ -16,7 +16,7 @@ export default function TokushohoPage() {
             &larr; トップに戻る
           </Link>
           <p className="mt-6 text-sm font-semibold text-blue-600 tracking-widest">
-            ClinicDX
+            ClinicApps
           </p>
           <h1 className="mt-2 text-3xl font-bold text-gray-900">
             特定商取引法に基づく表記
@@ -27,8 +27,8 @@ export default function TokushohoPage() {
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <table className="w-full text-sm leading-relaxed">
             <tbody className="divide-y divide-gray-200">
-              <Row label="販売事業者名" value="AI Solutions（個人事業）" />
-              <Row label="代表者名" value="大口陽平" />
+              <Row label="販売事業者名" value="大口アプリラボ（個人事業）" />
+              <Row label="代表者名" value="大口 陽平" />
               <Row
                 label="所在地"
                 value="〒558-0004 大阪府大阪市住吉区長居東4-2-7 長居中央ビル304"
@@ -50,40 +50,35 @@ export default function TokushohoPage() {
                       各システムの価格（税込）：
                     </p>
                     <PriceItem
-                      name="検査システム"
+                      name="カラダマップ（検査システム）"
                       monthly="5,500円/月"
-                      buyout="55,000円"
+                      buyout="-"
                     />
                     <PriceItem
-                      name="顧客管理"
-                      monthly="4,980円/月"
-                      buyout="49,800円"
+                      name="Clinic Core（顧客管理）"
+                      monthly="5,500円/月（モニター枠は初期費用0円・通常は初期費用33,000円）"
+                      buyout="-"
                     />
                     <PriceItem
                       name="予約管理"
-                      monthly="2,980円/月"
-                      buyout="29,800円"
+                      monthly="3,980円/月（初期費用11,000円）"
+                      buyout="-"
                     />
                     <PriceItem
                       name="WEB問診"
-                      monthly="2,980円/月"
-                      buyout="29,800円"
+                      monthly="2,980円/月（初期費用11,000円）"
+                      buyout="-"
                     />
                     <PriceItem
                       name="MEO勝ち上げくん"
-                      monthly="2,980円/月"
-                      buyout="29,800円"
-                    />
-                    <PriceItem
-                      name="睡眠チェック"
-                      monthly="1,980円/月"
-                      buyout="19,800円"
+                      monthly="3,980円/月（初期費用11,000円）"
+                      buyout="-"
                     />
                     <p className="text-xs text-gray-500 mt-2">
-                      ※買切りプランご購入の場合、別途年間保守契約（月額料金の約10%×12ヶ月分）が必要です。
+                      ※モニター枠は人数限定です。定員に達し次第、通常料金（初期費用込み）に切り替わります。
                     </p>
                     <p className="text-xs text-gray-500">
-                      ※セット割引等の詳細は販売ページをご確認ください。
+                      ※セット割引・キャンペーン等の詳細は販売ページをご確認ください。
                     </p>
                   </div>
                 }
@@ -102,11 +97,7 @@ export default function TokushohoPage() {
                   <div className="space-y-1">
                     <p>
                       <span className="font-medium">月額プラン：</span>
-                      ご契約時に初月分を決済。以降、毎月自動更新にて課金されます。
-                    </p>
-                    <p>
-                      <span className="font-medium">買切りプラン：</span>
-                      ご注文時に一括決済。年間保守契約料は別途年1回の決済となります。
+                      ご契約時に初月分（および初期費用が発生する場合はその費用）を決済。以降、毎月自動更新にて課金されます。
                     </p>
                   </div>
                 }
@@ -121,11 +112,11 @@ export default function TokushohoPage() {
                   <div className="space-y-1">
                     <p>
                       <span className="font-medium">月額プラン：</span>
-                      いつでも解約可能です。解約のお申し出をいただいた月の末日をもってサービスを停止いたします。日割り返金はいたしません。
+                      最低契約期間（原則6ヶ月、サービスにより異なります）経過後はいつでも解約可能です。最低契約期間内に解約された場合、残存月数分の早期解約金を申し受けます。解約のお申し出をいただいた月の末日をもってサービスを停止いたします。日割り返金はいたしません。
                     </p>
                     <p>
-                      <span className="font-medium">買切りプラン：</span>
-                      デジタルコンテンツの性質上、アカウント発行後の返品・返金には応じかねます。
+                      <span className="font-medium">アカウント発行後の返品・返金：</span>
+                      デジタルサービスの性質上、ご利用開始後の返金には応じかねます。
                     </p>
                   </div>
                 }
