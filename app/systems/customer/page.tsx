@@ -236,6 +236,40 @@ export default function CustomerPage() {
         </div>
       </section>
 
+      {/* セクション4.4: 動く操作デモ */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Live Action</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">使ってる感じを、動画で見る</h2>
+          <p className="text-center text-gray-600 mb-10 leading-relaxed">スクショだけでは伝わらない、画面の動き・タップの軽さをそのまま。</p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { src: 'patients-overview', title: '患者一覧 → 詳細', desc: 'LTV・主訴・来院履歴が1画面で見える' },
+              { src: 'roas-analysis',      title: 'ROAS分析', desc: '来店動機別・症状別をワンタップで切替' },
+              { src: 'ltv-analysis',       title: 'LTV分析', desc: '生涯売上をスクロールで把握' },
+              { src: 'master-menu',        title: 'マスター編集', desc: 'メニュー・料金を院ごとに自由設定' },
+            ].map((v) => (
+              <div key={v.src} className="bg-white border border-gray-100 rounded-2xl shadow-md overflow-hidden">
+                <video
+                  src={`/screens/clinic-core/videos/${v.src}.webm`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full aspect-[16/10] object-cover bg-gray-100"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-sm text-gray-900 mb-1">{v.title}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">{v.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-xs text-gray-400 mt-6">※ 動画はデモ整骨院アカウントの実画面を録画したものです（音声なし）</p>
+        </div>
+      </section>
+
       {/* セクション4.5: デモアプリを体験できる */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-emerald-50">
         <div className="max-w-6xl mx-auto px-6">
