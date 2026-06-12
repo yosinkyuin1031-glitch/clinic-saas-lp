@@ -71,29 +71,17 @@ export default function CustomerPage() {
         </div>
       </section>
 
-      {/* セクション1.5: 実績バッジ（ライブDB集計値） */}
-      <section className="max-w-6xl mx-auto px-6 -mt-4 mb-12">
-        <div className="bg-white border border-gray-100 rounded-2xl shadow-lg p-6 md:p-8">
-          <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-5">実績 — 全院合計（リアルタイム集計）</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <p className="text-3xl md:text-4xl font-black text-blue-600">6<span className="text-base font-bold text-gray-500 ml-1">院</span></p>
-              <p className="text-xs text-gray-500 mt-2 leading-snug">Clinic Core<br/>導入治療院</p>
-            </div>
-            <div>
-              <p className="text-3xl md:text-4xl font-black text-blue-600">2,092<span className="text-base font-bold text-gray-500 ml-1">人</span></p>
-              <p className="text-xs text-gray-500 mt-2 leading-snug">管理中の<br/>患者データ</p>
-            </div>
-            <div>
-              <p className="text-3xl md:text-4xl font-black text-blue-600">29,229<span className="text-base font-bold text-gray-500 ml-1">件</span></p>
-              <p className="text-xs text-gray-500 mt-2 leading-snug">登録済みの<br/>来院・伝票</p>
-            </div>
-            <div>
-              <p className="text-3xl md:text-4xl font-black text-yellow-500">残り5<span className="text-base font-bold text-gray-500 ml-1">名</span></p>
-              <p className="text-xs text-gray-500 mt-2 leading-snug">モニター枠<br/>（初期費用0円）</p>
-            </div>
+      {/* セクション1.5: モニター枠カウンター（緊急性訴求） */}
+      <section className="max-w-3xl mx-auto px-6 -mt-4 mb-12">
+        <div className="bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50 border-2 border-yellow-300 rounded-2xl shadow-lg p-5 md:p-6 flex items-center justify-center gap-5">
+          <span className="text-3xl md:text-4xl">⏳</span>
+          <div className="text-left">
+            <p className="text-xs text-amber-700 uppercase tracking-widest font-bold">Monitor Limited</p>
+            <p className="text-base md:text-lg text-gray-800 font-bold leading-snug">
+              モニター枠 <span className="text-amber-600 text-2xl md:text-3xl">残り 5 名</span>
+            </p>
+            <p className="text-xs text-gray-600 mt-1">通常 33,000円の初期費用が 0円。定員に達し次第、募集を終了します。</p>
           </div>
-          <p className="text-center text-[10px] text-gray-400 mt-5">※ 数値は本番システムからの実集計値（{new Date().getFullYear()}年{new Date().getMonth() + 1}月時点）。モニター枠は応募状況により変動します。</p>
         </div>
       </section>
 
@@ -495,6 +483,57 @@ export default function CustomerPage() {
                 掲載をお待ちください。
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* セクション8.4: AI活用（Claude採用） */}
+      <section className="py-16 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-300 uppercase tracking-widest mb-3">Powered by AI</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">最先端AI「Claude」が、あなたの院の数字を読み解く</h2>
+          <p className="text-center text-gray-300 mb-12 leading-relaxed text-sm md:text-base">
+            Clinic Coreは、世界最高水準のAI <span className="font-bold text-white">Anthropic社「Claude」</span> を採用。<br/>
+            数字を見せるだけでなく、AIが院の状態を読み解いて次の一手を示します。
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-5 mb-10">
+            {[
+              {
+                icon: "🧠",
+                title: "AI経営アドバイス",
+                body: "売上・リピート率・離反指標・季節性をClaudeが総合分析。「先月と比べて何が起きていて、何をすべきか」を日本語で要約。",
+              },
+              {
+                icon: "⚠️",
+                title: "離反予兆 早期検知",
+                body: "「来なくなりそう」を、過去パターンから先読み。気づいた時にはもう遅い、を防ぐ。",
+              },
+              {
+                icon: "📈",
+                title: "売上シミュレーター",
+                body: "月商目標から、必要な患者数・単価・リピート率を逆算。値上げや稼働率改善のシナリオ比較も可能。",
+              },
+              {
+                icon: "🎤",
+                title: "音声・テキスト一括入力",
+                body: "閉院後に1日分の伝票を音声で話すだけ。AIが解析して、スタッフ・金種・メニューを自動振り分け。",
+              },
+            ].map((f) => (
+              <div key={f.title} className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6">
+                <div className="text-3xl mb-3">{f.icon}</div>
+                <h3 className="font-bold text-base mb-2">{f.title}</h3>
+                <p className="text-sm text-gray-300 leading-relaxed">{f.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-w-3xl mx-auto bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 text-center">
+            <p className="text-xs text-blue-300 uppercase tracking-widest font-bold mb-2">Why Claude</p>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Claude（クロード）は、米Anthropic社が開発する大規模言語AI。<br className="hidden md:inline"/>
+              安全性と日本語の理解力に定評があり、世界中の企業・開発者から採用されている最先端モデルです。
+            </p>
           </div>
         </div>
       </section>
