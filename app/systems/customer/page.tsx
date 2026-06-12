@@ -101,6 +101,22 @@ export default function CustomerPage() {
       {/* セクション2: 作った思い + 開発者プロフィール */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-5xl mx-auto px-6">
+          {/* ブランドビジュアル：治療×アプリ開発 */}
+          <div className="text-center mb-10">
+            <div className="inline-block relative">
+              <Image
+                src="/oguchi-character.jpg"
+                alt="治療 × アプリ開発"
+                width={220}
+                height={220}
+                className="rounded-full shadow-xl border-4 border-white"
+                priority
+              />
+            </div>
+            <p className="mt-4 text-sm font-medium text-blue-600 tracking-widest uppercase">治療 × アプリ開発</p>
+            <p className="text-xs text-gray-500 mt-1">治療家の課題を、テクノロジーで解決する</p>
+          </div>
+
           <div className="grid md:grid-cols-5 gap-12 items-start">
             <div className="md:col-span-3">
               <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">Story</p>
@@ -274,40 +290,79 @@ export default function CustomerPage() {
         <p className="text-center mt-8 text-sm text-gray-400">連携は後から追加可能。まずはClinic Core単体でお使いいただけます。</p>
       </section>
 
-      {/* セクション6: 他社比較表 */}
+      {/* セクション6: 他サービスとの比較（匿名・費用/初期/機能の3軸） */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他社サービスとの比較</h2>
-          <p className="text-center text-gray-500 mb-10">治療院に必要な分析機能を全て備えているのは、Clinic Coreだけ</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他サービスとの比較</h2>
+          <p className="text-center text-gray-500 mb-10">費用・初期費用・できることの3軸でClinic Coreの違いを整理</p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="text-left p-4 rounded-tl-xl">比較項目</th>
-                  <th className="p-4 text-center">リピクル</th>
-                  <th className="p-4 text-center">スリーズプロ</th>
-                  <th className="p-4 text-center">Excel管理</th>
+                  <th className="p-4 text-center">治療院向け<br/>顧客管理SaaS<br/><span className="text-xs font-normal opacity-80">(他社A)</span></th>
+                  <th className="p-4 text-center">業務管理型<br/>SaaS<br/><span className="text-xs font-normal opacity-80">(他社B)</span></th>
+                  <th className="p-4 text-center">Excel<br/>管理</th>
                   <th className="p-4 text-center rounded-tr-xl font-bold">Clinic Core</th>
                 </tr>
               </thead>
               <tbody>
+                {/* 1. 費用（ランニングコスト） */}
+                <tr className="bg-blue-50">
+                  <td colSpan={5} className="px-4 py-2 text-xs font-bold text-blue-700">1. 費用（ランニングコスト）</td>
+                </tr>
                 {[
-                  ["月額料金", "要問合せ", "要問合せ", "0円", "5,500円"],
-                  ["初期費用", "要問合せ", "要問合せ", "0円", "モニター0円"],
+                  ["月額料金", "非公開（要問合せ）", "非公開（要問合せ）", "0円", "5,500円"],
+                  ["最低契約期間", "1年〜（個別契約）", "1年〜（個別契約）", "なし", "6ヶ月"],
+                ].map(([item, a, b, excel, core], i) => (
+                  <tr key={`cost-${i}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    <td className="p-4 font-medium text-gray-700">{item}</td>
+                    <td className="p-4 text-center text-gray-500">{a}</td>
+                    <td className="p-4 text-center text-gray-500">{b}</td>
+                    <td className="p-4 text-center text-gray-500">{excel}</td>
+                    <td className="p-4 text-center font-bold text-blue-600">{core}</td>
+                  </tr>
+                ))}
+
+                {/* 2. 初期費用 */}
+                <tr className="bg-blue-50">
+                  <td colSpan={5} className="px-4 py-2 text-xs font-bold text-blue-700">2. 初期費用</td>
+                </tr>
+                {[
+                  ["導入費用", "数十万円〜", "数十万円〜", "0円", "モニター0円 / 通常33,000円"],
+                  ["データ移行サポート", "別料金", "別料金", "なし", "CSV取込・代行対応"],
+                ].map(([item, a, b, excel, core], i) => (
+                  <tr key={`init-${i}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    <td className="p-4 font-medium text-gray-700">{item}</td>
+                    <td className="p-4 text-center text-gray-500">{a}</td>
+                    <td className="p-4 text-center text-gray-500">{b}</td>
+                    <td className="p-4 text-center text-gray-500">{excel}</td>
+                    <td className="p-4 text-center font-bold text-blue-600">{core}</td>
+                  </tr>
+                ))}
+
+                {/* 3. できること（機能面） */}
+                <tr className="bg-blue-50">
+                  <td colSpan={5} className="px-4 py-2 text-xs font-bold text-blue-700">3. できること（機能面）</td>
+                </tr>
+                {[
                   ["LTV・ROAS・CPA自動計算", "---", "△", "---", "●"],
-                  ["純新規売上/既存売上分析", "---", "---", "---", "●"],
+                  ["純新規売上 / 既存売上分析", "---", "---", "---", "●"],
                   ["エリア×媒体クロス分析", "---", "---", "---", "●"],
                   ["年代別クロス集計", "---", "△", "---", "●"],
-                  ["リピート率（2〜10回）", "△", "△", "---", "●"],
-                  ["離反アラート", "---", "---", "---", "●"],
-                  ["はがきDM宛名印刷", "---", "---", "---", "●"],
-                  ["CSV取込・出力", "△", "●", "---", "●"],
-                  ["治療院経営者が開発", "---", "---", "---", "●"],
-                ].map(([item, repicle, threez, excel, core], i) => (
-                  <tr key={item} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                  ["リピート率（2〜10回別）", "△", "△", "---", "●"],
+                  ["離反アラート（カスタマイズ可）", "---", "---", "---", "●"],
+                  ["AI経営アドバイス", "---", "---", "---", "●"],
+                  ["売上シミュレーター", "---", "---", "---", "●"],
+                  ["来院一括入力（音声・テキスト）", "---", "---", "---", "●"],
+                  ["はがきDM宛名印刷・CSV出力", "△", "●", "---", "●"],
+                  ["スマホ・PC両対応", "△", "△", "---", "●"],
+                  ["治療院経営者が開発・自院で日次運用", "---", "---", "---", "●"],
+                ].map(([item, a, b, excel, core], i) => (
+                  <tr key={`func-${i}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                     <td className="p-4 font-medium text-gray-700">{item}</td>
-                    <td className="p-4 text-center text-gray-500">{repicle}</td>
-                    <td className="p-4 text-center text-gray-500">{threez}</td>
+                    <td className="p-4 text-center text-gray-500">{a}</td>
+                    <td className="p-4 text-center text-gray-500">{b}</td>
                     <td className="p-4 text-center text-gray-500">{excel}</td>
                     <td className="p-4 text-center font-bold text-blue-600">{core}</td>
                   </tr>
@@ -315,6 +370,7 @@ export default function CustomerPage() {
               </tbody>
             </table>
           </div>
+          <p className="text-xs text-gray-400 mt-4 leading-relaxed">※ 他社A / 他社Bは特定サービスを指すものではなく、市場で多く見られる代表的なタイプを比較のために設定しています。料金条件は公開状況・時期によって変動するため、各社の正確な情報は提供元にご確認ください。</p>
         </div>
       </section>
 
