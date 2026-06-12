@@ -71,6 +71,32 @@ export default function CustomerPage() {
         </div>
       </section>
 
+      {/* セクション1.5: 実績バッジ（ライブDB集計値） */}
+      <section className="max-w-6xl mx-auto px-6 -mt-4 mb-12">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-lg p-6 md:p-8">
+          <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-5">実績 — 全院合計（リアルタイム集計）</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <p className="text-3xl md:text-4xl font-black text-blue-600">6<span className="text-base font-bold text-gray-500 ml-1">院</span></p>
+              <p className="text-xs text-gray-500 mt-2 leading-snug">Clinic Core<br/>導入治療院</p>
+            </div>
+            <div>
+              <p className="text-3xl md:text-4xl font-black text-blue-600">2,092<span className="text-base font-bold text-gray-500 ml-1">人</span></p>
+              <p className="text-xs text-gray-500 mt-2 leading-snug">管理中の<br/>患者データ</p>
+            </div>
+            <div>
+              <p className="text-3xl md:text-4xl font-black text-blue-600">29,229<span className="text-base font-bold text-gray-500 ml-1">件</span></p>
+              <p className="text-xs text-gray-500 mt-2 leading-snug">登録済みの<br/>来院・伝票</p>
+            </div>
+            <div>
+              <p className="text-3xl md:text-4xl font-black text-yellow-500">残り5<span className="text-base font-bold text-gray-500 ml-1">名</span></p>
+              <p className="text-xs text-gray-500 mt-2 leading-snug">モニター枠<br/>（初期費用0円）</p>
+            </div>
+          </div>
+          <p className="text-center text-[10px] text-gray-400 mt-5">※ 数値は本番システムからの実集計値（{new Date().getFullYear()}年{new Date().getMonth() + 1}月時点）。モニター枠は応募状況により変動します。</p>
+        </div>
+      </section>
+
       {/* モニター募集バナー */}
       <section className="bg-gray-900 py-12">
         <div className="max-w-3xl mx-auto px-6 text-center">
