@@ -410,7 +410,7 @@ export default function CustomerPage() {
         <div className="max-w-5xl mx-auto px-6">
           <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Case Study</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">導入事例</h2>
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto space-y-6">
             {[
               {
                 name: "山口先生",
@@ -448,6 +448,16 @@ export default function CustomerPage() {
                 </div>
               </div>
             ))}
+
+            {/* 今後追加予定のテーザー */}
+            <div className="bg-gradient-to-br from-blue-50 to-emerald-50 border-2 border-dashed border-blue-200 rounded-2xl p-8 text-center">
+              <p className="text-sm font-medium text-blue-600 uppercase tracking-widest mb-2">More Coming Soon</p>
+              <p className="font-bold text-gray-900 mb-2">他にも続々と導入院が増えています</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                整体院・鍼灸接骨院・整骨院など、現在モニターご利用中の先生方のインタビュー記事を順次公開予定です。<br />
+                掲載をお待ちください。
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -505,7 +515,7 @@ export default function CustomerPage() {
                 ))}
               </ul>
               <div className="mt-8">
-                <PurchaseButton href={STRIPE_MONITOR_URL} label="モニター価格で始める →" variant="primary" className="w-full" />
+                <PurchaseButton href={STRIPE_MONITOR_URL} label="モニター価格で始める →" variant="primary" onDark className="w-full" />
               </div>
             </div>
           </div>
@@ -518,12 +528,11 @@ export default function CustomerPage() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">よくある質問</h2>
         <div className="space-y-6 max-w-2xl mx-auto">
           {[
-            { q: "モニターは何をすればいいですか？", a: "特別な作業はありません。通常通り院でお使いいただき、使いにくい点や改善要望があればLINEでフィードバックをいただくだけです。" },
+            { q: "モニターは何をすればいいですか？", a: "通常通り院でお使いいただいた上で、改善のためのフィードバックにご協力いただきます。具体的には、(1) 使いにくい点・改善要望をLINEでお知らせいただく、(2) 1〜3ヶ月ご利用後にインタビュー（オンライン30分程度）に応じていただく、(3) 使ってみた感想を文章・写真等でいただく、の3点です。インタビュー内容や感想はLP・SNS等で導入事例として掲載させていただく場合があります（事前確認あり）。" },
             { q: "モニター期間が終わったらどうなりますか？", a: "モニター期間終了後も月額5,500円のまま継続いただけます。通常の初期費用33,000円が免除された状態がずっと続きます。" },
             { q: "既存データは移行できますか？", a: "CSVインポートに対応しています。ただし現在お使いのシステムによって移行できる範囲が異なります。まずはLINEでご相談ください。" },
             { q: "最低契約期間はありますか？", a: "6ヶ月の最低契約期間があります。6ヶ月経過後はいつでも解約可能です。" },
             { q: "サポートはどのように受けられますか？", a: "LINEにて個別サポートを行っています。初期設定から操作方法まで丁寧に対応します。" },
-            { q: "カラダマップやWEB問診がなくても使えますか？", a: "はい。Clinic Core単体でご利用いただけます。後から連携を追加することも可能です。" },
           ].map(({ q, a }) => (
             <div key={q} className="border border-gray-100 rounded-2xl p-6 bg-white shadow-sm">
               <p className="font-bold text-gray-900 mb-2">Q. {q}</p>
