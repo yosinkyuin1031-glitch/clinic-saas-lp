@@ -45,7 +45,7 @@ export default function CustomerPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
               <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める →</a>
-              <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-base font-bold px-8 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">本物の管理画面を触る</a>
+              <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-base font-bold px-8 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">デモアプリを試す</a>
             </div>
             <p className="mt-4 text-sm text-gray-400">月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
             <p className="mt-2 text-xs text-gray-400">
@@ -98,11 +98,11 @@ export default function CustomerPage() {
         </div>
       </section>
 
-      {/* セクション2: 作った思い */}
+      {/* セクション2: 作った思い + 開発者プロフィール */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12 items-center">
-            <div className="md:col-span-2">
+          <div className="grid md:grid-cols-5 gap-12 items-start">
+            <div className="md:col-span-3">
               <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">Story</p>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">なぜ、このシステムを作ったのか。</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
@@ -113,11 +113,35 @@ export default function CustomerPage() {
                 <p>広告費をかけても怖くない。どこに集中すべきかわかる。<br />そんな状態で経営できる治療家を増やしたくて、Clinic Coreを作りました。</p>
               </div>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-28 h-28 rounded-full flex items-center justify-center text-4xl font-black text-white bg-blue-600">大</div>
-              <p className="font-bold text-lg mt-4 text-gray-900">大口 陽平</p>
-              <p className="text-sm mt-1 text-gray-500">治療院経営者 / 開発者</p>
-              <p className="text-xs mt-2 text-gray-400">大口神経整体院 院長<br />4事業を経営しながら自院で毎日使用</p>
+
+            {/* 右: 開発者プロフィールカード */}
+            <div className="md:col-span-2">
+              <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div className="aspect-[5/6] relative bg-gray-100">
+                  <Image
+                    src="/oguchi-profile.jpg"
+                    alt="大口陽平"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-5">
+                  <p className="text-xs text-blue-600 font-medium uppercase tracking-widest mb-2">Developer</p>
+                  <p className="font-bold text-xl text-gray-900">大口 陽平</p>
+                  <p className="text-sm text-gray-500 mt-1">治療院経営者 / アプリ開発者</p>
+                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-2 text-xs text-gray-600 leading-relaxed">
+                    <p>・<span className="font-medium text-gray-800">大口神経整体院</span> 院長（名古屋）</p>
+                    <p>・<span className="font-medium text-gray-800">晴陽鍼灸院</span> 経営</p>
+                    <p>・整体院 / 訪問鍼灸 / アプリ販売 / コンサル / 治療機器販売 の5事業を運営</p>
+                    <p>・治療家向けアプリを30本以上開発</p>
+                    <p>・Clinic Core を自院で毎日使いながら改善中</p>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-4 leading-relaxed border-l-4 border-blue-200 pl-3 italic">
+                    「数字を見ずに経営するのは、目をつぶって運転するようなもの。広告費をかけても怖くない治療家を増やしたい。」
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -182,11 +206,11 @@ export default function CustomerPage() {
         </div>
       </section>
 
-      {/* セクション4.5: 本物の管理画面を体験できるデモ */}
+      {/* セクション4.5: デモアプリを体験できる */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-emerald-50">
         <div className="max-w-6xl mx-auto px-6">
           <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Live Demo</p>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">本物の管理画面を、そのまま触れます</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">デモアプリで全機能をそのまま試せます</h2>
           <p className="text-center text-gray-600 mb-10 leading-relaxed">これはモック画面ではありません。本番システムに「デモ整骨院」アカウントを用意してあり、<br/>テスト用患者80名・伝票2,600件・24ヶ月分の売上データ・予約データ入りで全画面そのまま触れます。</p>
 
           {/* スクリーンショットギャラリー */}
@@ -461,7 +485,7 @@ export default function CustomerPage() {
           <p className="text-blue-100 mb-8">月額5,500円で、治療院経営に必要な数字が全て手に入る。<br />モニター期間中は初期費用0円。</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow">モニター価格で始める →</a>
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">本物の管理画面を試す</a>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">デモアプリを試す</a>
             <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
           </div>
         </div>
