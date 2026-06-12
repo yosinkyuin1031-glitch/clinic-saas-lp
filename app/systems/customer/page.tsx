@@ -473,6 +473,62 @@ export default function CustomerPage() {
         </div>
       </section>
 
+      {/* セクション8.5: セキュリティ・データ保護 */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Security</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">患者情報を、安心して任せられる仕組み</h2>
+        <p className="text-center text-gray-500 mb-12 leading-relaxed">治療院は個人情報を扱う立場。Clinic Coreは大手SaaSと同等の基盤・運用で守ります。</p>
+
+        <div className="grid md:grid-cols-3 gap-5">
+          {[
+            {
+              icon: "🛡️",
+              title: "AWS東京リージョン基盤",
+              body: "データは Supabase（AWS東京リージョン）の堅牢なクラウドで保管。物理サーバの管理は不要、災害・物損リスクなし。",
+            },
+            {
+              icon: "🔒",
+              title: "通信は全てSSL/TLS暗号化",
+              body: "ログイン・データ送受信は全てHTTPS。第三者からの盗聴・改ざんを防ぎます。",
+            },
+            {
+              icon: "🚪",
+              title: "院ごとに完全データ分離",
+              body: "RLS（Row Level Security）で院ID単位にアクセス制御。他院のデータが見える事故が構造的に起きません。",
+            },
+            {
+              icon: "💾",
+              title: "日次自動バックアップ",
+              body: "毎日のスナップショットを自動保存。万一の操作ミス・障害でも復旧可能。バックアップ作業は不要。",
+            },
+            {
+              icon: "🔑",
+              title: "アカウント認証",
+              body: "Supabase Authによるメール+パスワード認証。スタッフごとの権限管理にも対応予定。",
+            },
+            {
+              icon: "📜",
+              title: "個人情報保護法準拠",
+              body: "プライバシーポリシーを公開。解約時のデータ削除依頼にも応じます（30日以内に完全削除）。",
+            },
+          ].map((s) => (
+            <div key={s.title} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+              <div className="text-3xl mb-3">{s.icon}</div>
+              <h3 className="font-bold text-gray-900 mb-2 text-sm">{s.title}</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">{s.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 max-w-3xl mx-auto bg-gradient-to-br from-blue-50 to-emerald-50 border border-blue-100 rounded-2xl p-6 text-center">
+          <p className="text-sm text-gray-700 leading-relaxed">
+            <span className="font-bold text-gray-900">運営：大口アプリラボ（大口陽平）</span><br/>
+            治療院経営者が自院（大口神経整体院）で毎日使うシステムです。<br/>
+            自分自身の患者情報も同じ基盤で守っているという責任で運営しています。
+          </p>
+        </div>
+      </section>
+
       {/* セクション9: 料金プラン */}
       <section className="bg-gray-50 py-16" id="pricing">
         <div className="max-w-5xl mx-auto px-6">
