@@ -155,6 +155,7 @@ async function main() {
   const updatedMetadata = {
     ...(account.metadata || {}),
     contract_type: "monitor",
+    is_monitor: true,
     monthly_override: monthlyAmount,
     monitor_stripe_product_id: product.id,
     monitor_stripe_price_id: price.id,

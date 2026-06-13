@@ -202,6 +202,35 @@ export const APP_CONFIGS: AppConfig[] = [
     },
   },
   {
+    id: "changesnap",
+    label: "ChangeSnap",
+    monthlyPrice: 1500,
+    initialCost: 0,
+    color: "bg-orange-500",
+    clinicFlag: "app_changesnap",
+    forSale: true,
+    stripe: {
+      product_id: "prod_UhOl5ft9PD7N2E",
+      // 月額¥1,500（2026-06-14作成）
+      // Payment Link: https://buy.stripe.com/14A6oG38g89aeIcb9708g0v
+      monthly_price_id: "price_1ThzyNCORfdwaD8CrpVH4hxd",
+      onetime_price_id: null,
+      maintenance_price_id: "price_1ThzyzCORfdwaD8CN3ZfjIPO",
+    },
+    email: {
+      loginUrl: "https://changesnap.vercel.app/login",
+      headerBg: "#F97316",
+      tagline: "ビフォーアフター写真をその場で1枚に",
+      intro: "ChangeSnapは、患者ごとのビフォーアフター写真を1つで管理し、その場で比較画像・スライド動画を書き出せるアプリです。写真アプリ・編集アプリの往復ゼロでSNS投稿用素材が作れます。",
+      features: [
+        "患者ごとフォルダで写真を整理（撮影日・ラベル付き）",
+        "2枚並べて左右/上下/スライド比較画像をその場で書き出し",
+        "Instagram Reels対応のスライド動画も書き出し可能",
+      ],
+      firstStep: "ログイン後、まず1名の患者を登録して写真を2枚アップロード→「比較を作る」をお試しください。",
+    },
+  },
+  {
     id: "point",
     label: "サブスク管理",
     monthlyPrice: 4980,
