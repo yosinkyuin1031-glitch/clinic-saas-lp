@@ -590,31 +590,50 @@ export async function POST(req: NextRequest) {
           retries++;
         }
 
-        // ランダムパスワード生成
-        const password = generatePassword();
+        // === Auth ユーザー確保（idempotent: 既存ユーザーがいたら流用） ===
+        let userId: string | null = null;
+        let password: string | null = null; // メール送信時に「初期パスワード」表記のため
 
-        // Supabase Auth でユーザー作成
-        const { data: authData, error: authError } =
-          await supabase.auth.admin.createUser({
-            email,
-            password,
-            email_confirm: true,
-            user_metadata: {
-              clinic_id: clinicId,
-              clinic_name: clinicName,
-            },
-          });
+        const { data: existingUserList } = await supabase.auth.admin.listUsers();
+        const existingUser = existingUserList?.users?.find(u => u.email === email);
 
-        if (authError) {
-          console.error("ユーザー作成エラー:", authError);
-          await logWebhookEvent(
-            supabase,
-            event.type,
-            event.id,
-            { email, clinic_name: clinicName },
-            "error",
-            `Auth作成エラー: ${authError.message}`
-          );
+        if (existingUser) {
+          // 既存ユーザー（別アプリ等で既に登録済み）はuser_idを流用してメール送信時は「既存アカウントを使ってログイン」のみ案内
+          userId = existingUser.id;
+          console.log(`既存ユーザーのuser_idを流用: ${email} (${userId})`);
+        } else {
+          password = generatePassword();
+          const { data: authData, error: authError } =
+            await supabase.auth.admin.createUser({
+              email,
+              password,
+              email_confirm: true,
+              user_metadata: {
+                clinic_id: clinicId,
+                clinic_name: clinicName,
+              },
+            });
+
+          if (authError) {
+            console.error("ユーザー作成エラー:", authError);
+            await logWebhookEvent(
+              supabase,
+              event.type,
+              event.id,
+              { email, clinic_name: clinicName },
+              "error",
+              `Auth作成エラー: ${authError.message}`
+            );
+            break;
+          }
+          if (authData?.user) {
+            userId = authData.user.id;
+          }
+        }
+
+        if (!userId) {
+          console.error("user_id確保に失敗しました:", email);
+          await logWebhookEvent(supabase, event.type, event.id, { email }, "error", "user_id確保失敗");
           break;
         }
 
@@ -645,7 +664,7 @@ export async function POST(req: NextRequest) {
         const { error: insertError } = await supabase
           .from("clinic_accounts")
           .insert({
-            user_id: authData.user.id,
+            user_id: userId,
             clinic_id: clinicId,
             clinic_name: clinicName,
             email,
@@ -707,12 +726,12 @@ export async function POST(req: NextRequest) {
         if (clinicError) console.error("clinics挿入エラー:", clinicError);
 
         // clinic_membersに挿入
-        if (clinic && authData.user) {
+        if (clinic && userId) {
           const { error: memberError } = await supabase
             .from("clinic_members")
             .insert({
               clinic_id: clinic.id,
-              user_id: authData.user.id,
+              user_id: userId,
               role: "owner",
               display_name: clinicName,
               is_active: true,
@@ -721,13 +740,13 @@ export async function POST(req: NextRequest) {
         }
 
         // MEOアプリが含まれている場合、MEOテーブルを自動作成
-        if (selectedApps.includes("meo") && authData.user) {
+        if (selectedApps.includes("meo") && userId) {
           const meoClinicId = `clinic-${Date.now().toString(36)}`;
 
           await supabase
             .from("meo_user_settings")
             .upsert({
-              user_id: authData.user.id,
+              user_id: userId,
               anthropic_key: "",
               active_clinic_id: meoClinicId,
               serp_api_key: "",
@@ -737,7 +756,7 @@ export async function POST(req: NextRequest) {
             .from("meo_clinics")
             .upsert({
               id: meoClinicId,
-              user_id: authData.user.id,
+              user_id: userId,
               name: clinicName,
               area: "",
               keywords: [],

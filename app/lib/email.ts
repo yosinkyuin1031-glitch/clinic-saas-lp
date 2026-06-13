@@ -12,7 +12,8 @@ interface AppWelcomeParams {
   to: string
   clinicName: string
   clinicId: string
-  password: string
+  /** 新規ユーザーは初期パスワード。既存ユーザー（別アプリで既に登録済み）の場合はnull → 「既存のパスワードでログイン」表示 */
+  password: string | null
   appId: string
   planType: 'monthly' | 'yearly' | 'onetime'
 }
@@ -54,15 +55,15 @@ export async function sendAppWelcomeEmail(params: AppWelcomeParams) {
               <table style="width: 100%; font-size: 14px;">
                 <tr><td style="padding: 4px 0; color: #666; width: 140px;">ログインURL</td><td style="font-weight: bold;"><a href="${app.email.loginUrl}" style="color: ${app.email.headerBg};">${app.email.loginUrl}</a></td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">メールアドレス</td><td style="font-weight: bold;">${to}</td></tr>
-                <tr><td style="padding: 4px 0; color: #666;">初期パスワード</td><td style="font-weight: bold; color: #e74c3c;">${password}</td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">${password ? '初期パスワード' : 'パスワード'}</td><td style="font-weight: bold; ${password ? 'color: #e74c3c;' : 'color: #555;'}">${password ?? '別アプリで既にご登録のメールアドレスです。お使いのパスワードでログインしてください。'}</td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">院ID</td><td>${clinicId}</td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">プラン</td><td>${planLabel}</td></tr>
               </table>
             </div>
 
-            <div style="background: #fff8e1; border-radius: 8px; padding: 12px; margin: 16px 0; font-size: 13px; color: #6b4f00;">
+            ${password ? `<div style="background: #fff8e1; border-radius: 8px; padding: 12px; margin: 16px 0; font-size: 13px; color: #6b4f00;">
               セキュリティのため、初回ログイン後にパスワードを変更してください。
-            </div>
+            </div>` : ''}
 
             <div style="margin: 20px 0 0;">
               <h4 style="margin: 0 0 8px; color: #14252A; font-size: 14px;">${app.label}でできること</h4>
@@ -151,7 +152,7 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
               <table style="width: 100%; font-size: 14px;">
                 <tr><td style="padding: 4px 0; color: #666; width: 120px;">院ID</td><td style="font-weight: bold;">${clinicId}</td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">メールアドレス</td><td style="font-weight: bold;">${to}</td></tr>
-                <tr><td style="padding: 4px 0; color: #666;">初期パスワード</td><td style="font-weight: bold; color: #e74c3c;">${password}</td></tr>
+                <tr><td style="padding: 4px 0; color: #666;">${password ? '初期パスワード' : 'パスワード'}</td><td style="font-weight: bold; ${password ? 'color: #e74c3c;' : 'color: #555;'}">${password ?? '別アプリで既にご登録のメールアドレスです。お使いのパスワードでログインしてください。'}</td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">プラン</td><td>${planLabel}</td></tr>
                 <tr><td style="padding: 4px 0; color: #666;">ご利用システム</td><td>${appList}</td></tr>
               </table>
