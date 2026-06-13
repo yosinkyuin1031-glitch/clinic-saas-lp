@@ -22,6 +22,20 @@ const DEMO_URL = "https://clinic-core-demo.vercel.app";
 export default function CustomerPage() {
   return (
     <main className="min-h-screen bg-white">
+      {/* LINEフローティングボタン（全画面常時表示） */}
+      <a
+        href={LINE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold text-sm px-4 py-3 rounded-full shadow-2xl transition-all hover:scale-105 active:scale-95"
+        aria-label="LINEで相談する"
+      >
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+        </svg>
+        <span className="hidden sm:inline">LINEで相談</span>
+      </a>
+
       {/* ヘッダー */}
       <header className="border-b border-gray-100 px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
         <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">← ClinicApps トップ</Link>
@@ -686,6 +700,62 @@ export default function CustomerPage() {
             </div>
           </div>
           <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。6ヶ月未満で解約された場合、残存月数分の早期解約金を申し受けます。</p>
+        </div>
+      </section>
+
+      {/* セクション9.5: 導入の流れ */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">How it works</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">導入は4ステップ・最短即日でスタート</h2>
+        <p className="text-center text-gray-500 mb-12 leading-relaxed">面倒な手続きはありません。LINEでひと声いただければ、こちらでフォローしながら進めます。</p>
+
+        <div className="grid md:grid-cols-4 gap-4 md:gap-6">
+          {[
+            {
+              step: "01",
+              title: "申込・決済",
+              desc: "LP内のボタンから1分でStripe決済。クレジットカード対応。",
+              detail: "1分",
+            },
+            {
+              step: "02",
+              title: "アカウント自動発行",
+              desc: "決済完了と同時に、メールでログインURL・ID・初期パスワードが届きます。",
+              detail: "数秒〜数分",
+            },
+            {
+              step: "03",
+              title: "データ移行（任意）",
+              desc: "既存患者データのCSVがあれば取込。データが無くてもそのまま使い始められます。代行も対応。",
+              detail: "0〜数日",
+            },
+            {
+              step: "04",
+              title: "使い始める",
+              desc: "ログインしてホーム画面へ。スタッフ・メニュー・症状などのマスター設定を済ませたら、日々の入力で数字が自動で見える状態に。",
+              detail: "当日〜",
+            },
+          ].map((s, i) => (
+            <div key={s.step} className="relative bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-xs font-bold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">{s.step}</span>
+                <p className="text-xs text-gray-400 font-medium">所要 {s.detail}</p>
+              </div>
+              <h3 className="font-bold text-sm text-gray-900 mb-2">{s.title}</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">{s.desc}</p>
+              {i < 3 && (
+                <span className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-gray-300 text-lg">›</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 max-w-2xl mx-auto bg-gradient-to-br from-green-50 to-blue-50 border border-green-100 rounded-2xl p-6 text-center">
+          <p className="text-sm font-bold text-gray-800 mb-3">迷ったらまずLINEで話を聞くだけでもOK</p>
+          <p className="text-xs text-gray-600 leading-relaxed mb-4">「うちの院に合うか分からない」「こんなデータでも移行できる？」など、申込前のご相談を歓迎しています。</p>
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-500 text-white font-bold text-sm px-6 py-3 rounded-xl hover:bg-green-600 transition shadow">
+            LINEで相談する（無料）
+          </a>
         </div>
       </section>
 
