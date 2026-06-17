@@ -406,7 +406,7 @@ export async function POST(req: NextRequest) {
                 owner_name: "",
                 phone: "",
                 email: finalEmail,
-                plan: finalSelectedApps.includes("kensa") ? "basic" : "active",
+                plan: "basic",
                 is_active: true,
                 theme_color: "#2563eb",
                 max_staff: 5,
@@ -421,6 +421,14 @@ export async function POST(req: NextRequest) {
               .single();
             if (newClinicError) {
               console.error("pending_payment branch clinics作成エラー:", newClinicError);
+              await logWebhookEvent(
+                supabase,
+                event.type,
+                event.id,
+                { clinic_id: finalClinicId, email: finalEmail, stage: "clinics_insert" },
+                "error",
+                `clinics作成失敗: ${newClinicError.message} / details=${newClinicError.details || ""}`
+              );
             } else if (newClinic) {
               pendingClinicRowId = newClinic.id;
             }
@@ -709,7 +717,7 @@ export async function POST(req: NextRequest) {
             owner_name: "",
             phone: "",
             email,
-            plan: selectedApps.includes("kensa") ? "basic" : "active",
+            plan: "basic",
             is_active: true,
             theme_color: "#2563eb",
             max_staff: 5,
@@ -723,7 +731,17 @@ export async function POST(req: NextRequest) {
           .select()
           .single();
 
-        if (clinicError) console.error("clinics挿入エラー:", clinicError);
+        if (clinicError) {
+          console.error("clinics挿入エラー:", clinicError);
+          await logWebhookEvent(
+            supabase,
+            event.type,
+            event.id,
+            { clinic_id: clinicId, email, stage: "clinics_insert" },
+            "error",
+            `clinics作成失敗: ${clinicError.message} / details=${clinicError.details || ""}`
+          );
+        }
 
         // clinic_membersに挿入
         if (clinic && userId) {
@@ -736,7 +754,17 @@ export async function POST(req: NextRequest) {
               display_name: clinicName,
               is_active: true,
             });
-          if (memberError) console.error("clinic_members挿入エラー:", memberError);
+          if (memberError) {
+            console.error("clinic_members挿入エラー:", memberError);
+            await logWebhookEvent(
+              supabase,
+              event.type,
+              event.id,
+              { clinic_id: clinicId, email, stage: "clinic_members_insert" },
+              "error",
+              `clinic_members作成失敗: ${memberError.message}`
+            );
+          }
         }
 
         // MEOアプリが含まれている場合、MEOテーブルを自動作成
