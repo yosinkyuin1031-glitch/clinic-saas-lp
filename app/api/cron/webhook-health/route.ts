@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { sendLINENotify } from "@/app/lib/line-notify";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-02-25.clover" as Stripe.LatestApiVersion,
-});
+import { stripe } from "@/app/lib/stripe";
 
 // Stripe Webhookの死活監視
 // 全Webhookエンドポイントを取得し、status !== "enabled" のものがあればLINE通知

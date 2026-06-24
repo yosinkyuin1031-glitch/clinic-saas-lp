@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { APP_CONFIGS } from "@/app/lib/app-config";
 import { sendLINENotify } from "@/app/lib/line-notify";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-18.acacia" as Stripe.LatestApiVersion,
-});
+import { stripe } from "@/app/lib/stripe";
 
 // 料金整合性を毎日チェックし、不一致があればLINE通知
 // GET /api/cron/price-check?key=ADMIN_PASSWORD

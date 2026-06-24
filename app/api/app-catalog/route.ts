@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { APP_CONFIGS } from "@/app/lib/app-config";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { stripe } from "@/app/lib/stripe";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "clinic-admin-2026";
 
