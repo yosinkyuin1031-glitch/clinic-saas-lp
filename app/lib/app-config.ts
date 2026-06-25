@@ -161,7 +161,7 @@ export const APP_CONFIGS: AppConfig[] = [
       extra_price_ids: ["price_1TGhZ1CORfdwaD8CPA6i7VRA", "price_1TP6fMCORfdwaD8CUM3GSW7w"],
     },
     email: {
-      loginUrl: "https://meo-app.vercel.app/login",
+      loginUrl: "https://meo-kachiagekun.vercel.app/login",
       headerBg: "#E11D48",
       tagline: "Googleマップ順位を自動モニタリング",
       intro: "MEO勝ち上げくんは、Googleマップの検索順位を定期的に追跡し、改善ポイントを提案するツールです。",
