@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-18.acacia" as Stripe.LatestApiVersion,
-});
+import type Stripe from "stripe";
+import { stripe } from "@/app/lib/stripe";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "clinic-admin-2026";
 
