@@ -8,21 +8,18 @@ export const LINE_URL = "https://lin.ee/8P11rM4";
 export const DEVELOPER = {
   name: "大口 陽平",
   title: "治療院経営者 / アプリ開発者",
+  // 「作っている人」用の写真は陽平本人が映ったものに限定する。
+  // portrait-2024（勉強会の集合写真）・treatment-1（女性スタッフ）・clinic-in-*（道案内）は使わない。
   portrait: "/images/clinic/portrait-2022.jpeg",
-  portraitAlt: "/images/clinic/portrait-2024.jpg",
+  portraitAlt: "/images/clinic/portrait-2022.jpeg",
   treatmentPhoto: "/images/clinic/treatment-3.jpeg",
   treatmentPhotos: [
-    "/images/clinic/treatment-1.jpeg",
     "/images/clinic/treatment-2.jpeg",
     "/images/clinic/treatment-3.jpeg",
     "/images/clinic/treatment-4.jpeg",
     "/images/clinic/treatment-5.jpeg",
     "/images/clinic/treatment-6.jpeg",
   ],
-  clinicPhotos: {
-    interior: "/images/clinic/clinic-in-1.jpeg",
-    exterior: "/images/clinic/clinic-out-1.jpg",
-  },
   clinics: [
     { name: "大口神経整体院", role: "院長", location: "大阪市住吉区" },
     { name: "晴陽鍼灸院", role: "代表", note: "訪問鍼灸リハビリ事業" },

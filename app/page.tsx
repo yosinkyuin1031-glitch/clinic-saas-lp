@@ -426,7 +426,7 @@ export default function Home() {
     const initialSubtotal = selected.reduce((sum, app) => sum + app.initialCost, 0);
     const maintenanceSubtotal = selected.reduce((sum, app) => sum + app.maintenancePrice, 0);
     const monthlyTotal = monthlySubtotal;
-    const yearlyTotal = monthlyTotal * 10; // 年払い = 月額 × 10（2ヶ月分お得）
+    const yearlyTotal = monthlyTotal * 11; // 年払い = 月額 × 11（1ヶ月分お得）
     return {
       monthlySubtotal,
       initialSubtotal,
@@ -538,6 +538,7 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
             <a href="#apps" className="hover:text-primary transition">システム一覧</a>
             <a href="#pricing" className="hover:text-primary transition">料金</a>
+            <a href="#security" className="hover:text-primary transition">セキュリティ</a>
             <a href="#custom-dev" className="hover:text-primary transition">オーダーメイド開発</a>
             <a href="#faq" className="hover:text-primary transition">FAQ</a>
           </div>
@@ -569,7 +570,7 @@ export default function Home() {
             <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
               現役治療家が作る、現場で本当に使える業務アプリ。
               <br className="hidden md:block" />
-              月額1,000円台から、価格帯と用途で選べる全6種＋オーダーメイド。
+              主力3アプリ（カラダマップ・Clinic Core・MEO勝ち上げくん）はすべて月額5,500円・初期費用0円。
               <br className="hidden md:block" />
               デモ版で実機を触ってから、必要なものだけ導入できます。
             </p>
@@ -638,101 +639,112 @@ export default function Home() {
       <section id="tiers" className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
-            <p className="text-xs font-bold text-accent tracking-widest mb-2">PRICE LINEUP</p>
+            <p className="text-xs font-bold text-accent tracking-widest mb-2">LINEUP</p>
             <h2 className="text-2xl md:text-3xl font-black text-primary mb-3">
-              価格帯で選べる、治療家のためのアプリ。
+              用途で選ぶ、治療家のためのアプリ。
             </h2>
             <p className="text-sm md:text-base text-gray-600">
-              月1,000円台のライトから、業務をまるごと統合するプレミアムまで。
+              主力3アプリはすべて月額5,500円〜・初期費用0円〜。検査・経営・集客の3軸から、必要なものだけ導入できます。
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {PRICE_TIERS.filter((tier) => {
-              if (tier.custom) return true; // オーダーメイド枠は常に表示
-              const apps = SALEABLE_APPS.filter(
-                (a) => a.monthlyPrice >= tier.range[0] && a.monthlyPrice <= tier.range[1]
-              );
-              return apps.length > 0; // 主力アプリが1つもないtierは丸ごと非表示
-            }).map((tier) => {
-              const tierApps = tier.custom
-                ? []
-                : SALEABLE_APPS.filter(
-                    (a) => a.monthlyPrice >= tier.range[0] && a.monthlyPrice <= tier.range[1]
-                  );
-              return (
-                <div
-                  key={tier.id}
-                  className={`bg-gradient-to-br ${tier.color} border-2 ${tier.border} rounded-2xl p-5 flex flex-col`}
-                >
-                  <div className="mb-4">
-                    <p className={`text-[10px] font-bold tracking-widest mb-1 ${tier.accent}`}>
-                      {tier.sub}
-                    </p>
-                    <h3 className="text-2xl font-black text-primary leading-tight">
-                      {tier.label}
-                    </h3>
-                    <p className="text-xs text-gray-600 mt-2 leading-relaxed">{tier.desc}</p>
-                  </div>
+          {/* 主力3アプリ 3カラム並列ショーケース */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+            {[
+              {
+                id: "kensa",
+                badge: "検査",
+                badgeColor: "bg-blue-100 text-blue-700",
+                name: "カラダマップ",
+                tagline: "3分で体の\"いま\"を見える化",
+                desc: "5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、AIセルフケア自動提案まで。",
+                detail: "/systems/kensa",
+                demo: "https://kensa-sheet-app.vercel.app/demo",
+                gradient: "from-blue-50 to-blue-100/40",
+                border: "border-blue-200",
+              },
+              {
+                id: "customer",
+                badge: "経営",
+                badgeColor: "bg-emerald-100 text-emerald-700",
+                name: "Clinic Core",
+                tagline: "経営の数字が、全部見える",
+                desc: "患者情報を一元管理。LTV・ROAS・リピート率・離反アラート・データ分析ダッシュボード搭載。14分析メニュー網羅。",
+                detail: "/systems/customer",
+                demo: "https://clinic-core-demo.vercel.app",
+                gradient: "from-emerald-50 to-emerald-100/40",
+                border: "border-emerald-200",
+              },
+              {
+                id: "meo",
+                badge: "集客",
+                badgeColor: "bg-rose-100 text-rose-700",
+                name: "MEO勝ち上げくん",
+                tagline: "Googleマップ集客を内製化",
+                desc: "キーワード1つでブログ・FAQ・GBP・noteを同時生成。順位アラート・医療広告ガイドライン自動チェック。",
+                detail: "/systems/meo",
+                demo: null,
+                gradient: "from-rose-50 to-rose-100/40",
+                border: "border-rose-200",
+              },
+            ].map((app) => (
+              <div
+                key={app.id}
+                className={`bg-gradient-to-br ${app.gradient} border-2 ${app.border} rounded-2xl p-6 flex flex-col`}
+              >
+                <span className={`inline-block self-start text-[11px] font-bold px-2.5 py-1 rounded-full mb-3 ${app.badgeColor}`}>
+                  {app.badge}
+                </span>
+                <h3 className="text-xl md:text-2xl font-black text-primary leading-tight mb-2">{app.name}</h3>
+                <p className="text-sm font-bold text-gray-700 mb-3">{app.tagline}</p>
+                <p className="text-xs text-gray-600 leading-relaxed mb-5 flex-1">{app.desc}</p>
 
-                  <div className="flex-1 space-y-2">
-                    {tier.custom ? (
-                      <div className="bg-white/70 border border-white rounded-lg p-4">
-                        <p className="text-xs text-gray-700 leading-relaxed mb-3">
-                          自院オリジナルのアプリを一から開発。
-                          ヒアリング無料・最短2週間〜。
-                        </p>
-                        <a
-                          href="#custom-dev"
-                          className={`block text-center text-xs font-bold text-white bg-violet-600 hover:bg-violet-700 px-3 py-2 rounded transition`}
-                        >
-                          オーダーメイドの詳細
-                        </a>
-                      </div>
-                    ) : tierApps.length === 0 ? (
-                      <div className="bg-white/60 border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <p className="text-xs text-gray-500">準備中のラインナップ</p>
-                        <p className="text-[10px] text-gray-400 mt-1">Coming Soon</p>
-                      </div>
-                    ) : (
-                      tierApps.map((app) => (
-                        <div
-                          key={app.id}
-                          className="bg-white/80 border border-white rounded-lg p-3 flex items-center justify-between gap-3 hover:bg-white transition"
-                        >
-                          <div className="min-w-0 flex-1">
-                            <p className="text-sm font-bold text-primary truncate">{app.name}</p>
-                            <p className="text-[11px] text-gray-500 truncate">
-                              月額{app.monthlyPrice.toLocaleString()}円
-                            </p>
-                          </div>
-                          <div className="flex gap-1 flex-shrink-0">
-                            {app.demoUrl && (
-                              <a
-                                href={app.demoUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition"
-                              >
-                                デモ
-                              </a>
-                            )}
-                            {app.detailUrl && (
-                              <a
-                                href={app.detailUrl}
-                                className="text-[10px] font-bold text-white bg-accent hover:bg-accent-600 px-2 py-1 rounded transition"
-                              >
-                                詳細
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
+                <div className="bg-white/80 border border-white rounded-lg p-3 mb-3 text-center">
+                  <p className="text-[11px] text-gray-500 mb-0.5">月額</p>
+                  <p className="text-xl font-black text-primary leading-none">5,500<span className="text-xs font-bold text-gray-400 ml-0.5">円〜</span></p>
+                  <p className="text-[10px] text-gray-400 mt-1.5">初期費用 0円〜 / 最低契約6ヶ月</p>
                 </div>
-              );
-            })}
+
+                <div className="flex gap-2">
+                  <a
+                    href={app.detail}
+                    className="flex-1 text-center text-xs font-bold text-white bg-primary hover:bg-primary-700 px-3 py-2 rounded transition"
+                  >
+                    詳しく見る
+                  </a>
+                  {app.demo && (
+                    <a
+                      href={app.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 px-3 py-2 rounded transition"
+                    >
+                      デモ
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* オーダーメイド開発（別枠） */}
+          <div className="mt-6 bg-gradient-to-br from-violet-50 to-violet-100/40 border-2 border-violet-200 rounded-2xl p-6 md:p-8 grid md:grid-cols-3 gap-6 items-center">
+            <div className="md:col-span-2">
+              <span className="inline-block text-[11px] font-bold bg-violet-100 text-violet-700 px-2.5 py-1 rounded-full mb-3">CUSTOM</span>
+              <h3 className="text-xl md:text-2xl font-black text-primary mb-2">オーダーメイド開発</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                自院オリジナルのアプリを一から開発。ヒアリング無料・最短2週間〜。
+                訪問鍼灸業務管理、頭痛ダイアリー、サロン経営アカデミー等の受託実績あり。
+              </p>
+            </div>
+            <div className="text-center md:text-right">
+              <a
+                href="#custom-dev"
+                className="inline-block text-sm font-bold text-white bg-violet-600 hover:bg-violet-700 px-6 py-3 rounded-xl transition shadow"
+              >
+                オーダーメイドの詳細 →
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -841,7 +853,7 @@ export default function Home() {
               </div>
               <h3 className="text-lg font-bold text-primary mb-2">大手の1/3以下の料金</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                大手ツールは月額2〜5万円。うちは月額1,980円から。治療院の経営を圧迫しない価格設計です。
+                大手ツールは月額2〜5万円。うちは月額5,500円〜・初期費用0円〜。治療院の経営を圧迫しない価格設計です。
               </p>
             </div>
           </div>
@@ -1109,7 +1121,7 @@ export default function Home() {
               >
                 年払い
                 <span className="absolute -top-2.5 -right-2 bg-cta text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                  2ヶ月分お得
+                  1ヶ月分お得
                 </span>
               </button>
             </div>
@@ -1129,7 +1141,7 @@ export default function Home() {
               </thead>
               <tbody>
                 {SALEABLE_APPS.map((app, i) => {
-                  const yearlyPrice = app.monthlyPrice * 10;
+                  const yearlyPrice = app.monthlyPrice * 11;
                   return (
                     <tr key={app.id} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
                       <td className="py-3 px-4 font-bold text-primary">
@@ -1300,11 +1312,11 @@ export default function Home() {
                       <div className="flex justify-between text-sm">
                         <span className="text-cta font-bold flex items-center gap-1">
                           <span className="bg-cta/10 text-cta text-xs px-2 py-0.5 rounded-full">
-                            2ヶ月分お得
+                            1ヶ月分お得
                           </span>
                           年払い割引
                         </span>
-                        <span className="text-cta font-bold">-{(calcTotal.monthlyTotal * 2).toLocaleString()}円</span>
+                        <span className="text-cta font-bold">-{(calcTotal.monthlyTotal).toLocaleString()}円</span>
                       </div>
                     )}
                     <div className="flex justify-between text-sm">
@@ -1542,13 +1554,13 @@ export default function Home() {
 
           <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 md:p-10">
             <div className="md:flex md:gap-10 md:items-start">
-              {/* 顔写真＋肩書（判別しやすく大型化＋識別ラベル） */}
+              {/* 顔写真＋肩書（判別しやすく大型化＋識別ラベル・陽平本人の写真のみ） */}
               <div className="md:w-80 flex-shrink-0 text-center md:text-left">
                 <div className="relative inline-block w-full max-w-[280px] mx-auto md:mx-0">
                   <img
-                    src="/images/clinic/portrait-2024.jpg"
+                    src="/images/clinic/portrait-2022.jpeg"
                     alt="大口 陽平（現役治療家・アプリ開発者）"
-                    className="w-full aspect-[4/5] rounded-2xl object-cover object-top shadow-xl border-4 border-white"
+                    className="w-full aspect-[4/5] rounded-2xl object-cover shadow-xl border-4 border-white"
                   />
                   {/* 識別ラベル：写真の上にオーバーレイ */}
                   <div className="absolute top-3 left-3 bg-cta text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg">
@@ -1560,25 +1572,25 @@ export default function Home() {
                     <p className="text-white/90 text-xs mt-0.5">現役治療家 / アプリ開発者</p>
                   </div>
                 </div>
-                {/* 施術風景サムネ（顔写真の補強） */}
+                {/* 施術風景サムネ（全て陽平本人が施術している写真） */}
                 <div className="grid grid-cols-3 gap-2 mt-3 max-w-[280px] mx-auto md:mx-0">
                   <img
-                    src="/images/clinic/treatment-1.jpeg"
-                    alt="施術中の大口陽平"
+                    src="/images/clinic/treatment-2.jpeg"
+                    alt="大口陽平が立位検査をしている様子"
                     className="aspect-square rounded-lg object-cover border-2 border-white shadow"
                   />
                   <img
                     src="/images/clinic/treatment-3.jpeg"
-                    alt="検査中"
+                    alt="大口陽平が骨格模型で患者に説明している様子"
                     className="aspect-square rounded-lg object-cover border-2 border-white shadow"
                   />
                   <img
-                    src="/images/clinic/clinic-in-1.jpeg"
-                    alt="院内の様子"
+                    src="/images/clinic/treatment-5.jpeg"
+                    alt="大口陽平がストレッチ指導をしている様子"
                     className="aspect-square rounded-lg object-cover border-2 border-white shadow"
                   />
                 </div>
-                <p className="text-xs text-gray-500 text-center md:text-left mt-2">↑ 普段、自分の院で施術している様子</p>
+                <p className="text-xs text-gray-500 text-center md:text-left mt-2">↑ 大口陽平が、自分の院で患者に施術・指導している様子</p>
                 <p className="text-sm text-gray-600 mt-4">大口神経整体院 院長</p>
                 <p className="text-sm text-gray-600">晴陽鍼灸院 代表</p>
                 <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
@@ -1633,6 +1645,96 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== セキュリティ ===== */}
+      <section id="security" className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-accent tracking-widest mb-2">SECURITY</p>
+            <h2 className="text-2xl md:text-3xl font-black text-primary mb-3">
+              患者情報を、自院と同じ水準で守る。
+            </h2>
+            <p className="text-sm md:text-base text-gray-600">
+              治療院経営者が自分の院の患者データを預ける前提で、4層のセキュリティを実装しています。
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* 1. 通信・データ保護 */}
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-black text-primary">① 通信とデータの暗号化</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>全通信SSL/TLS暗号化（HTTPS強制・HSTS有効）</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>データベース保存時も暗号化（Supabase基盤）</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>クリックジャッキング・MIMEスニッフィング対策</span></li>
+              </ul>
+            </div>
+
+            {/* 2. 院ごとのデータ分離 */}
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-black text-primary">② 院ごとのデータ完全分離</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>Supabase RLS（行レベルアクセス制御）で院間データを物理的に分離</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>「他院に自院のデータが見える」事故を構造的に防止</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>管理者キーはサーバー側のみ保管・フロント露出ゼロ</span></li>
+              </ul>
+            </div>
+
+            {/* 3. 決済セキュリティ */}
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-cta/10 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-black text-primary">③ 決済とアカウント管理</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>決済はStripe（PCI DSS Level 1）に完全委託・カード情報は当方サーバーを通過しない</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>Webhook通信は署名検証で改ざん防止</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>初期パスワード自動生成・初回ログイン後の変更を推奨</span></li>
+              </ul>
+            </div>
+
+            {/* 4. 運用とアップデート */}
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-black text-primary">④ 運用とアップデート</h3>
+              </div>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>依存ライブラリの脆弱性を定期チェック・即座にパッチ適用</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>定期バックアップとロギング（Vercel + Supabase基盤）</span></li>
+                <li className="flex items-start gap-2"><span className="text-accent font-bold mt-0.5">✓</span><span>解約済みメールの再登録ブロック等、業務ルール側でも保護</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <p className="text-center text-xs text-gray-500 mt-8 leading-relaxed">
+            ※ 開発者自身が大口神経整体院で運営している顧客データも、同じ基盤で守られています。<br/>
+            自分の院で運用に耐えるかが、最初のセキュリティテストです。
+          </p>
         </div>
       </section>
 
@@ -1855,7 +1957,7 @@ export default function Home() {
                       <span className="text-gray-500">初期費用</span>
                       <span className="font-bold">{calcTotal.initialTotal.toLocaleString()}円</span>
                     </div>
-                    <p className="text-cta text-xs text-right mt-1">2ヶ月分お得!</p>
+                    <p className="text-cta text-xs text-right mt-1">1ヶ月分お得!</p>
                   </>
                 ) : (
                   <>
