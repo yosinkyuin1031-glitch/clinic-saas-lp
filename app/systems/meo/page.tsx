@@ -55,6 +55,10 @@ export default function MeoPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
               <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
+              <a href="#demo-video" className="inline-flex items-center gap-2 text-base font-bold px-8 py-4 rounded-xl transition border-2 border-blue-600 text-blue-600 hover:bg-blue-50">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                動画でデモを見る
+              </a>
               <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-base font-bold px-8 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">LINEで相談する</a>
             </div>
             <p className="mt-4 text-sm text-gray-400">月額5,500円(税込)/ 初期費用0円 / 最低契約期間6ヶ月</p>
@@ -255,11 +259,12 @@ export default function MeoPage() {
         </div>
       </section>
 
-      {/* 動画 */}
-      <section className="bg-gray-900 py-14">
+      {/* 動画（ヒーローのアンカーリンク先） */}
+      <section id="demo-video" className="bg-gray-900 py-14 scroll-mt-20">
         <div className="max-w-3xl mx-auto px-6">
           <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-4">Live Action</p>
-          <h2 className="text-2xl font-bold text-white text-center mb-8">使ってる感じを、動画で見る</h2>
+          <h2 className="text-2xl font-bold text-white text-center mb-3">動画でデモを見る</h2>
+          <p className="text-center text-gray-400 text-sm mb-8">実際の管理画面を操作している様子です（音声なし）</p>
           <div className="relative pb-[62.5%] h-0 rounded-2xl overflow-hidden shadow-2xl">
             <video
               src={DEMO_VIDEO}
