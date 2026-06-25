@@ -239,23 +239,79 @@ export default function KensaPage() {
         <p className="text-center mt-10 text-gray-700 font-medium text-lg">検査で「根拠」を見せるだけで、全て解決します。</p>
       </section>
 
-      {/* 搭載機能 */}
+      {/* 搭載機能（実画面付き4機能 + サブ2機能） */}
       <section className="bg-gray-50 py-16">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">搭載機能</h2>
           <p className="text-center text-gray-500 mb-12">検査・診断・提案・記録・分析に必要な機能を全て搭載</p>
-          <div className="grid md:grid-cols-2 gap-6">
+
+          {/* メイン4機能（実画面付き） */}
+          <div className="space-y-10 mb-14">
             {[
-              {icon:"🗺️",title:"5段階検査ウィザード",body:"患者情報 → 立位検査 → 座位検査 → 上半身検査 → 自動診断。タップ操作だけで検査が完結。"},
-              {icon:"🎯",title:"段階的原因特定ロジック(業界唯一)",body:"立位→座位で足の影響、座位→上半身で上半身の影響を判定。原因部位を自動で絞り込む。"},
-              {icon:"📄",title:"PDF出力(患者用・施術者用)",body:"患者に渡すレポートと施術者向けカルテの2種類を自動生成。院のロゴ・テーマカラーも反映。"},
-              {icon:"🤖",title:"AIセルフケア自動提案",body:"診断結果に基づき、縮こまり・引っ張りの部位ごとに最適なセルフケアメニューを自動提案。"},
-              {icon:"📈",title:"経過比較・改善度トラッキング",body:"過去の検査と並べて比較。患者の改善経過を数値と視覚で伝えられるから、リピート率が上がる。"},
-              {icon:"📊",title:"ダッシュボード・統計分析",body:"月別検査数推移・患者数・TOP3診断をグラフ表示。院全体の傾向が一目でわかる。"},
+              {
+                screen: "/screens/kensa/1-patient.png",
+                icon: "🗺️",
+                title: "5段階検査ウィザード",
+                body: "患者情報 → 立位検査 → 座位検査 → 上半身検査 → 自動診断。タップ操作だけで検査が完結。タブレット片手にスタッフでも回せる設計です。",
+                bullets: ["ステップバーで進捗が一目瞭然", "タップ選択で迷わず入力", "患者検索＋新規追加もこの画面から"],
+              },
+              {
+                screen: "/screens/kensa/2-standing.png",
+                icon: "🎯",
+                title: "段階的原因特定ロジック",
+                body: "立位 → 座位で足の影響を、座位 → 上半身で上半身の影響を判定。「どこが原因で歪んでいるか」を自動で絞り込みます。神経整体の現場ロジックをそのままアプリ化。",
+                bullets: ["乳様突起・肩甲下角・腸骨稜を3択比較", "選択するだけで原因部位が自動判定", "「業界唯一」の段階的絞り込みロジック"],
+              },
+              {
+                screen: "/images/kensa-demo/10-pdf-buttons.png",
+                icon: "📄",
+                title: "AIセルフケア提案 + PDF出力",
+                body: "診断結果に基づき、足関節の回旋運動・タオルギャザー等のセルフケアをAIが自動生成。そのまま「患者用レポートPDF」「施術提案書PDF」をワンタップで出力できます。",
+                bullets: ["AIがセルフケア4種を自動生成", "患者用 / 施術者用の2種PDFを瞬時に出力", "院のロゴ・テーマカラーも反映可"],
+              },
+              {
+                screen: "/images/kensa-demo/12-history.png",
+                icon: "📈",
+                title: "経過比較・検査履歴",
+                body: "過去の検査結果を一覧で管理。「右側優位の上部交差症候群」「左下肢荷重不均衡パターン」など診断名で患者の経過を追えるので、リピート率の向上と説明の根拠が一気に揃います。",
+                bullets: ["NRS値と診断名で時系列管理", "再診・経過観察・初診をタグで識別", "患者別ビューで個別の改善度が見える"],
+              },
+            ].map((f, i) => (
+              <div key={f.title} className={`grid md:grid-cols-5 gap-8 items-center ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
+                <div className="md:col-span-3 md:[direction:ltr]">
+                  <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white">
+                    <img src={f.screen} alt={f.title} className="w-full h-auto" />
+                  </div>
+                </div>
+                <div className="md:col-span-2 md:[direction:ltr]">
+                  <span className="text-3xl">{f.icon}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mt-2 mb-3">{f.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{f.body}</p>
+                  <ul className="space-y-2">
+                    {f.bullets.map(b => (
+                      <li key={b} className="flex items-start gap-2 text-sm text-gray-700">
+                        <span className="text-blue-500 flex-shrink-0 mt-0.5">✓</span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* サブ機能 */}
+          <div className="grid md:grid-cols-2 gap-5">
+            {[
+              {icon:"📊",title:"ダッシュボード・統計分析",body:"月別検査数推移・患者数・TOP3診断をグラフ表示。院全体の傾向が一目で見えるから、経営の打ち手も判断できる。"},
+              {icon:"👥",title:"複数院・スタッフ別管理",body:"院ごとにアカウントを分けたり、スタッフごとの検査数や診断傾向を追えます。グループ院にもそのまま対応。"},
             ].map(f=>(
-              <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+              <div key={f.title} className="flex gap-4 p-5 bg-white border border-gray-100 rounded-2xl shadow-sm">
                 <span className="text-3xl flex-shrink-0">{f.icon}</span>
-                <div><h3 className="font-bold text-gray-900 mb-2">{f.title}</h3><p className="text-gray-600 text-sm leading-relaxed">{f.body}</p></div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-1.5 text-sm">{f.title}</h3>
+                  <p className="text-gray-600 text-xs leading-relaxed">{f.body}</p>
+                </div>
               </div>
             ))}
           </div>

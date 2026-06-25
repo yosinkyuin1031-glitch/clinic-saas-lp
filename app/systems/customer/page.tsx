@@ -181,7 +181,23 @@ export default function CustomerPage() {
         <div className="max-w-5xl mx-auto px-6">
           <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Features</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">Clinic Coreでできること</h2>
-          <p className="text-center text-gray-500 mb-12">治療院経営に必要な12の機能</p>
+          <p className="text-center text-gray-500 mb-10">治療院経営に必要な12の機能 + 14種の分析メニュー</p>
+
+          {/* 営業データ機能網羅バナー */}
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-12">
+            <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200">
+              <p className="text-xs font-bold text-blue-600 tracking-widest uppercase mb-2">All-in-One Analytics</p>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">これだけの分析機能を、ボタン1つで切り替えて使える</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                売上集計 / 伝票一覧 / LTV分析 / リピート分析 / 新規・既存分析 / ROAS分析 / 時間単価 /
+                稼働率 / クロス集計 / エリア分析 / 広告費入力 / 売上シミュレーター / スタッフ別売上 / 日報 —
+                経営判断に必要な数字が、すべて1画面から見える。
+              </p>
+            </div>
+            <div className="border-t border-gray-100">
+              <Image src="/screens/clinic-core/sales.png" alt="Clinic Core 営業データ機能一覧" width={1440} height={900} className="w-full h-auto" />
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               { icon: "📊", title: "LTV・ROAS・CPA 自動計算", body: "広告費と来院動機を自動マッチング。反応率・CV率・CPAがリアルタイムで見える。WEB広告もチラシも一元管理。", img: "roas" },

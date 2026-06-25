@@ -62,19 +62,33 @@ export default function MeoPage() {
               購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
             </p>
           </div>
-          {/* 右: 動画プレビュー */}
+          {/* 右: 実画面プレビュー（順位アラート・ダッシュボード・施策進捗の3枚） */}
           <div className="relative">
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-black">
-              <video
-                src={DEMO_VIDEO}
+            <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
+              <img
+                src="/screens/meo/1-dashboard.png"
+                alt="MEO勝ち上げくん 管理ダッシュボード"
                 className="w-full h-auto"
-                autoPlay
-                muted
-                loop
-                playsInline
               />
             </div>
-            <div className="absolute -bottom-6 -right-3 md:-right-6 bg-white rounded-xl shadow-xl border border-gray-100 p-4 hidden sm:block">
+            {/* 装飾サムネ：順位チェック画面 */}
+            <div className="hidden lg:block absolute -top-4 -right-4 w-44 rounded-xl overflow-hidden shadow-xl border-4 border-white bg-white">
+              <img
+                src="/screens/meo/4-ranking-check.png"
+                alt="順位アラート"
+                className="w-full h-auto"
+              />
+            </div>
+            {/* 装飾サムネ：施策チェック画面 */}
+            <div className="hidden lg:block absolute -bottom-6 -left-4 w-44 rounded-xl overflow-hidden shadow-xl border-4 border-white bg-white">
+              <img
+                src="/screens/meo/3-strategy-check.png"
+                alt="MEO対策進捗"
+                className="w-full h-auto"
+              />
+            </div>
+            {/* 料金バッジ */}
+            <div className="absolute -bottom-6 -right-3 md:-right-6 bg-white rounded-xl shadow-xl border border-gray-100 p-4 hidden sm:block z-10">
               <p className="text-xs text-gray-400 mb-1">月額</p>
               <p className="text-2xl font-bold text-blue-600">5,500<span className="text-sm font-normal text-gray-500">円</span></p>
               <p className="text-xs text-gray-400">初期費用 0円</p>
@@ -161,23 +175,80 @@ export default function MeoPage() {
         <p className="text-center mt-10 text-gray-700 font-medium text-lg">AIに任せれば、週10分でMEO対策が完了します。</p>
       </section>
 
-      {/* 機能紹介 */}
+      {/* 機能紹介（実画面付き4機能 + サブ4機能） */}
       <section className="bg-gray-50 py-16">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">搭載機能</h2>
           <p className="text-center text-gray-500 mb-12">MEO対策に必要な全てをAIが自動化</p>
-          <div className="grid md:grid-cols-2 gap-6">
+
+          {/* メイン4機能（実画面付き・縦並びの説得力カード） */}
+          <div className="space-y-10 mb-14">
             {[
-              {icon:"📍",title:"Googleマップ順位自動チェック",body:"指定キーワードの検索順位を毎日自動取得。順位の推移をグラフで可視化し、改善効果を数字で把握。"},
-              {icon:"✍️",title:"AI投稿文自動生成",body:"院の情報を入力するだけで、GBP投稿用の文章をAIが自動生成。写真付き投稿もワンクリック。"},
+              {
+                screen: "/screens/meo/4-ranking-check.png",
+                icon: "📍",
+                title: "Googleマップ順位アラート",
+                body: "追跡中のキーワードの順位を毎日自動取得。下落や上昇を「緊急 / 注意 / 上昇」で振り分け、改善のヒントまで提案します。「なぜ順位が下がったのか分からない」を解消。",
+                bullets: ["順位下落を緊急アラートで通知", "改善のヒントを自動表示", "競合の動きも可視化"],
+              },
+              {
+                screen: "/screens/meo/2-content-generation.png",
+                icon: "✍️",
+                title: "一括コンテンツ生成",
+                body: "症状キーワード1つで、FAQ → ブログ → WordPress投稿 → GBP投稿 → note記事 まで連鎖的に作成。投稿ネタ切れ・記事作成の負担をゼロに。",
+                bullets: ["1キーワードで複数チャネル同時生成", "ブログ・FAQ・GBP・noteを連鎖作成", "医療広告ガイドラインを自動チェック"],
+              },
+              {
+                screen: "/screens/meo/3-strategy-check.png",
+                icon: "✅",
+                title: "MEO対策進捗チェック",
+                body: "GBP最適化・写真戦略・口コミ戦略・サイテーション・LLMO対策など40項目を可視化。「どこまでやれば良いか」が一目で分かり、優先度順にタスク化されます。",
+                bullets: ["MEO40項目を進捗バーで管理", "GBP・口コミ・サイテーションを網羅", "残タスクを優先度順に表示"],
+              },
+              {
+                screen: "/screens/meo/5-history.png",
+                icon: "📝",
+                title: "生成コンテンツ履歴・再活用",
+                body: "AIが生成した記事・FAQ・GBP投稿を全件保存。後から検索・再活用・編集が可能。書きためた資産がそのままクリニックのMEO土台になります。",
+                bullets: ["全生成コンテンツを一元保存", "種別フィルタで検索", "クリック1つで再編集・再投稿"],
+              },
+            ].map((f, i) => (
+              <div key={f.title} className={`grid md:grid-cols-5 gap-8 items-center ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
+                <div className="md:col-span-3 md:[direction:ltr]">
+                  <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white">
+                    <img src={f.screen} alt={f.title} className="w-full h-auto" />
+                  </div>
+                </div>
+                <div className="md:col-span-2 md:[direction:ltr]">
+                  <span className="text-3xl">{f.icon}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mt-2 mb-3">{f.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{f.body}</p>
+                  <ul className="space-y-2">
+                    {f.bullets.map(b => (
+                      <li key={b} className="flex items-start gap-2 text-sm text-gray-700">
+                        <span className="text-blue-500 flex-shrink-0 mt-0.5">✓</span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* サブ機能（残り3つを2列カードで補強） */}
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
               {icon:"💬",title:"口コミ返信AI自動生成",body:"患者からの口コミに対して、適切な返信文をAIが自動提案。丁寧かつ迅速な対応が可能に。"},
-              {icon:"📝",title:"SEO記事自動生成",body:"地域×症状のキーワードで、SEOに最適化されたブログ記事をAIが自動作成。"},
               {icon:"⚕️",title:"医療広告ガイドラインチェック",body:"生成した文章が医療広告ガイドラインに違反していないか自動チェック。安心して投稿できます。"},
-              {icon:"📊",title:"分析ダッシュボード",body:"順位推移・投稿頻度・口コミ数をダッシュボードで一元管理。対策の効果が一目でわかる。"},
+              {icon:"🔌",title:"WordPress自動連携",body:"生成した記事をクリック1つでWordPressに公開。「コピー＆貼り付け」の手間をゼロに。"},
             ].map(f=>(
-              <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+              <div key={f.title} className="flex gap-4 p-5 bg-white border border-gray-100 rounded-2xl shadow-sm">
                 <span className="text-3xl flex-shrink-0">{f.icon}</span>
-                <div><h3 className="font-bold text-gray-900 mb-2">{f.title}</h3><p className="text-gray-600 text-sm leading-relaxed">{f.body}</p></div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-1.5 text-sm">{f.title}</h3>
+                  <p className="text-gray-600 text-xs leading-relaxed">{f.body}</p>
+                </div>
               </div>
             ))}
           </div>
