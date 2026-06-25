@@ -1,6 +1,4 @@
-"use client";
 import Link from "next/link";
-import { useState } from "react";
 import PurchaseButton from "../../components/PurchaseButton";
 import { LineFloatingButton } from "../_components/LineFloatingButton";
 import { SystemHeader } from "../_components/SystemHeader";
@@ -10,6 +8,7 @@ import { SystemHubNavigation } from "../_components/SystemHubNavigation";
 import { LINE_URL, DEVELOPER } from "../../lib/site-config";
 import { getAppVoices } from "../../lib/testimonials";
 import { VoiceCardDetail } from "../_components/VoiceCard";
+import { BodyLandmarkSvg } from "../_components/BodyLandmarkSvg";
 
 const STRIPE_URL = "https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k";
 const DEMO_URL = "https://kensa-sheet-app.vercel.app/demo";
@@ -33,84 +32,6 @@ const INDUSTRY_USE_CASES = [
   },
 ];
 
-function KensaDemo() {
-  const [step, setStep] = useState(1);
-  const [nrs, setNrs] = useState<number | null>(null);
-  const [standing, setStanding] = useState<Record<string, number>>({});
-  const [seated, setSeated] = useState<Record<string, number>>({});
-  const titles = ["患者情報", "立位検査", "座位検査", "診断結果", "ケア＆PDF"];
-  const landmarks = ["乳様突起", "肩甲下角", "腸骨稜"];
-  return (
-    <div className="mx-auto max-w-[360px]">
-      <p className="text-center text-xs text-gray-400 mb-2">▼ 実際に操作できるデモ</p>
-      <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-        <div className="bg-blue-600 px-4 py-2.5 flex items-center justify-between">
-          <span className="text-white text-sm font-medium">カラダマップ — {titles[step-1]}</span>
-          <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">Step {step}/5</span>
-        </div>
-        <div className="flex gap-0.5 bg-blue-700 px-3 pb-1.5 pt-1">
-          {[1,2,3,4,5].map(s=><div key={s} className={`h-1 flex-1 rounded-full transition-all ${s<=step?"bg-white":"bg-white/25"}`}/>)}
-        </div>
-        <div className="bg-white p-4 min-h-[280px]">
-          {step===1&&<div>
-            <p className="text-xs text-gray-500 mb-3">基本情報と痛みレベルを入力</p>
-            <div className="grid grid-cols-2 gap-2 mb-3">
-              <div className="bg-blue-50 border border-blue-300 rounded-lg px-3 py-2 text-sm text-gray-700">山田 花子</div>
-              <div className="bg-blue-50 border border-blue-300 rounded-lg px-3 py-2 text-sm text-gray-700">再診</div>
-            </div>
-            <div className="bg-blue-50 border border-blue-300 rounded-lg px-3 py-2 text-sm text-gray-700 mb-3">腰痛・左下肢のしびれ</div>
-            <p className="text-xs text-gray-500 mb-2">痛みレベル（NRS 0〜10）</p>
-            <div className="flex gap-1">
-              {[0,1,2,3,4,5,6,7,8,9,10].map(n=><button key={n} onClick={()=>setNrs(n)} className={`flex-1 h-7 text-xs rounded transition-all ${nrs===n?"bg-blue-600 text-white":"bg-gray-50 border border-gray-200 text-gray-500"}`}>{n}</button>)}
-            </div>
-          </div>}
-          {(step===2||step===3)&&<div>
-            <p className="text-xs text-gray-500 mb-3">{step===2?"立った状態で各ランドマークの左右差を評価":"足が床につかない高さで座らせて再評価"}</p>
-            {landmarks.map(lm=>{
-              const st=step===2?standing:seated;
-              const setter=step===2?setStanding:setSeated;
-              return <div key={lm} className="bg-gray-50 rounded-xl p-3 mb-2">
-                <p className="text-xs font-medium text-gray-700 mb-2">{lm}</p>
-                <div className="grid grid-cols-3 gap-1">
-                  {["左高","均等","右高"].map((label,i)=><button key={label} onClick={()=>setter(prev=>({...prev,[lm]:i}))} className={`h-8 text-xs rounded-lg transition-all ${st[lm]===i?"bg-blue-600 text-white":"bg-white border border-gray-200 text-gray-500"}`}>{label}</button>)}
-                </div>
-              </div>;
-            })}
-          </div>}
-          {step===4&&<div>
-            <p className="text-xs text-gray-500 mb-3">立位・座位の差異から原因部位を自動特定</p>
-            <div className="bg-blue-50 border border-blue-300 rounded-xl p-3 mb-2">
-              <p className="text-xs text-blue-600 mb-1">原因部位</p>
-              <p className="text-lg font-medium text-blue-700">足部〜下肢</p>
-              <p className="text-xs text-blue-600 mt-1">立位→座位で変化あり。足からの影響が主因。</p>
-            </div>
-            <div className="bg-green-50 border border-green-300 rounded-xl p-3 mb-2">
-              <p className="text-xs text-green-600 mb-1">縮こまり部位</p>
-              <p className="text-base font-medium text-green-700">左腸腰筋・左梨状筋</p>
-              <p className="text-xs text-green-600 mt-1">腸骨稜の左高から推定</p>
-            </div>
-            <p className="text-xs text-gray-400 mt-2">NRS: {nrs??6}/10 → 改善ターゲット: 3以下</p>
-          </div>}
-          {step===5&&<div>
-            <p className="text-xs text-gray-500 mb-3">AIが自動提案したセルフケアを患者に共有</p>
-            {[{no:1,text:"大腰筋ストレッチ（仰臥位・片足引き寄せ）",tag:"縮こまり解除"},{no:2,text:"梨状筋リリース(座位・足組みストレッチ)",tag:"縮こまり解除"},{no:3,text:"重心バランス訓練(片脚立ち 30秒×3回)",tag:"再発予防"}].map(c=><div key={c.no} className="flex gap-2 py-2 border-b border-gray-100">
-              <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs flex-shrink-0">{c.no}</div>
-              <div><p className="text-xs text-gray-700 leading-relaxed">{c.text}</p><span className="inline-block text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded mt-1">{c.tag}</span></div>
-            </div>)}
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              <div className="bg-blue-600 text-white text-center text-xs font-medium py-2.5 rounded-xl cursor-pointer">患者用PDF<br/><span className="opacity-75">説明用レポート</span></div>
-              <div className="bg-gray-50 border border-gray-200 text-center text-xs py-2.5 rounded-xl cursor-pointer">施術者用PDF<br/><span className="text-gray-400">カルテ保存用</span></div>
-            </div>
-          </div>}
-        </div>
-        <div className="flex gap-2 px-4 py-3 border-t border-gray-100 bg-white">
-          {step>1&&<button onClick={()=>setStep(s=>s-1)} className="px-4 py-2 text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-xl">← 戻る</button>}
-          <button onClick={()=>setStep(s=>Math.min(5,s+1))} className="flex-1 py-2 text-sm font-medium bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">{step<5?"次へ →":"完了 ✓"}</button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function KensaPage() {
   return (
@@ -141,19 +62,29 @@ export default function KensaPage() {
               購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
             </p>
           </div>
-          {/* 右: 実画面プレビュー */}
+          {/* 右: 人体検査図 + 実画面 */}
           <div className="relative">
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
-              <img src="/screens/kensa/1-patient.png" alt="カラダマップ 患者情報画面" className="w-full h-auto" />
-            </div>
-            <div className="absolute -bottom-10 -right-3 md:-right-8 w-40 md:w-56 hidden sm:block">
-              <div className="rounded-xl overflow-hidden shadow-2xl border-4 border-white">
-                <img src="/screens/kensa/5-result.png" alt="カラダマップ 診断結果" className="w-full h-auto" />
+            <div className="grid grid-cols-2 gap-4 items-stretch">
+              {/* 人体図カード */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-xl border border-blue-100 p-4 flex flex-col">
+                <p className="text-[10px] font-bold text-blue-600 tracking-widest uppercase mb-2 text-center">3つのランドマーク</p>
+                <div className="flex-1 flex items-center justify-center">
+                  <BodyLandmarkSvg className="w-full h-auto max-h-[280px]" />
+                </div>
+                <p className="text-[10px] text-blue-900 text-center mt-2 leading-relaxed">立位・座位・上半身で<br/>左右差をチェック</p>
+              </div>
+              {/* スクショカード */}
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <img src="/screens/kensa/2-standing.png" alt="立位検査画面" className="w-full h-auto" />
               </div>
             </div>
-            <div className="absolute -top-8 -left-3 md:-left-8 w-36 md:w-48 hidden sm:block">
-              <div className="rounded-xl overflow-hidden shadow-xl border-4 border-white">
-                <img src="/screens/kensa/2-standing.png" alt="カラダマップ 立位検査" className="w-full h-auto" />
+            {/* 下部に施術風景を1枚 */}
+            <div className="mt-4 rounded-xl overflow-hidden shadow-lg border border-gray-100 relative aspect-[16/6]">
+              <img src="/images/clinic/treatment-3.jpeg" alt="検査・施術の様子" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+              <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                <p className="text-white text-xs font-bold drop-shadow">現役治療家が、自分の院で毎日使う</p>
+                <p className="text-white/90 text-[10px] mt-1 drop-shadow">大口神経整体院・施術風景</p>
               </div>
             </div>
           </div>
@@ -245,11 +176,13 @@ export default function KensaPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">搭載機能</h2>
           <p className="text-center text-gray-500 mb-12">検査・診断・提案・記録・分析に必要な機能を全て搭載</p>
 
-          {/* メイン4機能（実画面付き） */}
+          {/* メイン4機能（実画面 + 人体図/施術写真の組み合わせ） */}
           <div className="space-y-10 mb-14">
             {[
               {
                 screen: "/screens/kensa/1-patient.png",
+                bodySide: <BodyLandmarkSvg className="w-full h-auto max-h-[300px]" />,
+                bodyLabel: "検査対象：人体3ランドマーク",
                 icon: "🗺️",
                 title: "5段階検査ウィザード",
                 body: "患者情報 → 立位検査 → 座位検査 → 上半身検査 → 自動診断。タップ操作だけで検査が完結。タブレット片手にスタッフでも回せる設計です。",
@@ -257,6 +190,8 @@ export default function KensaPage() {
               },
               {
                 screen: "/screens/kensa/2-standing.png",
+                bodySide: <BodyLandmarkSvg className="w-full h-auto max-h-[300px]" highlight="pelvis" />,
+                bodyLabel: "原因部位：腸骨稜の左右差から推定",
                 icon: "🎯",
                 title: "段階的原因特定ロジック",
                 body: "立位 → 座位で足の影響を、座位 → 上半身で上半身の影響を判定。「どこが原因で歪んでいるか」を自動で絞り込みます。神経整体の現場ロジックをそのままアプリ化。",
@@ -264,6 +199,8 @@ export default function KensaPage() {
               },
               {
                 screen: "/images/kensa-demo/10-pdf-buttons.png",
+                bodyPhoto: "/images/clinic/treatment-5.jpeg",
+                bodyLabel: "PDF→患者にその場で渡せる",
                 icon: "📄",
                 title: "AIセルフケア提案 + PDF出力",
                 body: "診断結果に基づき、足関節の回旋運動・タオルギャザー等のセルフケアをAIが自動生成。そのまま「患者用レポートPDF」「施術提案書PDF」をワンタップで出力できます。",
@@ -271,18 +208,38 @@ export default function KensaPage() {
               },
               {
                 screen: "/images/kensa-demo/12-history.png",
+                bodyPhoto: "/images/clinic/treatment-6.jpeg",
+                bodyLabel: "経過を患者と一緒に確認",
                 icon: "📈",
                 title: "経過比較・検査履歴",
                 body: "過去の検査結果を一覧で管理。「右側優位の上部交差症候群」「左下肢荷重不均衡パターン」など診断名で患者の経過を追えるので、リピート率の向上と説明の根拠が一気に揃います。",
                 bullets: ["NRS値と診断名で時系列管理", "再診・経過観察・初診をタグで識別", "患者別ビューで個別の改善度が見える"],
               },
             ].map((f, i) => (
-              <div key={f.title} className={`grid md:grid-cols-5 gap-8 items-center ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
+              <div key={f.title} className={`grid md:grid-cols-6 gap-6 items-center ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
+                {/* 左列：人体図 or 施術写真 */}
+                <div className="md:col-span-1 md:[direction:ltr]">
+                  {f.bodySide ? (
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-3">
+                      {f.bodySide}
+                      <p className="text-[10px] text-blue-900 text-center mt-1.5 leading-tight">{f.bodyLabel}</p>
+                    </div>
+                  ) : f.bodyPhoto ? (
+                    <div className="rounded-2xl overflow-hidden shadow-md border border-gray-100 relative aspect-[3/4]">
+                      <img src={f.bodyPhoto} alt={f.bodyLabel} className="absolute inset-0 w-full h-full object-cover" />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                        <p className="text-white text-[10px] leading-tight">{f.bodyLabel}</p>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+                {/* 中央列：スクショ */}
                 <div className="md:col-span-3 md:[direction:ltr]">
                   <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white">
                     <img src={f.screen} alt={f.title} className="w-full h-auto" />
                   </div>
                 </div>
+                {/* 右列：機能説明 */}
                 <div className="md:col-span-2 md:[direction:ltr]">
                   <span className="text-3xl">{f.icon}</span>
                   <h3 className="text-xl md:text-2xl font-bold text-gray-900 mt-2 mb-3">{f.title}</h3>
@@ -359,14 +316,6 @@ export default function KensaPage() {
         </div>
       </section>
 
-      {/* インタラクティブデモ */}
-      <section className="py-16 max-w-5xl mx-auto px-6">
-        <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">インタラクティブデモ</p>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">この場でタップして試す</h2>
-        <p className="text-center text-gray-500 mb-10">ボタンをタップしてStep 1〜5を体験できます</p>
-        <KensaDemo />
-      </section>
-
       {/* 業種別ユースケース */}
       <section className="bg-gray-50">
         <IndustryUseCaseSection useCases={INDUSTRY_USE_CASES} appName="カラダマップ" />
@@ -390,7 +339,7 @@ export default function KensaPage() {
           <p className="text-center text-gray-500 mb-10">段階的原因特定ロジックを搭載しているのは、このシステムだけ</p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
-              <thead><tr className="bg-blue-600 text-white"><th className="text-left p-4 rounded-tl-xl">比較項目</th><th className="p-4 text-center">紙カルテ</th><th className="p-4 text-center">汎用電子カルテ</th><th className="p-4 text-center">大手レセコン</th><th className="p-4 text-center rounded-tr-xl font-bold">カラダマップ</th></tr></thead>
+              <thead><tr className="bg-blue-600 text-white"><th className="text-left p-4 rounded-tl-xl">比較項目</th><th className="p-4 text-center">紙の検査シート</th><th className="p-4 text-center">汎用AI診断ツール</th><th className="p-4 text-center">大手評価アプリ</th><th className="p-4 text-center rounded-tr-xl font-bold">カラダマップ</th></tr></thead>
               <tbody>{[["月額料金","0円","10,000円〜","20,000円〜","5,500円"],["初期費用","0円","50,000円〜","100,000円〜","0円"],["段階的原因特定ロジック","－","－","－","●"],["PDF出力(患者用＋施術者用)","－","●","●","●"],["AIセルフケア自動提案","－","－","－","●"],["経過比較・前回データ並列","－","▲","●","●"],["オフライン対応(PWA)","－","－","－","●"],["最低契約期間","－","12ヶ月","12ヶ月","6ヶ月"]].map(([item,a,b,c,d],i)=><tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}><td className="p-4 font-medium text-gray-700">{item}</td><td className="p-4 text-center text-gray-500">{a}</td><td className="p-4 text-center text-gray-500">{b}</td><td className="p-4 text-center text-gray-500">{c}</td><td className="p-4 text-center font-bold text-blue-600">{d}</td></tr>)}</tbody>
             </table>
           </div>

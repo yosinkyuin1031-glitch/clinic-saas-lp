@@ -161,31 +161,6 @@ export const TESTIMONIALS: Testimonial[] = [
     permission: { name: true, clinicName: true, photo: true, location: false },
   },
   {
-    id: "yamashita-kensa-clinic-core",
-    kind: "product",
-    displayName: "山下 将太",
-    role: "柏原尚門館整骨院 柔道整復師",
-    photoUrl: "/images/voices/yamashita.jpg",
-    industryLabel: "接骨院",
-    location: "大阪府柏原市",
-    shortText:
-      "マップに入力するだけで、患者さんへの身体の説明と治療の見える化が一気にラクに。初診時の説明に困っている先生におすすめです。",
-    detail: {
-      background:
-        "患者さんに伝える時の身体の状態や治療の説明が、口頭だけだとうまく伝わらず困っていた。カラダマップとClinic Coreを併用して変わったこと：",
-      points: [
-        "マップに入力するだけで歪みや原因となる場所が見える化できる",
-        "初診時の問診や身体の説明がスムーズに",
-        "顧客管理と説明ツールが連携して現場が回しやすい",
-      ],
-      quote:
-        "初診時の問診や身体の説明に困っている先生はぜひ導入をお勧めします！",
-    },
-    targetApps: ["kensa", "customer"],
-    showOnGeneral: true,
-    permission: { name: true, clinicName: true, photo: true, location: true },
-  },
-  {
     id: "nakakoshi-kensa-meo",
     kind: "product",
     displayName: "中越 俊兵",
@@ -207,6 +182,31 @@ export const TESTIMONIALS: Testimonial[] = [
         "費用対効果はバッチリです。",
     },
     targetApps: ["kensa", "meo"],
+    showOnGeneral: true,
+    permission: { name: true, clinicName: true, photo: true, location: true },
+  },
+  {
+    id: "yamashita-kensa-clinic-core",
+    kind: "product",
+    displayName: "山下 将太",
+    role: "柏原尚門館整骨院 柔道整復師",
+    photoUrl: "/images/voices/yamashita.jpg",
+    industryLabel: "接骨院",
+    location: "大阪府柏原市",
+    shortText:
+      "マップに入力するだけで、患者さんへの身体の説明と治療の見える化が一気にラクに。初診時の説明に困っている先生におすすめです。",
+    detail: {
+      background:
+        "患者さんに伝える時の身体の状態や治療の説明が、口頭だけだとうまく伝わらず困っていた。カラダマップとClinic Coreを併用して変わったこと：",
+      points: [
+        "マップに入力するだけで歪みや原因となる場所が見える化できる",
+        "初診時の問診や身体の説明がスムーズに",
+        "顧客管理と説明ツールが連携して現場が回しやすい",
+      ],
+      quote:
+        "初診時の問診や身体の説明に困っている先生はぜひ導入をお勧めします！",
+    },
+    targetApps: ["kensa", "customer"],
     showOnGeneral: true,
     permission: { name: true, clinicName: true, photo: true, location: true },
   },
