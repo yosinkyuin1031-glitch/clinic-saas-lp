@@ -67,6 +67,7 @@ export const TESTIMONIALS: Testimonial[] = [
     kind: "product",
     displayName: "山口先生",
     role: "院長",
+    photoUrl: "/images/voices/yamaguchi.jpg",
     industryLabel: "鍼灸院",
     shortText:
       "AI離反予測・音声入力で時短。過去データも移行できて、毎日の入力負担が激減した。",
@@ -115,6 +116,7 @@ export const TESTIMONIALS: Testimonial[] = [
     kind: "product",
     displayName: "中庄谷先生",
     role: "院長",
+    photoUrl: "/images/voices/nakashoya.png",
     industryLabel: "整体院",
     shortText:
       "月14,000円→5,500円に。見たい数字が一瞬で出せて、経営の自己分析が回るようになった。",

@@ -175,7 +175,7 @@ export async function sendWelcomeEmail(params: WelcomeEmailParams) {
           </div>
 
           <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
-            &copy; 2026 ClinicDX / AI Solutions
+            &copy; 2026 ClinicDX / 株式会社IDOMI
           </p>
         </div>
       `,
@@ -243,7 +243,7 @@ export async function sendAdminNotification(params: AdminNotificationParams) {
             </div>
           </div>
           <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
-            &copy; 2026 ClinicDX / AI Solutions
+            &copy; 2026 ClinicDX / 株式会社IDOMI
           </p>
         </div>
       `,
@@ -282,7 +282,7 @@ export async function sendAdminCancellationNotification(params: { clinicName: st
             </div>
           </div>
           <p style="text-align: center; font-size: 12px; color: #999; margin-top: 16px;">
-            &copy; 2026 ClinicDX / AI Solutions
+            &copy; 2026 ClinicDX / 株式会社IDOMI
           </p>
         </div>
       `,

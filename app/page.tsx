@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { getGeneralProductVoices, getCustomVoices } from "./lib/testimonials";
+import { VoiceCardShort, CustomWorkCard } from "./systems/_components/VoiceCard";
 
 // ========== データ定義 ==========
 
@@ -10,13 +12,13 @@ const APPS = [
     name: "カラダマップ",
     shortName: "カラダマップ",
     categories: ["検査＆診断"],
-    description: "5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、セルフケア自動提案まで。",
+    description: "3分で、体の\"いま\"を見える化。5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、セルフケア自動提案まで。",
     features: ["5段階検査ウィザード", "原因部位を自動特定", "患者用・施術者用PDF出力", "セルフケア自動提案"],
-    monthlyPrice: 3980,
-    initialCost: 11000,
-    maintenancePrice: 1190,
+    monthlyPrice: 5500,
+    initialCost: 0,
+    maintenancePrice: 0,
     badge: "看板商品",
-    demoUrl: "https://kensa-sheet-app.vercel.app",
+    demoUrl: "https://kensa-sheet-app.vercel.app/demo",
     detailUrl: "/systems/kensa",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -29,11 +31,11 @@ const APPS = [
     name: "Clinic Core",
     shortName: "顧客管理",
     categories: ["開業", "集客", "内製化"],
-    description: "患者情報を一元管理。来院履歴・離反アラート・データ分析ダッシュボード搭載。",
+    description: "現役治療家が作った、現場で使える顧客管理。患者情報を一元管理。来院履歴・離反アラート・データ分析ダッシュボード搭載。最低契約6ヶ月。",
     features: ["患者情報を一元管理", "来院履歴・離反アラート", "データ分析ダッシュボード"],
     monthlyPrice: 5500,
-    initialCost: 33000,
-    maintenancePrice: 1490,
+    initialCost: 0,
+    maintenancePrice: 0,
     badge: "NEW",
     demoUrl: "https://clinic-core-demo.vercel.app",
     detailUrl: "/systems/customer",
@@ -48,12 +50,12 @@ const APPS = [
     name: "予約管理",
     shortName: "予約管理",
     categories: ["開業", "内製化"],
-    description: "カレンダー形式で直感操作。ダブルブッキング防止、LINE通知連携。",
-    features: ["カレンダー形式で直感操作", "ダブルブッキング防止", "LINE通知連携"],
+    description: "カレンダー形式で直感操作。ダブルブッキング防止、LINE通知連携。Clinic Coreとの2システム連携を準備中。",
+    features: ["カレンダー形式で直感操作", "ダブルブッキング防止", "Clinic Coreと連携予定"],
     monthlyPrice: 3980,
-    initialCost: 11000,
-    maintenancePrice: 890,
-    badge: "NEW",
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/reservation",
     icon: (
@@ -62,37 +64,34 @@ const APPS = [
       </svg>
     ),
   },
-  {
-    id: "monshin",
-    name: "WEB問診",
-    shortName: "WEB問診",
-    categories: ["開業"],
-    description: "来院前にスマホで問診。自動集計・PDF出力。カスタム問診項目対応。",
-    features: ["来院前にスマホで問診", "自動集計・PDF出力", "カスタム問診項目"],
-    monthlyPrice: 2980,
-    initialCost: 11000,
-    maintenancePrice: 890,
-    badge: "NEW",
-    demoUrl: "",
-    detailUrl: "/systems/monshin",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-      </svg>
-    ),
-  },
+  // WEB問診（monshin）: ¥5,500統一・新Stripe Payment Link準備中につき、一時的にLPから非表示。
+  // 設定完了時に下記を復活＆stripeLinksに追加すれば再公開される。
+  // {
+  //   id: "monshin",
+  //   name: "WEB問診",
+  //   shortName: "WEB問診",
+  //   categories: ["開業"],
+  //   description: "来院前にスマホで問診。自動集計・PDF出力。整体／鍼灸／接骨院／サロンテンプレ＋項目ON/OFFでカスタマイズ可能。",
+  //   features: ["来院前にスマホで問診", "自動集計・PDF出力", "業種別テンプレ＋項目カスタマイズ"],
+  //   monthlyPrice: 5500,
+  //   initialCost: 0,
+  //   maintenancePrice: 0,
+  //   badge: "準備中",
+  //   demoUrl: "",
+  //   detailUrl: "/systems/monshin",
+  // },
   {
     id: "meo",
     name: "MEO勝ち上げくん",
     shortName: "MEO対策",
     categories: ["集客", "内製化"],
-    description: "Googleマップ順位を自動チェック。AI投稿文を自動生成。医療広告ガイドライン自動チェック。",
-    features: ["Googleマップ順位を自動チェック", "AI投稿文を自動生成", "医療広告ガイドライン自動チェック"],
-    monthlyPrice: 3980,
-    initialCost: 11000,
-    maintenancePrice: 1490,
+    description: "キーワード1つでブログ・FAQ・GBP・noteを同時生成。医療広告ガイドラインを自動チェック。WordPress連携で公開まで全自動。",
+    features: ["キーワード1つで4コンテンツ同時生成", "医療広告ガイドライン違反を自動防止", "LLMO対策・WordPress連携で公開まで全自動"],
+    monthlyPrice: 5500,
+    initialCost: 0,
+    maintenancePrice: 0,
     badge: "看板商品",
-    demoUrl: "",
+    demoUrl: "https://meo-kachiagekun.vercel.app/demo",
     detailUrl: "/systems/meo",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -108,9 +107,9 @@ const APPS = [
     categories: ["検査＆診断", "体質分析"],
     description: "5軸×30問で睡眠の質を数値化。レーダーチャート・AIセルフケア提案・PDF出力。",
     features: ["5軸スコアリング分析", "AIセルフケア・施術提案", "ビフォーアフター比較"],
-    monthlyPrice: 2200,
-    initialCost: 11000,
-    maintenancePrice: 1490,
+    monthlyPrice: 3300,
+    initialCost: 0,
+    maintenancePrice: 0,
     badge: "準備中",
     demoUrl: "",
     detailUrl: "/systems/sleep",
@@ -120,9 +119,198 @@ const APPS = [
       </svg>
     ),
   },
+  {
+    id: "heatscope",
+    name: "HeatScope",
+    shortName: "HPヒートマップ",
+    categories: ["集客", "内製化"],
+    description: "治療院HPのどこが見られて、どこが押されてるかが3分でわかる。クリック・スクロール・アテンションマップ＋治療院専用の自動改善提案。",
+    features: ["クリック／スクロール／アテンション3種ヒートマップ", "治療院専用の自動改善提案（日本語）", "WordPress/ペライチ等の設置ガイド＋制作会社向け依頼書PDF"],
+    monthlyPrice: 5500,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://heatscope.vercel.app/demo",
+    detailUrl: "/systems/heatscope",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2.25c-2.429 0-4.817.178-7.152.521C2.87 3.061 1.5 4.795 1.5 6.741v6.018c0 1.946 1.37 3.68 3.348 3.97.877.129 1.761.234 2.652.316V21l4.5-4.5c2.429 0 4.817-.178 7.152-.52 1.978-.29 3.348-2.025 3.348-3.971V6.741c0-1.946-1.37-3.68-3.348-3.97A48.43 48.43 0 0012 2.25z" />
+      </svg>
+    ),
+  },
+  {
+    id: "menu",
+    name: "メニュー管理",
+    shortName: "メニュー管理",
+    categories: ["内製化", "集客"],
+    description: "施術・物販・オプションのメニューマスター＋松竹梅プランを一元管理。提案書ジェネレーターと連携して、A4提案書とスライドにそのまま反映できます。",
+    features: ["メニュー（施術／物販／オプション）一元管理", "松竹梅プラン構成・院ごと自由設計", "提案書ジェネレーターと連携可能"],
+    monthlyPrice: 3300,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://menu-proposal.vercel.app",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    ),
+  },
+  {
+    id: "proposal",
+    name: "提案書ジェネレーター",
+    shortName: "提案書作成",
+    categories: ["集客", "内製化"],
+    description: "3分で、患者の心を動かす提案書とスライドを。A4提案書＋13枚スライドを自動生成。年齢・症状で4テーマ自動切替・PDF出力対応。",
+    features: ["9症状プリセットからA4提案書を自動生成", "NotebookLM風13枚スライドを同時生成", "年齢・症状で4テーマ自動切替・PDF出力"],
+    monthlyPrice: 1100,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://proposal-generator-gold.vercel.app",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5A3.375 3.375 0 0010.125 2.25H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),
+  },
+  {
+    id: "subpoints",
+    name: "サブスクポイント管理",
+    shortName: "サブスク管理",
+    categories: ["開業", "内製化"],
+    description: "治療院のサブスク会員を、まるごと自動管理。Square／会費ペイの自動引落＋ポイント連携。引落失敗の自動休止・リマインダーまで標準装備。",
+    features: ["Square／会費ペイ自動引落＋ポイント連携", "引落失敗の自動休止・リマインダー", "患者マイページ（QRコード）・月次レポート"],
+    monthlyPrice: 5500,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://clinic-point-system.vercel.app",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+    ),
+  },
+  {
+    id: "changesnap",
+    name: "ChangeSnap",
+    shortName: "写真比較",
+    categories: ["集客", "内製化"],
+    description: "治療院のビフォーアフターを、最速で素材化。比較画像も動画もワンタップ書き出し。SNS・LP・院内POPの素材作りが3分で完了。",
+    features: ["ビフォーアフター写真を一元管理", "左右・上下・スライド比較を自動生成", "動画書き出し（MediaRecorder）"],
+    monthlyPrice: 1100,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://changesnap.vercel.app",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+      </svg>
+    ),
+  },
+  {
+    id: "invoice",
+    name: "InvoiceForge",
+    shortName: "請求書作成",
+    categories: ["内製化"],
+    description: "治療院の請求書を、3分で。施術メニューがワンタップ、消費税も自動計算。PDF出力・テンプレ保存・売上サマリーまで一気通貫。",
+    features: ["施術メニューをワンタップ追加", "消費税自動計算・PDF出力", "売上サマリー・複製・オートセーブ"],
+    monthlyPrice: 1100,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "https://invoice-forge-ashy.vercel.app",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
+  {
+    id: "threadslab",
+    name: "ThreadsLab",
+    shortName: "スレッツ自動化",
+    categories: ["集客", "内製化"],
+    description: "AIがThreads投稿を毎日自動生成＋自動投稿。治療院特化プロンプト・薬機法NGフィルタ・随時承認モード搭載のSNS集客SaaS。",
+    features: ["AIが毎日Threads投稿を自動生成", "薬機法NGフィルタ・治療院特化プロンプト", "Threads Graph APIで自動投稿（承認モード）"],
+    monthlyPrice: 11000,
+    initialCost: 0,
+    maintenancePrice: 0,
+    badge: "準備中",
+    demoUrl: "",
+    detailUrl: "",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+      </svg>
+    ),
+  },
 ];
 
 const CATEGORIES = ["すべて", "開業", "集客", "内製化", "検査＆診断"];
+
+type PriceTier = {
+  id: string;
+  label: string;
+  sub: string;
+  desc: string;
+  range: [number, number];
+  color: string;
+  accent: string;
+  border: string;
+  custom?: boolean;
+};
+
+const PRICE_TIERS: PriceTier[] = [
+  {
+    id: "light",
+    label: "1,000円台",
+    sub: "ライト",
+    desc: "サブとしてサクッと導入できる単機能アプリ",
+    range: [0, 1999],
+    color: "from-sky-50 to-blue-50",
+    accent: "text-sky-700",
+    border: "border-sky-200",
+  },
+  {
+    id: "standard",
+    label: "3,000円台",
+    sub: "スタンダード",
+    desc: "院の日々の業務を支える主力アプリ",
+    range: [2000, 4999],
+    color: "from-amber-50 to-orange-50",
+    accent: "text-amber-700",
+    border: "border-amber-200",
+  },
+  {
+    id: "premium",
+    label: "5,000円台〜",
+    sub: "プレミアム",
+    desc: "院全体の業務をまるごと統合する基幹アプリ・ハイエンド機能",
+    range: [5000, 99999],
+    color: "from-rose-50 to-pink-50",
+    accent: "text-rose-700",
+    border: "border-rose-200",
+  },
+  {
+    id: "custom",
+    label: "オーダーメイド",
+    sub: "カスタム開発",
+    desc: "院の業務に合わせて一から作るオリジナルアプリ",
+    range: [10000, 999999],
+    color: "from-violet-50 to-indigo-50",
+    accent: "text-violet-700",
+    border: "border-violet-200",
+    custom: true,
+  },
+];
 
 const COMING_SOON_APPS = [
   "LINE自動化ツール",
@@ -130,32 +318,33 @@ const COMING_SOON_APPS = [
   "LP作成ツール",
 ];
 
+// WEB問診（monshin）は¥5,500統一の新Payment Link準備中につき、セット例から一時的に除外。
 const SET_EXAMPLES = [
   {
-    name: "顧客管理パック",
-    appIds: ["customer", "reservation"],
-    description: "患者管理と予約管理をまとめて導入",
-    setMonthly: 8800,
-    setInitial: 38500,
-    label: "7%OFF",
+    name: "経営強化パック",
+    appIds: ["kensa", "customer"],
+    description: "検査で説明根拠を作り、Clinic Coreで経営数字を見える化",
+    setMonthly: 10500, // 5500+5500=11000 から ¥500 OFF
+    setInitial: 0,
+    label: "¥500/月OFF",
     note: null,
   },
   {
-    name: "集客パック",
-    appIds: ["meo", "monshin"],
-    description: "新規集客を強化したい先生向け",
-    setMonthly: 6480,
-    setInitial: 19800,
-    label: "7%OFF",
+    name: "集客強化パック",
+    appIds: ["meo", "customer"],
+    description: "Googleマップ集客＋顧客管理で、新規〜リピートまで一気通貫",
+    setMonthly: 10500, // 5500+5500=11000 から ¥500 OFF
+    setInitial: 0,
+    label: "¥500/月OFF",
     note: null,
   },
   {
-    name: "検査パック",
-    appIds: ["kensa", "sleep"],
-    description: "検査・分析をまとめて数値化",
-    setMonthly: 5680,
-    setInitial: 19800,
-    label: "8%OFF",
+    name: "フル装備パック",
+    appIds: ["kensa", "customer", "meo"],
+    description: "主力3アプリ全部入り。検査・顧客管理・集客をまとめて内製化",
+    setMonthly: 15500, // 5500*3=16500 から ¥1,000 OFF
+    setInitial: 0,
+    label: "¥1,000/月OFF",
     note: null,
   },
 ];
@@ -166,8 +355,12 @@ const FAQS = [
     a: "はい、スマホがあれば操作できるシンプル設計です。導入時にZoomでサポートしますのでご安心ください。",
   },
   {
-    q: "途中で解約できますか？",
-    a: "はい、最低利用期間はありません。いつでも解約可能で、解約月の月末まで利用できます。",
+    q: "最低契約期間はありますか？",
+    a: "主力アプリ（カラダマップ・Clinic Core・MEO勝ち上げくん）はいずれも最低契約期間6ヶ月です。導入後すぐの解約はできませんが、6ヶ月経過後はいつでも解約可能で、解約月の月末まで利用いただけます。\n初期費用0円・月額5,500円でご利用いただけるため、6ヶ月で総額33,000円から内製化を始められます。",
+  },
+  {
+    q: "6ヶ月以内に解約したくなった場合は？",
+    a: "残り月数分の月額料金を一括精算いただく形になります（例：3ヶ月で解約 → 残り3ヶ月分=16,500円）。最低契約は「投資した時間が無駄にならないように、しっかり使い倒してもらう」ための仕組みとしています。",
   },
   {
     q: "データの移行はできますか？",
@@ -183,23 +376,7 @@ const FAQS = [
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "A整体院",
-    role: "院長",
-    text: "顧客管理と予約管理を導入。紙カルテから解放されて施術に集中できるようになった。受付の手間が本当に減りました。",
-  },
-  {
-    name: "B鍼灸院",
-    role: "院長",
-    text: "MEO勝ち上げくんで順位が上がり、新規が月5人増えた。週10分の運用だけでこの結果は驚きです。",
-  },
-  {
-    name: "C整骨院",
-    role: "院長",
-    text: "検査シートで患者への説明が格段にわかりやすくなった。リピート率が上がって、患者さんの満足度も高くなりました。",
-  },
-];
+// 利用者の声 / 開発実績の声は app/lib/testimonials.ts で一元管理
 
 
 // ========== コンポーネント ==========
@@ -229,9 +406,11 @@ export default function Home() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
+  // 準備中アプリは総合LPから完全に隠す（badge: "準備中" のものは販売LPに出さない）
+  const SALEABLE_APPS = APPS.filter(app => app.badge !== "準備中");
   const filteredApps = activeCategory === "すべて"
-    ? APPS
-    : APPS.filter(app => app.categories.includes(activeCategory));
+    ? SALEABLE_APPS
+    : SALEABLE_APPS.filter(app => app.categories.includes(activeCategory));
 
   const calcTotal = useMemo(() => {
     const selected = APPS.filter(app => selectedApps.includes(app.id));
@@ -287,7 +466,7 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          planName: `ClinicApps（${appNames}）${planSuffix}`,
+          planName: `ClinicMark（${appNames}）${planSuffix}`,
           email: checkoutEmail,
           clinicName: checkoutClinicName,
           amount,
@@ -346,7 +525,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-black text-sm">C</span>
             </div>
-            <span className="text-lg font-black tracking-tight text-primary">ClinicApps</span>
+            <span className="text-lg font-black tracking-tight text-primary">ClinicMark</span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
             <a href="#apps" className="hover:text-primary transition">システム一覧</a>
@@ -374,16 +553,17 @@ export default function Home() {
         <div className="relative max-w-5xl mx-auto px-4 py-20 md:py-28">
           <div className="text-center">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight">
-              <span className="text-primary">治療家が、治療家のために</span>
+              <span className="text-primary">治療家のための、</span>
               <br />
-              <span className="text-primary">作った</span>
-              <span className="text-accent">業務システム。</span>
+              <span className="text-accent">アプリラボ。</span>
             </h1>
 
             <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              高くて使いこなせないシステムは、もういらない。
+              現役治療家が作る、現場で本当に使える業務アプリ。
               <br className="hidden md:block" />
-              月額2,200円から、初期費用11,000円〜。全6システムを自由に組み合わせ。
+              月額1,000円台から、価格帯と用途で選べる全6種＋オーダーメイド。
+              <br className="hidden md:block" />
+              デモ版で実機を触ってから、必要なものだけ導入できます。
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -391,7 +571,7 @@ export default function Home() {
                 href="#apps"
                 className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg hover:shadow-accent/20 transition-all"
               >
-                システムを見る
+                アプリを探す
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </a>
               <a
@@ -407,27 +587,178 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== 治療家プロフィールバンド ===== */}
+      <section className="py-8 bg-white border-t border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="flex items-center gap-4 md:gap-6 flex-wrap justify-center md:justify-between">
+            <div className="flex items-center gap-3 md:gap-4">
+              <img
+                src="/images/clinic/portrait-2022.jpeg"
+                alt="大口陽平"
+                className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover shadow-md border-2 border-white ring-2 ring-accent/20"
+              />
+              <div>
+                <p className="text-[11px] text-gray-400 font-bold tracking-widest">DEVELOPED BY</p>
+                <p className="text-sm md:text-base font-black text-primary">大口 陽平（現役治療家）</p>
+                <p className="text-[11px] md:text-xs text-gray-500">大口神経整体院 院長 / 晴陽鍼灸院 代表</p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-6">
+              <div className="text-center">
+                <p className="text-xl font-black text-primary leading-none">10<span className="text-[10px] font-bold text-gray-400 ml-0.5">年</span></p>
+                <p className="text-[10px] text-gray-500 mt-1">施術歴</p>
+              </div>
+              <div className="w-px h-8 bg-gray-200"></div>
+              <div className="text-center">
+                <p className="text-xl font-black text-primary leading-none">50<span className="text-[10px] font-bold text-gray-400 ml-0.5">+</span></p>
+                <p className="text-[10px] text-gray-500 mt-1">開発システム</p>
+              </div>
+              <div className="w-px h-8 bg-gray-200"></div>
+              <div className="text-center">
+                <p className="text-xl font-black text-primary leading-none">429<span className="text-[10px] font-bold text-gray-400 ml-0.5">万</span></p>
+                <p className="text-[10px] text-gray-500 mt-1">一人治療院最高月商</p>
+              </div>
+            </div>
+            <a href="#developer" className="text-xs font-bold text-accent hover:text-accent-600 transition whitespace-nowrap">
+              詳しいプロフィール &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== 価格帯ショーケース ===== */}
+      <section id="tiers" className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-accent tracking-widest mb-2">PRICE LINEUP</p>
+            <h2 className="text-2xl md:text-3xl font-black text-primary mb-3">
+              価格帯で選べる、治療家のためのアプリ。
+            </h2>
+            <p className="text-sm md:text-base text-gray-600">
+              月1,000円台のライトから、業務をまるごと統合するプレミアムまで。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {PRICE_TIERS.filter((tier) => {
+              if (tier.custom) return true; // オーダーメイド枠は常に表示
+              const apps = SALEABLE_APPS.filter(
+                (a) => a.monthlyPrice >= tier.range[0] && a.monthlyPrice <= tier.range[1]
+              );
+              return apps.length > 0; // 主力アプリが1つもないtierは丸ごと非表示
+            }).map((tier) => {
+              const tierApps = tier.custom
+                ? []
+                : SALEABLE_APPS.filter(
+                    (a) => a.monthlyPrice >= tier.range[0] && a.monthlyPrice <= tier.range[1]
+                  );
+              return (
+                <div
+                  key={tier.id}
+                  className={`bg-gradient-to-br ${tier.color} border-2 ${tier.border} rounded-2xl p-5 flex flex-col`}
+                >
+                  <div className="mb-4">
+                    <p className={`text-[10px] font-bold tracking-widest mb-1 ${tier.accent}`}>
+                      {tier.sub}
+                    </p>
+                    <h3 className="text-2xl font-black text-primary leading-tight">
+                      {tier.label}
+                    </h3>
+                    <p className="text-xs text-gray-600 mt-2 leading-relaxed">{tier.desc}</p>
+                  </div>
+
+                  <div className="flex-1 space-y-2">
+                    {tier.custom ? (
+                      <div className="bg-white/70 border border-white rounded-lg p-4">
+                        <p className="text-xs text-gray-700 leading-relaxed mb-3">
+                          自院オリジナルのアプリを一から開発。
+                          ヒアリング無料・最短2週間〜。
+                        </p>
+                        <a
+                          href="#custom-dev"
+                          className={`block text-center text-xs font-bold text-white bg-violet-600 hover:bg-violet-700 px-3 py-2 rounded transition`}
+                        >
+                          オーダーメイドの詳細
+                        </a>
+                      </div>
+                    ) : tierApps.length === 0 ? (
+                      <div className="bg-white/60 border border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <p className="text-xs text-gray-500">準備中のラインナップ</p>
+                        <p className="text-[10px] text-gray-400 mt-1">Coming Soon</p>
+                      </div>
+                    ) : (
+                      tierApps.map((app) => (
+                        <div
+                          key={app.id}
+                          className="bg-white/80 border border-white rounded-lg p-3 flex items-center justify-between gap-3 hover:bg-white transition"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-bold text-primary truncate">{app.name}</p>
+                            <p className="text-[11px] text-gray-500 truncate">
+                              月額{app.monthlyPrice.toLocaleString()}円
+                            </p>
+                          </div>
+                          <div className="flex gap-1 flex-shrink-0">
+                            {app.demoUrl && (
+                              <a
+                                href={app.demoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition"
+                              >
+                                デモ
+                              </a>
+                            )}
+                            {app.detailUrl && (
+                              <a
+                                href={app.detailUrl}
+                                className="text-[10px] font-bold text-white bg-accent hover:bg-accent-600 px-2 py-1 rounded transition"
+                              >
+                                詳細
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ===== こんな悩みありませんか？ ===== */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
             こんな悩みありませんか？
           </h2>
+          <p className="text-center text-gray-500 text-sm mb-8 -mt-4">
+            治療家が抱えがちな「経営の数字」「説明の根拠」「集客」の悩みを、3つのアプリで解決します。
+          </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              "カルテや顧客情報が紙やExcelでバラバラ",
-              "予約管理が電話対応で手間がかかる",
-              "MEO対策、何から始めればいいかわからない",
-              "月2〜5万円のシステム、使いこなせていない",
-              "ITに詳しくなくて導入が不安",
-            ].map((text, i) => (
+              { tag: "Clinic Core", text: "カルテや顧客情報が紙やExcelでバラバラ" },
+              { tag: "Clinic Core", text: "LTV・リピート率・離反など、経営の数字が見えていない" },
+              { tag: "カラダマップ", text: "口頭の検査説明だと患者さんに伝わりきらない" },
+              { tag: "MEO勝ち上げくん", text: "MEO対策、何から始めればいいかわからない" },
+              { tag: "MEO勝ち上げくん", text: "MEO業者に月3〜5万円払っていて中身も見えない" },
+              { tag: "共通", text: "ITに詳しくなくて、月2〜5万円のシステムを使いこなせていない" },
+            ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                 <div className="flex-shrink-0 w-8 h-8 bg-cta/10 rounded-lg flex items-center justify-center mt-0.5">
                   <svg className="w-4 h-4 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                   </svg>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed">{text}</p>
+                <div className="flex-1 min-w-0">
+                  <span className="inline-block text-[10px] font-bold bg-accent/10 text-accent px-2 py-0.5 rounded-full mb-1.5">
+                    {item.tag}
+                  </span>
+                  <p className="text-sm text-gray-700 leading-relaxed">{item.text}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -436,10 +767,41 @@ export default function Home() {
 
       {/* ===== 差別化セクション ===== */}
       <section className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
-            現役治療家が、現場で作ったシステムです。
-          </h2>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-accent tracking-widest mb-2">WHY US</p>
+            <h2 className="text-2xl md:text-3xl font-black text-primary">
+              現役治療家が、現場で作ったシステムです。
+            </h2>
+          </div>
+
+          {/* 院内施術写真＋紹介文 */}
+          <div className="grid md:grid-cols-2 gap-8 items-center mb-12 bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 md:p-8">
+            <div>
+              <img
+                src="/images/clinic/treatment-3.jpeg"
+                alt="大口陽平が骨格模型を使って説明する様子"
+                className="w-full h-64 md:h-72 object-cover rounded-xl shadow-md"
+              />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-accent tracking-widest mb-3">FROM CLINIC FLOOR</p>
+              <h3 className="text-xl md:text-2xl font-black text-primary leading-snug mb-4">
+                治療とスタッフ教育に、<br />
+                時間を残すために作っています。
+              </h3>
+              <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
+                治療家の本業は、目の前の患者さんと、スタッフを育てる時間。
+                それ以外の事務作業に時間を奪われている治療院が多すぎる――
+                <strong>その時間を取り戻すためのアプリ</strong>を、現場で毎日使いながら磨いています。
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                整体院・鍼灸院・接骨院・サロン――業種が変わっても、
+                「治療家が時間を奪われている作業」は驚くほど共通しています。
+              </p>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 text-center">
               <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -492,7 +854,7 @@ export default function Home() {
               <thead>
                 <tr className="bg-primary text-white">
                   <th className="py-3 px-4 text-left rounded-tl-lg"></th>
-                  <th className="py-3 px-4 text-center font-black">ClinicApps</th>
+                  <th className="py-3 px-4 text-center font-black">ClinicMark</th>
                   <th className="py-3 px-4 text-center">大手A社</th>
                   <th className="py-3 px-4 text-center rounded-tr-lg">大手B社</th>
                 </tr>
@@ -591,44 +953,53 @@ export default function Home() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-gray-400">初期費用</p>
-                      <p className="text-sm font-bold text-gray-600">{app.initialCost.toLocaleString()}円</p>
+                      <p className="text-sm font-bold text-gray-600">{app.initialCost === 0 ? "不要" : `${app.initialCost.toLocaleString()}円`}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  {["kensa", "meo", "customer", "reservation", "monshin"].includes(app.id) ? (
-                    <>
-                      {app.detailUrl && (
-                        <a
-                          href={app.detailUrl}
-                          className="block w-full text-center bg-primary text-white font-bold py-2.5 px-4 rounded-xl hover:bg-primary-700 transition-all text-sm"
-                        >
-                          詳しく見る
-                        </a>
-                      )}
-                      <a
-                        href={
-                          app.id === "kensa"
-                            ? "https://buy.stripe.com/14AfZg6ks3SU9nS0ut08g02"
-                            : app.id === "meo"
-                            ? "https://buy.stripe.com/9B6dR824cahi1Vqb9708g03"
-                            : app.id === "customer"
-                            ? "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06"
-                            : app.id === "reservation"
-                            ? "https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08"
-                            : "https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a"
-                        }
-                        className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
-                      >
-                        今すぐ始める &rarr;
-                      </a>
-                    </>
-                  ) : (
-                    <span className="block w-full text-center border-2 border-gray-200 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-sm cursor-not-allowed">
-                      準備中
-                    </span>
+                  {app.detailUrl && (
+                    <a
+                      href={app.detailUrl}
+                      className="block w-full text-center bg-primary text-white font-bold py-2.5 px-4 rounded-xl hover:bg-primary-700 transition-all text-sm"
+                    >
+                      詳しく見る
+                    </a>
                   )}
+                  {(() => {
+                    // 主力3アプリ ¥5,500/月・初期費用0円・Custom Field「治療院名」設定済
+                    // 決済完了 → /api/webhooks/stripe で自動アカウント発行＋メール送信
+                    const stripeLinks: Record<string, string> = {
+                      kensa: "https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k",
+                      meo: "https://buy.stripe.com/dRm3cucIQ2OQfMg1yx08g0y",
+                      customer: "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07",
+                    };
+                    const link = stripeLinks[app.id];
+                    if (link) {
+                      return (
+                        <a
+                          href={link}
+                          className="block w-full text-center border-2 border-accent text-accent font-bold py-2.5 px-4 rounded-xl hover:bg-accent hover:text-white transition-all text-sm"
+                        >
+                          今すぐ始める &rarr;
+                        </a>
+                      );
+                    }
+                    return (
+                      <span className="block w-full text-center border-2 border-gray-200 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-sm cursor-not-allowed">
+                        準備中
+                      </span>
+                    );
+                  })()}
+                  <a
+                    href="https://lin.ee/8P11rM4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center text-xs text-gray-500 hover:text-cta py-1 transition-colors"
+                  >
+                    気になる方はLINEで相談
+                  </a>
                 </div>
               </div>
             ))}
@@ -655,8 +1026,14 @@ export default function Home() {
           <p className="text-center text-gray-500 text-sm mb-10">
             気になるシステムの専用ページで、機能・料金・比較表を確認できます
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
+              {
+                name: "カラダマップ",
+                desc: "検査で原因部位を自動特定・PDF納品",
+                price: "5,500",
+                url: "/systems/kensa",
+              },
               {
                 name: "Clinic Core",
                 desc: "数字で経営を変える分析ツール",
@@ -664,27 +1041,9 @@ export default function Home() {
                 url: "/systems/customer",
               },
               {
-                name: "予約管理",
-                desc: "予約の取りこぼしを仕組みで防ぐ",
-                price: "3,980",
-                url: "/systems/reservation",
-              },
-              {
-                name: "WEB問診",
-                desc: "初診の10分をもっと大切に",
-                price: "2,980",
-                url: "/systems/monshin",
-              },
-              {
-                name: "カラダマップ",
-                desc: "検査で原因部位を自動特定",
-                price: "3,980",
-                url: "/systems/kensa",
-              },
-              {
                 name: "MEO勝ち上げくん",
                 desc: "Googleマップ順位を自動管理",
-                price: "3,980",
+                price: "5,500",
                 url: "/systems/meo",
               },
             ].map((item, i) => (
@@ -761,7 +1120,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {APPS.map((app, i) => {
+                {SALEABLE_APPS.map((app, i) => {
                   const yearlyPrice = app.monthlyPrice * 10;
                   return (
                     <tr key={app.id} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
@@ -781,7 +1140,9 @@ export default function Home() {
                           <>{app.monthlyPrice.toLocaleString()}円/月</>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-center">{app.initialCost.toLocaleString()}円</td>
+                      <td className="py-3 px-4 text-center">
+                        {app.initialCost === 0 ? "不要" : `${app.initialCost.toLocaleString()}円`}
+                      </td>
                     </tr>
                   );
                 })}
@@ -790,15 +1151,14 @@ export default function Home() {
           </div>
 
           {/* セットで買うとお得 */}
-          <div className="bg-gray-100 rounded-2xl border border-gray-200 p-6 md:p-8 mb-10 relative">
-            <span className="absolute -top-3 right-4 bg-gray-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">準備中</span>
-            <h3 className="text-xl font-black text-gray-400 text-center mb-2">セットで買うとお得</h3>
-            <p className="text-center text-gray-400 text-sm mb-6">目的に合わせたパックで、月額も初期費用もお得になります。</p>
+          <div className="bg-gradient-to-br from-accent/5 to-cta/5 rounded-2xl border border-accent/20 p-6 md:p-8 mb-10">
+            <h3 className="text-xl font-black text-primary text-center mb-2">セットで買うとお得</h3>
+            <p className="text-center text-gray-600 text-sm mb-6">目的に合わせたパックで、月額がお得になります。</p>
           </div>
 
           {/* セットパック */}
-          <h3 className="text-xl font-black text-gray-400 text-center mb-6">おすすめパック</h3>
-          <div className="grid md:grid-cols-2 gap-5 mb-10 opacity-50 pointer-events-none">
+          <h3 className="text-xl font-black text-primary text-center mb-6">おすすめパック</h3>
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
             {SET_EXAMPLES.map((set) => {
               const apps = APPS.filter(a => set.appIds.includes(a.id));
               const monthlyTotal = apps.reduce((s, a) => s + a.monthlyPrice, 0);
@@ -845,11 +1205,16 @@ export default function Home() {
                     </div>
                   </div>
                   {set.note && (
-                    <p className="text-xs text-gray-400 mt-3">{set.note}</p>
+                    <p className="text-xs text-gray-500 mt-3">{set.note}</p>
                   )}
-                  <span className="block w-full mt-4 py-3 rounded-xl font-bold text-sm text-center bg-gray-200 text-gray-400 cursor-not-allowed">
-                    準備中
-                  </span>
+                  <a
+                    href="https://lin.ee/8P11rM4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-4 py-3 rounded-xl font-bold text-sm text-center bg-cta text-white hover:bg-cta-600 transition-colors shadow-sm"
+                  >
+                    このパックで相談する
+                  </a>
                 </div>
               );
             })}
@@ -857,10 +1222,15 @@ export default function Home() {
 
           {/* システム選択・料金計算 */}
           <div id="pricing-calc" className="bg-gray-50 rounded-2xl border border-gray-200 p-6 md:p-8">
-            <h3 className="text-xl font-black text-primary text-center mb-6">カスタム選択</h3>
+            <h3 className="text-xl font-black text-primary text-center mb-2">カスタム選択</h3>
+            <p className="text-center text-xs text-gray-500 mb-6">必要な主力アプリだけ選んで、自分のクリニックに合う組み合わせで導入できます</p>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-              {[APPS.find(a => a.id === "meo")!, APPS.find(a => a.id === "kensa")!].map((app) => {
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {[
+                APPS.find(a => a.id === "kensa")!,
+                APPS.find(a => a.id === "customer")!,
+                APPS.find(a => a.id === "meo")!,
+              ].map((app) => {
                 const isSelected = selectedApps.includes(app.id);
                 return (
                   <button
@@ -1107,69 +1477,149 @@ export default function Home() {
       </section>
 
       {/* ===== 導入院の声 ===== */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
-            導入院の声
-          </h2>
-          <div className="grid md:grid-cols-3 gap-5">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-primary font-bold text-sm">{t.name.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-primary">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.role}</p>
-                  </div>
+      {(() => {
+        const voices = getGeneralProductVoices();
+        return (
+          <section className="py-16 bg-gray-50">
+            <div className="max-w-6xl mx-auto px-4">
+              <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
+                導入院の声
+              </h2>
+              <p className="text-center text-gray-500 text-sm mb-10">
+                整体院・鍼灸院・接骨院・サロン、あらゆる治療家・施術家にご利用いただいています
+              </p>
+              {voices.length > 0 ? (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {voices.map((t) => <VoiceCardShort key={t.id} t={t} />)}
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+              ) : (
+                <p className="text-center text-gray-400 text-sm">導入院の声を掲載準備中です。</p>
+              )}
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ===== 開発実績（オーダーメイド受託の声）===== */}
+      {(() => {
+        const customs = getCustomVoices();
+        if (customs.length === 0) return null;
+        return (
+          <section className="py-16 bg-white">
+            <div className="max-w-6xl mx-auto px-4">
+              <p className="text-center text-xs font-bold text-violet-600 tracking-widest mb-2">CUSTOM WORK</p>
+              <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
+                オーダーメイド開発実績
+              </h2>
+              <p className="text-center text-gray-500 text-sm mb-10">
+                治療家向けだけでなく、飲食店・美容など、さまざまな業界の受託開発実績があります
+              </p>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {customs.map((t) => <CustomWorkCard key={t.id} t={t} />)}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ===== 開発者紹介 ===== */}
       <section id="developer" className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-10">
-            開発者紹介
-          </h2>
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-accent tracking-widest mb-2">DEVELOPER</p>
+            <h2 className="text-2xl md:text-3xl font-black text-primary">
+              作っている人
+            </h2>
+          </div>
 
-          <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-8 md:p-10">
+          <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-gray-200 p-6 md:p-10">
             <div className="md:flex md:gap-10 md:items-start">
-              <div className="md:flex-1">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-2xl font-black shadow-lg">
-                    大
+              {/* 顔写真＋肩書（判別しやすく大型化＋識別ラベル） */}
+              <div className="md:w-80 flex-shrink-0 text-center md:text-left">
+                <div className="relative inline-block w-full max-w-[280px] mx-auto md:mx-0">
+                  <img
+                    src="/images/clinic/portrait-2024.jpg"
+                    alt="大口 陽平（現役治療家・アプリ開発者）"
+                    className="w-full aspect-[4/5] rounded-2xl object-cover object-top shadow-xl border-4 border-white"
+                  />
+                  {/* 識別ラベル：写真の上にオーバーレイ */}
+                  <div className="absolute top-3 left-3 bg-cta text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg">
+                    DEVELOPER
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-primary">大口 陽平</h3>
-                    <p className="text-sm text-gray-500">大口神経整体院 院長 / システム開発者</p>
+                  {/* 名前バナー：写真下端にオーバーレイで載せ、ひと目で「これが開発者」と分かるように */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-b-2xl p-4">
+                    <p className="text-white font-black text-lg leading-tight">大口 陽平</p>
+                    <p className="text-white/90 text-xs mt-0.5">現役治療家 / アプリ開発者</p>
+                  </div>
+                </div>
+                {/* 施術風景サムネ（顔写真の補強） */}
+                <div className="grid grid-cols-3 gap-2 mt-3 max-w-[280px] mx-auto md:mx-0">
+                  <img
+                    src="/images/clinic/treatment-1.jpeg"
+                    alt="施術中の大口陽平"
+                    className="aspect-square rounded-lg object-cover border-2 border-white shadow"
+                  />
+                  <img
+                    src="/images/clinic/treatment-3.jpeg"
+                    alt="検査中"
+                    className="aspect-square rounded-lg object-cover border-2 border-white shadow"
+                  />
+                  <img
+                    src="/images/clinic/clinic-in-1.jpeg"
+                    alt="院内の様子"
+                    className="aspect-square rounded-lg object-cover border-2 border-white shadow"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 text-center md:text-left mt-2">↑ 普段、自分の院で施術している様子</p>
+                <p className="text-sm text-gray-600 mt-4">大口神経整体院 院長</p>
+                <p className="text-sm text-gray-600">晴陽鍼灸院 代表</p>
+                <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
+                  <span className="text-[11px] font-bold bg-primary/10 text-primary px-2.5 py-1 rounded-full">施術歴10年</span>
+                  <span className="text-[11px] font-bold bg-accent/10 text-accent px-2.5 py-1 rounded-full">開業2021年</span>
+                  <span className="text-[11px] font-bold bg-cta/10 text-cta px-2.5 py-1 rounded-full">大阪市住吉区</span>
+                </div>
+              </div>
+
+              {/* プロフィール本文 */}
+              <div className="md:flex-1 mt-8 md:mt-0">
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
+                  大阪市住吉区で<strong>「大口神経整体院」</strong>を運営する現役治療家。
+                  施術歴10年・2021年に独立開業し、<strong>一人治療院で月商429万円</strong>を達成。
+                  訪問鍼灸リハビリ事業<strong>「晴陽鍼灸院」</strong>も運営し、堺市・大阪市南部エリアで在宅医療をサポートしています。
+                </p>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">
+                  <strong>本業はあくまで治療と、スタッフを育てる時間。</strong>
+                  患者さんと向き合う時間、スタッフを教育する時間――この2つを削らないために、
+                  事務作業や情報整理は徹底的に自動化する。
+                  <strong>それも今の時代の治療家の役割</strong>だと考えています。
+                </p>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-6">
+                  AIを活用して<strong>これまでに50以上のシステムを開発</strong>。
+                  すべて自分の院で実際に使い、施術とスタッフ教育に時間を回せるよう改善を重ねています。
+                  だから、治療家が本当に必要としているシンプルで効く機能だけが残りました。
+                </p>
+
+                {/* 実績ハイライト */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
+                    <p className="text-2xl md:text-3xl font-black text-primary leading-none">10<span className="text-sm font-bold text-gray-400">年</span></p>
+                    <p className="text-[11px] text-gray-500 mt-1.5">施術歴</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
+                    <p className="text-2xl md:text-3xl font-black text-primary leading-none">50<span className="text-sm font-bold text-gray-400">+</span></p>
+                    <p className="text-[11px] text-gray-500 mt-1.5">開発システム</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm">
+                    <p className="text-2xl md:text-3xl font-black text-primary leading-none">429<span className="text-sm font-bold text-gray-400">万</span></p>
+                    <p className="text-[11px] text-gray-500 mt-1.5">一人治療院最高月商</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                  現役の治療家だからこそ、現場で本当に使えるシステムを作れます。
-                  大手のツールは高くて使わない機能が多すぎる。
-                  そう感じたのが開発のきっかけでした。
-                </p>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  整体院経営の現場から生まれたツールを、同じ悩みを持つ治療家に届けたい。
-                  AIを活用し、50以上のシステムを開発。すべて自分の院で実際に使って改善を重ねています。
-                </p>
-              </div>
-
-              <div className="md:w-72 mt-6 md:mt-0">
-                <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">整体院経営者</span>
-                    <span className="text-xs font-bold bg-accent/10 text-accent px-3 py-1 rounded-full">システム開発者</span>
-                  </div>
-                  <p className="text-sm text-gray-600 leading-relaxed italic">
-                    「現役の治療家だからこそ、現場で本当に使えるシステムを作れます」
+                <div className="mt-6 bg-white rounded-xl border-l-4 border-accent p-4">
+                  <p className="text-sm text-gray-700 leading-relaxed italic">
+                    「本業は治療と、スタッフを育てる時間。<br />
+                    それを守るために、自動化できるところは全部自動化する。
+                    それも今の治療家に必要な仕事だと思っています。」
                   </p>
                 </div>
               </div>
@@ -1279,7 +1729,7 @@ export default function Home() {
                     required
                     value={contactForm.clinicName}
                     onChange={(e) => setContactForm({ ...contactForm, clinicName: e.target.value })}
-                    placeholder="例: 大口整骨院"
+                    placeholder="例: ◯◯整体院 / ◯◯鍼灸院 / ◯◯接骨院 / ◯◯サロン"
                     className="w-full mt-1.5 px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                   />
                 </div>
@@ -1425,7 +1875,7 @@ export default function Home() {
                 <input
                   value={checkoutClinicName}
                   onChange={(e) => setCheckoutClinicName(e.target.value)}
-                  placeholder="例: 大口整骨院"
+                  placeholder="例: ◯◯整体院 / ◯◯鍼灸院 / ◯◯接骨院 / ◯◯サロン"
                   className="w-full mt-1.5 px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                 />
               </div>
@@ -1464,10 +1914,10 @@ export default function Home() {
                 <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
                   <span className="text-white font-black text-sm">C</span>
                 </div>
-                <span className="text-lg font-black text-white">ClinicApps</span>
+                <span className="text-lg font-black text-white">ClinicMark</span>
               </div>
               <p className="text-sm text-gray-400 max-w-xs">
-                治療家が、治療家のために作った業務システム。
+                治療家のための、アプリラボ。
                 現場で毎日使いながら改善を重ねています。
               </p>
             </div>
@@ -1484,7 +1934,7 @@ export default function Home() {
               <div>
                 <p className="text-white font-bold mb-3">運営</p>
                 <div className="space-y-2">
-                  <p className="text-gray-400">大口アプリラボ</p>
+                  <p className="text-gray-400">株式会社IDOMI</p>
                   <p className="text-gray-400 text-xs">代表 大口 陽平 / 大口神経整体院 院長</p>
                   <a href="https://lin.ee/8P11rM4" target="_blank" rel="noopener noreferrer" className="block hover:text-white transition">LINEで相談</a>
                 </div>
@@ -1499,7 +1949,7 @@ export default function Home() {
                 <a href="/legal/privacy" className="hover:text-white transition">プライバシーポリシー</a>
               </div>
               <p className="text-xs text-gray-500">
-                &copy; 2026 ClinicApps. All rights reserved.
+                &copy; 2026 株式会社IDOMI. All rights reserved.
               </p>
             </div>
           </div>

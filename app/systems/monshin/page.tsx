@@ -1,14 +1,38 @@
 import Link from "next/link";
+import { LineFloatingButton } from "../_components/LineFloatingButton";
+import { SystemHeader } from "../_components/SystemHeader";
+import { DeveloperCard } from "../_components/DeveloperCard";
+import { IndustryUseCaseSection } from "../_components/IndustryUseCaseSection";
+import { BusinessInfoFooter } from "../_components/BusinessInfoFooter";
+import { LINE_URL } from "../../lib/site-config";
 
 const YOUTUBE_ID = "";
+const STRIPE_URL = "https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a";
+
+const INDUSTRY_USE_CASES = [
+  {
+    industry: "seitai" as const,
+    body: "主訴・生活習慣・既往歴を細かくヒアリング。施術前に「何を聞くか」が決まる。",
+  },
+  {
+    industry: "shinkyu" as const,
+    body: "症状の経時変化・服薬歴・既往歴を漏らさず取得。施術の安全性確保に直結。",
+  },
+  {
+    industry: "sekkotsu" as const,
+    body: "負傷原因（労災・第三者行為）の確認を漏らさず取得。保険算定の根拠資料に。",
+  },
+  {
+    industry: "salon" as const,
+    body: "肌質・希望メニュー・体調を事前ヒアリング。施術時間の組み立てが圧倒的に楽に。",
+  },
+];
 
 export default function MonshinPage() {
   return (
     <main className="min-h-screen bg-white">
-      <header className="border-b border-gray-100 px-6 py-4 flex items-center justify-between max-w-5xl mx-auto">
-        <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">← ClinicApps トップ</Link>
-        <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="text-sm bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">LINEで相談する</a>
-      </header>
+      <LineFloatingButton />
+      <SystemHeader />
 
       {/* ヒーロー */}
       <section className="max-w-5xl mx-auto px-6 py-20 text-center">
@@ -16,14 +40,14 @@ export default function MonshinPage() {
         <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 WEB問診システム</p>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">初診の10分を、<br />もっと大切なことに使う。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">来院前に問診を済ませる。それだけで、<br />初診の質が劇的に変わります。</p>
-        <a href="https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額2,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月（6ヶ月未満解約時は残存月数分の早期解約金）</p>
+        <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
+        <p className="mt-4 text-sm text-gray-400">月額2,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
         <p className="mt-2 text-xs text-gray-400">
           購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
         </p>
       </section>
 
-      {/* YouTube動画 */}
+      {/* 動画 */}
       <section className="bg-gray-900 py-14">
         <div className="max-w-3xl mx-auto px-6">
           <p className="text-center text-xs text-gray-400 uppercase tracking-widest mb-4">操作デモ動画</p>
@@ -84,8 +108,13 @@ export default function MonshinPage() {
         </div>
       </section>
 
+      {/* ★業種別ユースケース */}
+      <section className="bg-gray-50">
+        <IndustryUseCaseSection useCases={INDUSTRY_USE_CASES} appName="WEB問診" />
+      </section>
+
       {/* 比較表 */}
-      <section className="bg-gray-50 py-16">
+      <section className="py-16">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他の問診方法との比較</h2>
           <p className="text-center text-gray-500 mb-10">問診から患者登録まで自動化できるのは、このシステムだけ</p>
@@ -114,14 +143,26 @@ export default function MonshinPage() {
       </section>
 
       {/* 連携 */}
-      <section className="py-16 max-w-5xl mx-auto px-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他システムとの連携</h2>
-        <p className="text-center text-gray-500 mb-10">単体でも使える。連携すればさらに強力に。</p>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">Clinic Coreと連携</h3><p className="text-gray-600 text-sm leading-relaxed">問診回答が自動で患者カルテに反映。主訴・既往歴・来院きっかけが入力なしで蓄積されます。</p></div>
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">予約管理と連携</h3><p className="text-gray-600 text-sm leading-relaxed">予約確定時に問診URLを自動案内。患者は来院前にスマホで問診を完了できます。</p></div>
+      <section className="bg-gray-50 py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">他システムとの連携</h2>
+          <p className="text-center text-gray-500 mb-10">単体でも使える。連携すればさらに強力に。</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">Clinic Coreと連携</h3><p className="text-gray-600 text-sm leading-relaxed">問診回答が自動で患者カルテに反映。主訴・既往歴・来院きっかけが入力なしで蓄積されます。</p></div>
+            <div className="bg-white border border-blue-100 rounded-2xl p-6"><h3 className="font-bold text-gray-900 mb-2">予約管理と連携</h3><p className="text-gray-600 text-sm leading-relaxed">予約確定時に問診URLを自動案内。患者は来院前にスマホで問診を完了できます。</p></div>
+          </div>
+          <p className="text-center mt-8 text-sm text-gray-400">連携は後から追加可能。まずはWEB問診単体でお使いいただけます。</p>
         </div>
-        <p className="text-center mt-8 text-sm text-gray-400">連携は後から追加可能。まずはWEB問診単体でお使いいただけます。</p>
+      </section>
+
+      {/* 開発者紹介 */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Developer</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">作っているのは現役治療家</h2>
+        <p className="text-center text-gray-500 mb-10">自院（大口神経整体院）で毎日使う問診票として作りました。</p>
+        <div className="max-w-md mx-auto">
+          <DeveloperCard />
+        </div>
       </section>
 
       {/* 料金 */}
@@ -136,14 +177,49 @@ export default function MonshinPage() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* 導入の流れ */}
       <section className="py-16 max-w-5xl mx-auto px-6">
+        <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">How it works</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">導入は4ステップ・最短即日でスタート</h2>
+        <p className="text-center text-gray-500 mb-12 leading-relaxed">問診票テンプレを業種別に用意。当日から使い始められます。</p>
+        <div className="grid md:grid-cols-4 gap-4 md:gap-6">
+          {[
+            { step: "01", title: "申込・決済", desc: "LP内のボタンから1分でStripe決済。", detail: "1分" },
+            { step: "02", title: "業種テンプレ選択", desc: "整体・鍼灸・接骨院・サロンのテンプレから選んで開始。", detail: "5分" },
+            { step: "03", title: "項目カスタマイズ", desc: "院に必要な質問だけ残し、項目をON/OFFで調整。", detail: "10〜20分" },
+            { step: "04", title: "QR配布", desc: "問診QRを発行して受付・予約完了メールに掲載。当日から運用。", detail: "当日〜" },
+          ].map((s, i) => (
+            <div key={s.step} className="relative bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-xs font-bold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center">{s.step}</span>
+                <p className="text-xs text-gray-400 font-medium">所要 {s.detail}</p>
+              </div>
+              <h3 className="font-bold text-sm text-gray-900 mb-2">{s.title}</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">{s.desc}</p>
+              {i < 3 && (
+                <span className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-gray-300 text-lg">›</span>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 max-w-2xl mx-auto bg-gradient-to-br from-green-50 to-blue-50 border border-green-100 rounded-2xl p-6 text-center">
+          <p className="text-sm font-bold text-gray-800 mb-3">迷ったらまずLINEで話を聞くだけでもOK</p>
+          <p className="text-xs text-gray-600 leading-relaxed mb-4">「うちの院に合わせて項目を変えたい」「業種テンプレを見たい」など、申込前のご相談を歓迎しています。</p>
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-green-500 text-white font-bold text-sm px-6 py-3 rounded-xl hover:bg-green-600 transition shadow">
+            LINEで相談する（無料）
+          </a>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-gray-50 py-16 max-w-5xl mx-auto px-6">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">よくある質問</h2>
         <div className="space-y-6 max-w-2xl mx-auto">
           {[
-            {q:"問診の質問内容はカスタマイズできますか？",a:"はい。治療院の施術内容に合わせて質問項目を自由に設定できます。"},
+            {q:"問診の質問内容はカスタマイズできますか？",a:"はい。整体・鍼灸・接骨院・サロンの業種テンプレから選び、項目のON/OFF・順番変更で自由に調整できます。"},
             {q:"Clinic Coreがなくても使えますか？",a:"はい。WEB問診単体でご利用いただけます。後からClinic Coreを追加して連携することも可能です。"},
             {q:"患者のスマホ操作が苦手な場合は？",a:"QRコードを読み取るだけのシンプルな画面設計です。来院時にタブレットで記入していただくことも可能です。"},
+            {q:"整体院以外でも使えますか？",a:"はい。鍼灸院・接骨院・サロンでもご利用いただけます。業種別の問診テンプレを用意しています。"},
           ].map(({q,a})=>(
             <div key={q} className="border border-gray-100 rounded-2xl p-6 bg-white shadow-sm"><p className="font-bold text-gray-900 mb-2">Q. {q}</p><p className="text-gray-600 text-sm leading-relaxed">A. {a}</p></div>
           ))}
@@ -155,16 +231,12 @@ export default function MonshinPage() {
         <h2 className="text-2xl md:text-3xl font-bold mb-4">初診の10分を、施術に使おう。</h2>
         <p className="text-blue-100 mb-8">月額2,980円で、問診の手間をゼロにする。</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://buy.stripe.com/fZufZgdMUcpq2Zufpn08g0a" target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
-          <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
+          <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
+          <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
         </div>
       </section>
 
-      <footer className="border-t border-gray-100 py-8 text-center text-sm text-gray-400">
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/">ClinicApps</Link><span>|</span><Link href="/legal/privacy">プライバシーポリシー</Link><span>|</span><Link href="/legal/terms">利用規約</Link><span>|</span><Link href="/legal/tokushoho">特定商取引法</Link>
-        </div>
-      </footer>
+      <BusinessInfoFooter productName="WEB問診" />
     </main>
   );
 }

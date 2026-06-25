@@ -2,20 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import PurchaseButton from "../../components/PurchaseButton";
+import { getAppVoices } from "../../lib/testimonials";
+import { VoiceCardDetail } from "../_components/VoiceCard";
+import { SystemHubNavigation } from "../_components/SystemHubNavigation";
 
 export const metadata: Metadata = {
   title: "Clinic Core（クリニックコア）| 治療院専用 顧客管理・経営分析システム",
-  description: "LTV・ROAS・リピート率・エリア分布。治療院経営に必要な数字が全部見える。モニター募集中：月額5,500円・初期費用0円。",
+  description: "LTV・ROAS・リピート率・エリア分布。治療院経営に必要な数字が全部見える。月額5,500円・初期費用0円。",
   openGraph: {
     title: "Clinic Core | 治療院の経営を、数字で動かせ。",
-    description: "モニター5名限定募集。月額5,500円・初期費用0円で、LTV・ROAS・リピート率が全部見える。",
+    description: "月額5,500円・初期費用0円で、LTV・ROAS・リピート率が全部見える。",
     type: "website",
     url: "https://clinic-saas-lp.vercel.app/systems/customer",
   },
 };
 
-const STRIPE_MONITOR_URL = "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07";
-const STRIPE_NORMAL_URL = "https://buy.stripe.com/8x2cN4aAI3SU43y7WV08g06";
+// TODO: 新Payment Link（月額5,500円・初期費用0円・通常販売）を陽平が作成し次第、STRIPE_URLを差し替え。
+// 現状は旧モニター用URL（月額5,500円・初期費用0円）が条件に近いので暫定使用。
+const STRIPE_URL = "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07";
 const LINE_URL = "https://lin.ee/qvChhK3";
 const DEMO_URL = "https://clinic-core-demo.vercel.app";
 
@@ -42,12 +46,12 @@ export default function CustomerPage() {
         <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="text-sm bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">LINEで相談する</a>
       </header>
 
-      {/* セクション1: ヒーロー（モニター募集） */}
+      {/* セクション1: ヒーロー */}
       <section className="max-w-6xl mx-auto px-6 pt-16 pb-24 md:pt-20 md:pb-32">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* 左: テキスト・CTA */}
           <div className="text-center lg:text-left">
-            <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">モニター5名限定 / 初期費用0円</span>
+            <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold px-4 py-1.5 rounded-full mb-4">看板商品</span>
             <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 顧客管理・経営分析システム</p>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
               治療院の経営を、<br />
@@ -55,10 +59,10 @@ export default function CustomerPage() {
             </h1>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               LTV・ROAS・純新規売上・リピート率・エリア分析。<br />
-              経営に必要な数字が、全部見える。月額5,500円から。
+              経営に必要な数字が、全部見える。月額5,500円・初期費用0円。
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
-              <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">モニター価格で始める →</a>
+              <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
               <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block text-base font-bold px-8 py-4 rounded-xl transition border-2 border-gray-700 text-gray-700 hover:bg-gray-50">デモアプリを試す</a>
             </div>
             <p className="mt-4 text-sm text-gray-400">月額5,500円（税込）/ 初期費用0円 / 最低契約期間6ヶ月</p>
@@ -85,46 +89,6 @@ export default function CustomerPage() {
         </div>
       </section>
 
-      {/* セクション1.5: モニター枠カウンター（緊急性訴求） */}
-      <section className="max-w-3xl mx-auto px-6 -mt-4 mb-12">
-        <div className="bg-gradient-to-r from-yellow-50 via-amber-50 to-yellow-50 border-2 border-yellow-300 rounded-2xl shadow-lg p-5 md:p-6 flex items-center justify-center gap-5">
-          <span className="text-3xl md:text-4xl">⏳</span>
-          <div className="text-left">
-            <p className="text-xs text-amber-700 uppercase tracking-widest font-bold">Monitor Limited</p>
-            <p className="text-base md:text-lg text-gray-800 font-bold leading-snug">
-              モニター枠 <span className="text-amber-600 text-2xl md:text-3xl">残り 5 名</span>
-            </p>
-            <p className="text-xs text-gray-600 mt-1">通常 33,000円の初期費用が 0円。定員に達し次第、募集を終了します。</p>
-          </div>
-        </div>
-      </section>
-
-      {/* モニター募集バナー */}
-      <section className="bg-gray-900 py-12">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-4">Limited Offer</p>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">モニター5名限定で募集中</h2>
-          <div className="grid grid-cols-3 gap-4 max-w-md mx-auto mb-6">
-            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-              <p className="text-2xl font-bold text-white">5,500<span className="text-sm text-gray-400">円/月</span></p>
-              <p className="text-xs text-gray-400 mt-1">モニター月額</p>
-            </div>
-            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-              <p className="text-2xl font-bold text-green-400">0<span className="text-sm text-gray-400">円</span></p>
-              <p className="text-xs text-gray-400 mt-1">初期費用</p>
-            </div>
-            <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
-              <p className="text-2xl font-bold text-yellow-400">5<span className="text-sm text-gray-400">名</span></p>
-              <p className="text-xs text-gray-400 mt-1">残り枠</p>
-            </div>
-          </div>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            通常：月額5,500円＋初期費用33,000円のところ、<br />
-            モニター期間中は初期費用0円でご利用いただけます。<br />
-            定員に達し次第、募集を終了します。
-          </p>
-        </div>
-      </section>
 
       {/* セクション2: 作った思い + 開発者プロフィール */}
       <section className="bg-gray-50 py-16">
@@ -175,10 +139,10 @@ export default function CustomerPage() {
                   <p className="font-bold text-xl text-gray-900">大口 陽平</p>
                   <p className="text-sm text-gray-500 mt-1">治療院経営者 / アプリ開発者</p>
                   <div className="mt-4 pt-4 border-t border-gray-100 space-y-2 text-xs text-gray-600 leading-relaxed">
-                    <p>・<span className="font-medium text-gray-800">大口神経整体院</span> 院長（名古屋）</p>
-                    <p>・<span className="font-medium text-gray-800">晴陽鍼灸院</span> 経営</p>
-                    <p>・整体院 / 訪問鍼灸 / アプリ販売 / コンサル / 治療機器販売 の5事業を運営</p>
-                    <p>・治療家向けアプリを30本以上開発</p>
+                    <p>・<span className="font-medium text-gray-800">大口神経整体院</span> 院長（大阪市住吉区）</p>
+                    <p>・<span className="font-medium text-gray-800">晴陽鍼灸院</span> 経営（訪問鍼灸リハビリ事業）</p>
+                    <p>・施術歴10年・2021年開業／一人治療院で最高月商429万円達成</p>
+                    <p>・治療家向けアプリを50本以上開発</p>
                     <p>・Clinic Core を自院で毎日使いながら改善中</p>
                   </div>
                   <p className="text-xs text-gray-500 mt-4 leading-relaxed border-l-4 border-blue-200 pl-3 italic">
@@ -255,30 +219,21 @@ export default function CustomerPage() {
         <div className="max-w-6xl mx-auto px-6">
           <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Live Action</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">使ってる感じを、動画で見る</h2>
-          <p className="text-center text-gray-600 mb-10 leading-relaxed">スクショだけでは伝わらない、画面の動き・タップの軽さをそのまま。</p>
+          <p className="text-center text-gray-600 mb-10 leading-relaxed">
+            ホーム → 顧客管理 → 予約管理 → 営業データ → 月間統計 → マスター。<br className="hidden md:block" />
+            すべてのタブを実際に操作した動画です。
+          </p>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { src: 'patients-overview', title: '患者一覧 → 詳細', desc: 'LTV・主訴・来院履歴が1画面で見える' },
-              { src: 'roas-analysis',      title: 'ROAS分析', desc: '来店動機別・症状別をワンタップで切替' },
-              { src: 'ltv-analysis',       title: 'LTV分析', desc: '生涯売上をスクロールで把握' },
-              { src: 'master-menu',        title: 'マスター編集', desc: 'メニュー・料金を院ごとに自由設定' },
-            ].map((v) => (
-              <div key={v.src} className="bg-white border border-gray-100 rounded-2xl shadow-md overflow-hidden">
-                <video
-                  src={`/screens/clinic-core/videos/${v.src}.webm`}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full aspect-[16/10] object-cover bg-gray-100"
-                />
-                <div className="p-4">
-                  <h3 className="font-bold text-sm text-gray-900 mb-1">{v.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{v.desc}</p>
-                </div>
-              </div>
-            ))}
+          <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-xl bg-black max-w-4xl mx-auto">
+            <video
+              src="/screens/clinic-core/videos/clinic-core-demo.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              className="w-full aspect-[16/10] object-contain bg-black"
+            />
           </div>
           <p className="text-center text-xs text-gray-400 mt-6">※ 動画はデモ整骨院アカウントの実画面を録画したものです（音声なし）</p>
         </div>
@@ -391,7 +346,7 @@ export default function CustomerPage() {
                   <td colSpan={5} className="px-4 py-2 text-xs font-bold text-blue-700">2. 初期費用</td>
                 </tr>
                 {[
-                  ["導入費用", "数十万円〜", "数十万円〜", "0円", "モニター0円 / 通常33,000円"],
+                  ["導入費用", "数十万円〜", "数十万円〜", "0円", "0円"],
                   ["データ移行サポート", "別料金", "別料金", "なし", "CSV取込・代行対応"],
                 ].map(([item, a, b, excel, core], i) => (
                   <tr key={`init-${i}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
@@ -468,72 +423,31 @@ export default function CustomerPage() {
       </section>
 
       {/* セクション8: 導入事例 */}
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-5xl mx-auto px-6">
-          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Case Study</p>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">導入事例</h2>
-          <div className="max-w-2xl mx-auto space-y-6">
-            {[
-              {
-                name: "山口先生",
-                clinic: "やまぐち鍼灸接骨院",
-                background: "以前は別の顧客管理システムを使っていたが、打ち込みが面倒で負担になっていた。Clinic Coreに乗り換えて変わったこと：",
-                points: [
-                  "AIが離反しそうな方やリピート率、前月比を自動計算して常に表示",
-                  "音声による一括入力でめちゃくちゃ時短",
-                  "過去のデータも移行できた",
-                ],
-                quote: "顧客管理に手間がかかると感じている方や、数字をすぐに把握したい先生におすすめです。",
-              },
-              {
-                name: "中庄谷先生",
-                clinic: "マラウェイ整体院",
-                background: "以前は有料の月14,000円の顧客管理システムを利用していたが、毎月の固定費負担と『見たい数字を一瞬で出せない』ことが課題だった。Clinic Coreに乗り換えて変わったこと：",
-                points: [
-                  "月14,000円から5,500円に固定費を大幅削減",
-                  "見たい数字が一瞬で出せて、分析の時短ができる",
-                  "毎月の数字統計を見ながら自己分析を回せている",
-                ],
-                quote: "自院の経営設計がどんぶり勘定になっている先生で、数字分析をしっかりして理想の治療院経営をしたい方におすすめです。",
-              },
-            ].map((caseItem) => (
-              <div key={caseItem.name} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
-                    {caseItem.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-bold text-lg text-gray-900">{caseItem.name}</p>
-                    <p className="text-sm text-gray-500">{caseItem.clinic}</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">{caseItem.background}</p>
-                <ul className="space-y-2 mb-6">
-                  {caseItem.points.map((point) => (
-                    <li key={point} className="flex items-start gap-2 text-sm text-gray-700">
-                      <span className="text-blue-500 flex-shrink-0 mt-0.5">&#x2713;</span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-                <div className="bg-blue-50 border-l-4 border-blue-400 rounded-r-xl p-4">
-                  <p className="text-gray-700 text-sm leading-relaxed italic">&ldquo;{caseItem.quote}&rdquo;</p>
+      {(() => {
+        const voices = getAppVoices("customer");
+        return (
+          <section className="bg-gray-50 py-16">
+            <div className="max-w-5xl mx-auto px-6">
+              <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Case Study</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">導入事例</h2>
+              <div className="max-w-2xl mx-auto space-y-6">
+                {voices.map((t) => (
+                  <VoiceCardDetail key={t.id} t={t} />
+                ))}
+
+                <div className="bg-gradient-to-br from-blue-50 to-emerald-50 border-2 border-dashed border-blue-200 rounded-2xl p-8 text-center">
+                  <p className="text-sm font-medium text-blue-600 uppercase tracking-widest mb-2">More Coming Soon</p>
+                  <p className="font-bold text-gray-900 mb-2">他にも続々と導入院が増えています</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    整体院・鍼灸院・接骨院・サロンなど、現在ご利用中の先生方のインタビュー記事を順次公開予定です。<br />
+                    掲載をお待ちください。
+                  </p>
                 </div>
               </div>
-            ))}
-
-            {/* 今後追加予定のテーザー */}
-            <div className="bg-gradient-to-br from-blue-50 to-emerald-50 border-2 border-dashed border-blue-200 rounded-2xl p-8 text-center">
-              <p className="text-sm font-medium text-blue-600 uppercase tracking-widest mb-2">More Coming Soon</p>
-              <p className="font-bold text-gray-900 mb-2">他にも続々と導入院が増えています</p>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                整体院・鍼灸接骨院・整骨院など、現在モニターご利用中の先生方のインタビュー記事を順次公開予定です。<br />
-                掲載をお待ちください。
-              </p>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       {/* セクション8.4: AI活用（Claude採用） */}
       <section className="py-16 bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 text-white">
@@ -635,7 +549,7 @@ export default function CustomerPage() {
 
         <div className="mt-10 max-w-3xl mx-auto bg-gradient-to-br from-blue-50 to-emerald-50 border border-blue-100 rounded-2xl p-6 text-center">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <span className="font-bold text-gray-900">運営：大口アプリラボ（大口陽平）</span><br/>
+            <span className="font-bold text-gray-900">運営：株式会社IDOMI（代表：大口陽平）</span><br/>
             治療院経営者が自院（大口神経整体院）で毎日使うシステムです。<br/>
             自分自身の患者情報も同じ基盤で守っているという責任で運営しています。
           </p>
@@ -646,48 +560,23 @@ export default function CustomerPage() {
       <section className="bg-gray-50 py-16" id="pricing">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">料金プラン</h2>
-          <p className="text-center text-gray-500 mb-12">モニター募集中は初期費用0円でご利用いただけます</p>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* 通常プラン */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-              <p className="text-sm font-bold text-gray-500 mb-2">通常プラン</p>
-              <p className="text-4xl font-bold text-gray-900 mb-1">5,500<span className="text-lg font-normal text-gray-500">円/月</span></p>
-              <p className="text-sm text-gray-500 mb-6">初期費用 33,000円（税込）</p>
-              <ul className="space-y-3 text-sm text-gray-600">
+          <p className="text-center text-gray-500 mb-12">月額5,500円・初期費用0円・最低契約6ヶ月。シンプルな1プラン構成です。</p>
+          <div className="max-w-lg mx-auto">
+            <div className="bg-blue-600 rounded-2xl p-8 shadow-lg text-white relative">
+              <span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">看板商品</span>
+              <p className="text-sm font-bold text-blue-200 mb-2">通常プラン</p>
+              <p className="text-4xl font-bold mb-1">5,500<span className="text-lg font-normal text-blue-200">円/月</span></p>
+              <p className="text-sm text-blue-200 mb-6">初期費用 0円（税込）</p>
+              <ul className="space-y-3 text-sm text-blue-100">
                 {[
                   "全機能利用可能",
                   "患者数無制限",
                   "LTV・ROAS・CPA自動計算",
                   "リピート分析・離反アラート",
                   "エリア×媒体クロス分析",
+                  "カラダマップ／WEB問診連携対応",
                   "CSV取込・出力",
                   "LINEサポート付き",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-2">
-                    <span className="text-blue-500 flex-shrink-0">✓</span>{t}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <PurchaseButton href={STRIPE_NORMAL_URL} label="通常プランで始める" variant="secondary" className="w-full" />
-              </div>
-            </div>
-            {/* モニタープラン */}
-            <div className="bg-blue-600 rounded-2xl p-8 shadow-lg text-white relative">
-              <span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">5名限定</span>
-              <p className="text-sm font-bold text-blue-200 mb-2">モニタープラン</p>
-              <p className="text-4xl font-bold mb-1">5,500<span className="text-lg font-normal text-blue-200">円/月</span></p>
-              <p className="text-sm text-blue-200 mb-1">初期費用 <span className="line-through">33,000円</span></p>
-              <p className="text-lg font-bold text-yellow-300 mb-6">→ 初期費用 0円</p>
-              <ul className="space-y-3 text-sm text-blue-100">
-                {[
-                  "通常プランの全機能",
-                  "初期費用0円（33,000円OFF）",
-                  "患者数無制限",
-                  "カラダマップ連携対応",
-                  "WEB問診連携対応",
-                  "優先サポート",
-                  "導入セットアップ無料",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-2">
                     <span className="text-yellow-300 flex-shrink-0">✓</span>{t}
@@ -695,7 +584,7 @@ export default function CustomerPage() {
                 ))}
               </ul>
               <div className="mt-8">
-                <PurchaseButton href={STRIPE_MONITOR_URL} label="モニター価格で始める →" variant="primary" onDark className="w-full" />
+                <PurchaseButton href={STRIPE_URL} label="今すぐ始める →" variant="primary" onDark className="w-full" />
               </div>
             </div>
           </div>
@@ -764,8 +653,7 @@ export default function CustomerPage() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">よくある質問</h2>
         <div className="space-y-6 max-w-2xl mx-auto">
           {[
-            { q: "モニターは何をすればいいですか？", a: "通常通り院でお使いいただいた上で、改善のためのフィードバックにご協力いただきます。具体的には、(1) 使いにくい点・改善要望をLINEでお知らせいただく、(2) 1〜3ヶ月ご利用後にインタビュー（オンライン30分程度）に応じていただく、(3) 使ってみた感想を文章・写真等でいただく、の3点です。インタビュー内容や感想はLP・SNS等で導入事例として掲載させていただく場合があります（事前確認あり）。" },
-            { q: "モニター期間が終わったらどうなりますか？", a: "モニター期間終了後も月額5,500円のまま継続いただけます。通常の初期費用33,000円が免除された状態がずっと続きます。" },
+            { q: "途中で機能が変わったり料金が上がることはありますか？", a: "ご契約時の月額5,500円・初期費用0円の条件は、契約継続中は変わりません。新機能のリリース時も追加課金はありません。" },
             { q: "既存データは移行できますか？", a: "CSVインポートに対応しています。ただし現在お使いのシステムによって移行できる範囲が異なります。まずはLINEでご相談ください。" },
             { q: "最低契約期間はありますか？", a: "6ヶ月の最低契約期間があります。6ヶ月経過後はいつでも解約可能です。" },
             { q: "サポートはどのように受けられますか？", a: "LINEにて個別サポートを行っています。初期設定から操作方法まで丁寧に対応します。" },
@@ -781,11 +669,11 @@ export default function CustomerPage() {
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-white text-center">
         <div className="max-w-5xl mx-auto px-6">
-          <span className="inline-block bg-white/20 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">モニター5名限定 / 初期費用0円</span>
+          <span className="inline-block bg-white/20 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">月額5,500円 / 初期費用0円</span>
           <h2 className="text-2xl md:text-4xl font-bold mb-4">数字を見る院だけが、生き残る。</h2>
-          <p className="text-blue-100 mb-8">月額5,500円で、治療院経営に必要な数字が全て手に入る。<br />モニター期間中は初期費用0円。</p>
+          <p className="text-blue-100 mb-8">月額5,500円で、治療院経営に必要な数字が全て手に入る。<br />初期費用0円・最低契約6ヶ月。</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-            <a href={STRIPE_MONITOR_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow">モニター価格で始める →</a>
+            <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
             <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-800 transition border-2 border-white/40">デモアプリを試す</a>
             <a href={LINE_URL} target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>
           </div>
@@ -800,8 +688,8 @@ export default function CustomerPage() {
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
             <dl className="text-sm divide-y divide-gray-100">
               <div className="flex flex-col md:flex-row gap-1 md:gap-6 py-3">
-                <dt className="md:w-36 text-gray-500 shrink-0">屋号</dt>
-                <dd className="font-bold text-gray-900">大口アプリラボ</dd>
+                <dt className="md:w-36 text-gray-500 shrink-0">法人名</dt>
+                <dd className="font-bold text-gray-900">株式会社IDOMI</dd>
               </div>
               <div className="flex flex-col md:flex-row gap-1 md:gap-6 py-3">
                 <dt className="md:w-36 text-gray-500 shrink-0">代表者</dt>
@@ -836,10 +724,12 @@ export default function CustomerPage() {
         </div>
       </section>
 
+      <SystemHubNavigation currentAppId="customer" />
+
       {/* フッター */}
       <footer className="border-t border-gray-100 py-8 text-center text-sm text-gray-400">
         <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/">ClinicApps</Link>
+          <Link href="/">ClinicMark 総合ページ</Link>
           <span>|</span>
           <Link href="/legal/privacy">プライバシーポリシー</Link>
           <span>|</span>
@@ -847,7 +737,7 @@ export default function CustomerPage() {
           <span>|</span>
           <Link href="/legal/tokushoho">特定商取引法</Link>
         </div>
-        <p className="mt-4">&copy; 2025 Clinic Core</p>
+        <p className="mt-4">&copy; 2025 ClinicMark / Clinic Core</p>
       </footer>
     </main>
   );

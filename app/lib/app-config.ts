@@ -148,17 +148,17 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "meo",
     label: "MEO勝ち上げくん",
-    monthlyPrice: 3980,
-    initialCost: 11000,
+    monthlyPrice: 5500,
+    initialCost: 0,
     color: "bg-rose-500",
     clinicFlag: "app_meo",
-    forSale: false,
+    forSale: true,
     stripe: {
       product_id: "prod_UFBw6XVaolhrNd",
-      monthly_price_id: "price_1TP6fMCORfdwaD8CUM3GSW7w",
+      monthly_price_id: "price_1Tm35uCORfdwaD8C4dNfKKrL",
       onetime_price_id: "price_1TGhZ2CORfdwaD8CdR4HrCK1",
       maintenance_price_id: "price_1TGhZ2CORfdwaD8CuMEkZlFE",
-      extra_price_ids: ["price_1TGhZ1CORfdwaD8CPA6i7VRA"],
+      extra_price_ids: ["price_1TGhZ1CORfdwaD8CPA6i7VRA", "price_1TP6fMCORfdwaD8CUM3GSW7w"],
     },
     email: {
       loginUrl: "https://meo-app.vercel.app/login",

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "特定商取引法に基づく表記 | ClinicApps",
-  description: "ClinicApps（大口アプリラボ）の特定商取引法に基づく表記ページです。",
+  description: "ClinicApps（クリニックマーク）の特定商取引法に基づく表記ページです。",
 };
 
 export default function TokushohoPage() {
@@ -27,7 +27,7 @@ export default function TokushohoPage() {
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <table className="w-full text-sm leading-relaxed">
             <tbody className="divide-y divide-gray-200">
-              <Row label="販売事業者名" value="大口アプリラボ（個人事業）" />
+              <Row label="販売事業者名" value="株式会社IDOMI" />
               <Row label="代表者名" value="大口 陽平" />
               <Row
                 label="所在地"
