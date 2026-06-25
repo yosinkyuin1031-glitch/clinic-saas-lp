@@ -5,6 +5,27 @@ import PurchaseButton from "../../components/PurchaseButton";
 import { getAppVoices } from "../../lib/testimonials";
 import { VoiceCardDetail } from "../_components/VoiceCard";
 import { SystemHubNavigation } from "../_components/SystemHubNavigation";
+import { IndustryUseCaseSection } from "../_components/IndustryUseCaseSection";
+
+// 業種別ユースケース（整体院 / 鍼灸院 / 接骨院 / サロン それぞれの数字活用例）
+const INDUSTRY_USE_CASES = [
+  {
+    industry: "seitai" as const,
+    body: "LTVとリピート率を症状別に分析。「自律神経系の患者はLTVが高いが、腰痛単発はリピートしない」が数字で見える。広告予算の配分が変わる。",
+  },
+  {
+    industry: "shinkyu" as const,
+    body: "保険診療と保険外メニューの売上をそれぞれ集計。「保険外サブスクの加入率」「自費メニューのLTV寄与」を可視化し、収益構造の改善ポイントが見える。",
+  },
+  {
+    industry: "sekkotsu" as const,
+    body: "保険診療＋自費メニューの混在を一元管理。スタッフ別売上・部位別来院数を可視化し、若手の指導や柔整師のシフト最適化に活用できる。",
+  },
+  {
+    industry: "salon" as const,
+    body: "回数券・サブスクメニューの管理に対応。メニュー別LTV・指名スタッフ別の売上比率を見て、リピート設計とメニュー改廃の根拠に。",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Clinic Core（クリニックコア）| 治療院専用 顧客管理・経営分析システム",
@@ -300,6 +321,11 @@ export default function CustomerPage() {
             <p className="text-xs text-gray-500 mt-3">ボタンを押すと自動でデモアカウントにログインします・スマホ/PC両対応</p>
           </div>
         </div>
+      </section>
+
+      {/* セクション4.7: 業種別ユースケース */}
+      <section className="bg-gray-50">
+        <IndustryUseCaseSection useCases={INDUSTRY_USE_CASES} appName="Clinic Core" />
       </section>
 
       {/* セクション5: 他システムとの連携 */}
