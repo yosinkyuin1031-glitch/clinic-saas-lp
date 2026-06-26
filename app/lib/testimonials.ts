@@ -186,6 +186,31 @@ export const TESTIMONIALS: Testimonial[] = [
     permission: { name: true, clinicName: true, photo: true, location: true },
   },
   {
+    id: "mizuta-kensa",
+    kind: "product",
+    displayName: "水田 順司",
+    role: "整体院 海沙 院長",
+    photoUrl: "/images/voices/mizuta.jpg",
+    industryLabel: "整体院",
+    location: "熊本県天草市",
+    shortText:
+      "写真での説明だと細かい所が伝わらず時間がかかっていたのが、見ただけで変化が伝わり、リピートにつながるように。",
+    detail: {
+      background:
+        "お客様に姿勢の崩れなどを説明するときに写真を使用していたが、細い部分が伝わりにくく、説明に時間がかかりすぎていた。カラダマップを導入して変わったこと：",
+      points: [
+        "お客様自身が見てすぐ変化を感じられる",
+        "説明にかかる時間が大幅に短縮",
+        "納得感が上がってリピートにつながりやすくなった",
+      ],
+      quote:
+        "治療家はどうしても施術の説明が長くなりがちですが、このツールを活用すればお客様に見ていただくだけで完結します。可視化するツールをお持ちでなければお勧めです。",
+    },
+    targetApps: ["kensa"],
+    showOnGeneral: true,
+    permission: { name: true, clinicName: true, photo: true, location: true },
+  },
+  {
     id: "yamashita-kensa-clinic-core",
     kind: "product",
     displayName: "山下 将太",
