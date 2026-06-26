@@ -317,8 +317,8 @@ export const TESTIMONIALS: Testimonial[] = [
   {
     id: "ing-trekuri-2026",
     kind: "custom",
-    displayName: "株式会社ING 代表",
-    role: "療術業",
+    displayName: "川口先生",
+    role: "株式会社ING 代表 / 療術業",
     photoUrl: "/images/voices/ing.jpg",
     location: "和歌山",
     shortText:
@@ -337,7 +337,7 @@ export const TESTIMONIALS: Testimonial[] = [
     customAppName: "トレクリ（治療院向けトレーニング管理アプリ・共同開発）",
     customAppCategory: "治療家向け（トレーニング連携）",
     developedYear: 2026,
-    permission: { name: false, clinicName: true, photo: true, location: true },
+    permission: { name: true, clinicName: true, photo: true, location: true },
   },
 ];
 
