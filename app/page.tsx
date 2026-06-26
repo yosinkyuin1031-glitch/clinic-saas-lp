@@ -201,14 +201,19 @@ const APPS = [
     name: "ChangeSnap",
     shortName: "写真比較",
     categories: ["集客", "内製化"],
-    description: "治療院のビフォーアフターを、最速で素材化。比較画像も動画もワンタップ書き出し。SNS・LP・院内POPの素材作りが3分で完了。",
-    features: ["ビフォーアフター写真を一元管理", "左右・上下・スライド比較を自動生成", "動画書き出し（MediaRecorder）"],
-    monthlyPrice: 1100,
+    description: "治療院のビフォーアフターを、最速で素材化。AI背景除去・比較画像・動画・SNS最適3サイズが、患者フォルダから3分で書き出し完了。10GB／院（写真約25,000枚相当）込み。",
+    features: [
+      "患者ごとフォルダで写真を整理（撮影日・カテゴリ・並べ替え）",
+      "左右／上下／スライド比較画像＋SNS3サイズ（1:1／9:16／16:9）一括書き出し",
+      "AI背景除去（透過／白背景）・院ロゴ透かし・矢印／丸／文字アノテーション",
+      "並列動画書き出し・10GB／院・患者向けリンク共有（LINE対応）",
+    ],
+    monthlyPrice: 3300,
     initialCost: 0,
     maintenancePrice: 0,
-    badge: "準備中",
+    badge: "NEW",
     demoUrl: "https://changesnap.vercel.app",
-    detailUrl: "",
+    detailUrl: "/systems/changesnap",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
@@ -217,7 +222,7 @@ const APPS = [
   },
   {
     id: "invoice",
-    name: "InvoiceForge",
+    name: "スマート請求書",
     shortName: "請求書作成",
     categories: ["内製化"],
     description: "治療院の請求書を、3分で。施術メニューがワンタップ、消費税も自動計算。PDF出力・テンプレ保存・売上サマリーまで一気通貫。",
@@ -1112,6 +1117,7 @@ export default function Home() {
                       kensa: "https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k",
                       meo: "https://buy.stripe.com/dRm3cucIQ2OQfMg1yx08g0y",
                       customer: "https://buy.stripe.com/5kQbJ0dMUexydE8a5308g07",
+                      changesnap: "https://buy.stripe.com/4gMaEWbEMexyeIc7WV08g0z",
                     };
                     const link = stripeLinks[app.id];
                     if (link) {
