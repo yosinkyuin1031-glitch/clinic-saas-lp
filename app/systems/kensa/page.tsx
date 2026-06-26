@@ -8,7 +8,6 @@ import { SystemHubNavigation } from "../_components/SystemHubNavigation";
 import { LINE_URL, DEVELOPER } from "../../lib/site-config";
 import { getAppVoices } from "../../lib/testimonials";
 import { VoiceCardDetail } from "../_components/VoiceCard";
-import { BodyLandmarkSvg } from "../_components/BodyLandmarkSvg";
 
 const STRIPE_URL = "https://buy.stripe.com/00w28qgZ60GIeIc0ut08g0k";
 const DEMO_URL = "https://kensa-sheet-app.vercel.app/demo";
@@ -62,20 +61,16 @@ export default function KensaPage() {
               購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
             </p>
           </div>
-          {/* 右: 人体検査図 + 実画面 */}
+          {/* 右: 実画面スクショ2枚 + 施術風景 */}
           <div className="relative">
             <div className="grid grid-cols-2 gap-4 items-stretch">
-              {/* 人体図カード */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-xl border border-blue-100 p-4 flex flex-col">
-                <p className="text-[10px] font-bold text-blue-600 tracking-widest uppercase mb-2 text-center">3つのランドマーク</p>
-                <div className="flex-1 flex items-center justify-center">
-                  <BodyLandmarkSvg className="w-full h-auto max-h-[280px]" />
-                </div>
-                <p className="text-[10px] text-blue-900 text-center mt-2 leading-relaxed">立位・座位・上半身で<br/>左右差をチェック</p>
-              </div>
-              {/* スクショカード */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-                <img src="/screens/kensa/2-standing.png" alt="立位検査画面" className="w-full h-auto" />
+                <img src="/images/kensa-demo/05-standing-filled.png" alt="立位検査画面（入力済み）" className="w-full h-auto" />
+                <p className="text-[10px] text-gray-500 text-center py-2 border-t border-gray-100">立位検査・ランドマーク入力</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <img src="/screens/kensa/result-body-illustration.png" alt="診断結果の体幹図（捻り・側屈・左右差を可視化）" className="w-full h-auto" />
+                <p className="text-[10px] text-gray-500 text-center py-2 border-t border-gray-100">診断結果：体幹図で歪みを可視化</p>
               </div>
             </div>
             {/* 下部に施術風景を1枚 */}
@@ -95,16 +90,7 @@ export default function KensaPage() {
       <section className="bg-gray-50 py-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-10">
-            <div className="inline-block relative">
-              <img
-                src="/images/clinic/treatment-2.jpeg"
-                alt="検査・施術の様子"
-                width={220}
-                height={220}
-                className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-full shadow-xl border-4 border-white object-cover"
-              />
-            </div>
-            <p className="mt-4 text-sm font-medium text-blue-600 tracking-widest uppercase">治療 × アプリ開発</p>
+            <p className="text-sm font-medium text-blue-600 tracking-widest uppercase">治療 × アプリ開発</p>
             <p className="text-xs text-gray-500 mt-1">治療家の課題を、テクノロジーで解決する</p>
           </div>
 
@@ -173,25 +159,42 @@ export default function KensaPage() {
       {/* 搭載機能（実画面付き4機能 + サブ2機能） */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">搭載機能</h2>
-          <p className="text-center text-gray-500 mb-12">検査・診断・提案・記録・分析に必要な機能を全て搭載</p>
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Features</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">カラダマップでできること</h2>
+          <p className="text-center text-gray-500 mb-10">検査・診断・セルフケア提案・PDF出力・経過比較に必要な機能を全て搭載</p>
+
+          {/* All-in-One Inspection バナー */}
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-12">
+            <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200">
+              <p className="text-xs font-bold text-blue-600 tracking-widest uppercase mb-2">All-in-One Inspection</p>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">5段階検査の根拠を、この1枚に集約</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                乳様突起 / 肩甲下角 / 腸骨稜 / 肩峰 / 肘頭 / 茎状突起 / 大転子 / 膝蓋骨上端 / 外果 —
+                9つのランドマークの左右差・捻り・側屈を1画面で可視化。
+                「説明の根拠」と「経過の証拠」を、検査するたびに自動で残せます。
+              </p>
+            </div>
+            <div className="border-t border-gray-100 bg-gray-50 p-4 md:p-8">
+              <img src="/screens/kensa/result-body-illustration.png" alt="カラダマップ 診断結果の体幹図" className="w-full h-auto rounded-lg shadow-md" />
+            </div>
+          </div>
 
           {/* メイン4機能（実画面 + 人体図/施術写真の組み合わせ） */}
           <div className="space-y-10 mb-14">
             {[
               {
                 screen: "/screens/kensa/1-patient.png",
-                bodySide: <BodyLandmarkSvg className="w-full h-auto max-h-[300px]" />,
-                bodyLabel: "検査対象：人体3ランドマーク",
+                bodyShot: "/images/kensa-demo/03-patient-filled.png",
+                bodyLabel: "患者情報の入力フォーム",
                 icon: "🗺️",
                 title: "5段階検査ウィザード",
                 body: "患者情報 → 立位検査 → 座位検査 → 上半身検査 → 自動診断。タップ操作だけで検査が完結。タブレット片手にスタッフでも回せる設計です。",
                 bullets: ["ステップバーで進捗が一目瞭然", "タップ選択で迷わず入力", "患者検索＋新規追加もこの画面から"],
               },
               {
-                screen: "/screens/kensa/2-standing.png",
-                bodySide: <BodyLandmarkSvg className="w-full h-auto max-h-[300px]" highlight="pelvis" />,
-                bodyLabel: "原因部位：腸骨稜の左右差から推定",
+                screen: "/images/kensa-demo/05-standing-filled.png",
+                bodyShot: "/screens/kensa/result-body-illustration.png",
+                bodyLabel: "診断結果：原因部位を自動で特定",
                 icon: "🎯",
                 title: "段階的原因特定ロジック",
                 body: "立位 → 座位で足の影響を、座位 → 上半身で上半身の影響を判定。「どこが原因で歪んでいるか」を自動で絞り込みます。神経整体の現場ロジックをそのままアプリ化。",
@@ -199,8 +202,8 @@ export default function KensaPage() {
               },
               {
                 screen: "/images/kensa-demo/10-pdf-buttons.png",
-                bodyPhoto: "/images/clinic/treatment-5.jpeg",
-                bodyLabel: "PDF→患者にその場で渡せる",
+                bodyShot: "/images/kensa-demo/09-selfcare.png",
+                bodyLabel: "AIが自動生成したセルフケア",
                 icon: "📄",
                 title: "AIセルフケア提案 + PDF出力",
                 body: "診断結果に基づき、足関節の回旋運動・タオルギャザー等のセルフケアをAIが自動生成。そのまま「患者用レポートPDF」「施術提案書PDF」をワンタップで出力できます。",
@@ -208,8 +211,8 @@ export default function KensaPage() {
               },
               {
                 screen: "/images/kensa-demo/12-history.png",
-                bodyPhoto: "/images/clinic/treatment-6.jpeg",
-                bodyLabel: "経過を患者と一緒に確認",
+                bodyShot: "/images/kensa-demo/11-patients.png",
+                bodyLabel: "患者一覧から経過を追える",
                 icon: "📈",
                 title: "経過比較・検査履歴",
                 body: "過去の検査結果を一覧で管理。「右側優位の上部交差症候群」「左下肢荷重不均衡パターン」など診断名で患者の経過を追えるので、リピート率の向上と説明の根拠が一気に揃います。",
@@ -217,21 +220,12 @@ export default function KensaPage() {
               },
             ].map((f, i) => (
               <div key={f.title} className={`grid md:grid-cols-6 gap-6 items-center ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
-                {/* 左列：人体図 or 施術写真 */}
+                {/* 左列：実画面スクショ（補足画面） */}
                 <div className="md:col-span-1 md:[direction:ltr]">
-                  {f.bodySide ? (
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-3">
-                      {f.bodySide}
-                      <p className="text-[10px] text-blue-900 text-center mt-1.5 leading-tight">{f.bodyLabel}</p>
-                    </div>
-                  ) : f.bodyPhoto ? (
-                    <div className="rounded-2xl overflow-hidden shadow-md border border-gray-100 relative aspect-[3/4]">
-                      <img src={f.bodyPhoto} alt={f.bodyLabel} className="absolute inset-0 w-full h-full object-cover" />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                        <p className="text-white text-[10px] leading-tight">{f.bodyLabel}</p>
-                      </div>
-                    </div>
-                  ) : null}
+                  <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+                    <img src={f.bodyShot} alt={f.bodyLabel} className="w-full h-auto" />
+                    <p className="text-[10px] text-gray-500 text-center py-1.5 leading-tight border-t border-gray-100">{f.bodyLabel}</p>
+                  </div>
                 </div>
                 {/* 中央列：スクショ */}
                 <div className="md:col-span-3 md:[direction:ltr]">
@@ -297,21 +291,41 @@ export default function KensaPage() {
 
       {/* デモアプリ案内 */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-emerald-50">
-        <div className="max-w-5xl mx-auto px-6">
-          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Try It</p>
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Live Demo</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">デモアプリで全機能をそのまま試せます</h2>
           <p className="text-center text-gray-600 mb-10 leading-relaxed">
-            ログイン不要。ブラウザでアクセスするだけで、Step1〜5の検査・診断・PDF出力をそのまま試せます。
+            ログイン不要。ブラウザでアクセスするだけで、Step1〜5の検査・診断・セルフケア提案・PDF出力をそのまま試せます。
           </p>
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-gray-100 shadow-md p-8 text-center">
-            <p className="text-sm text-gray-500 mb-2">デモアプリURL</p>
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="block text-blue-600 font-bold text-base md:text-lg break-all hover:underline mb-6">
-              {DEMO_URL}
+
+          {/* スクリーンショットギャラリー */}
+          <div className="grid md:grid-cols-3 gap-5 mb-10">
+            {[
+              { img: '/images/kensa-demo/03-patient-filled.png', title: '患者情報入力', desc: '主訴・NRS・初診/再診を1画面で入力' },
+              { img: '/images/kensa-demo/05-standing-filled.png', title: '立位検査', desc: '3ランドマークの左右差をタップで記録' },
+              { img: '/screens/kensa/result-body-illustration.png', title: '診断結果（体幹図）', desc: '捻り・側屈・左右差を1枚で可視化' },
+              { img: '/images/kensa-demo/09-selfcare.png', title: 'AIセルフケア提案', desc: '診断結果に基づき自動生成された運動メニュー' },
+              { img: '/images/kensa-demo/10-pdf-buttons.png', title: 'PDF出力', desc: '患者用・施術者用の2種PDFをワンタップで' },
+              { img: '/images/kensa-demo/12-history.png', title: '検査履歴・経過比較', desc: 'NRS値と診断名で時系列管理' },
+            ].map((g) => (
+              <div key={g.img} className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition">
+                <div className="relative w-full aspect-[16/10] bg-gray-50 border-b border-gray-100">
+                  <img src={g.img} alt={g.title} className="absolute inset-0 w-full h-full object-cover object-top" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-sm text-gray-900 mb-1">{g.title}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">{g.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-gray-100 shadow-md p-6 md:p-8 text-center">
+            <p className="text-sm text-gray-700 mb-4 font-medium">👇 上の画面は全部、いまから触れます</p>
+            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">
+              デモを開く（ログイン不要）→
             </a>
-            <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 transition shadow">
-              デモを開く →
-            </a>
-            <p className="text-xs text-gray-400 mt-6">※ デモ版はデータ保存ができません。製品版で全機能をご利用いただけます。</p>
+            <p className="text-xs text-gray-500 mt-3">スマホ/PC両対応・データは端末のみに保存されます</p>
           </div>
         </div>
       </section>

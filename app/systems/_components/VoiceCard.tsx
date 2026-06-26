@@ -1,4 +1,5 @@
 import type { Testimonial } from "../../lib/testimonials";
+import { getAppDisplayName } from "../../lib/site-config";
 
 // 短いコメント用カード（総合LP「導入院の声」4列グリッド用）
 export function VoiceCardShort({ t }: { t: Testimonial }) {
@@ -33,9 +34,16 @@ export function VoiceCardShort({ t }: { t: Testimonial }) {
       )}
       <p className="text-sm text-gray-600 leading-relaxed">&ldquo;{t.shortText}&rdquo;</p>
       {t.targetApps && t.targetApps.length > 0 && (
-        <p className="text-[11px] text-gray-400 mt-3">
-          利用中：{t.targetApps.join(" / ")}
-        </p>
+        <div className="mt-4 pt-3 border-t border-gray-100">
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1.5">利用中</p>
+          <div className="flex flex-wrap gap-1.5">
+            {t.targetApps.map((id) => (
+              <span key={id} className="inline-block text-[11px] font-medium bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md">
+                {getAppDisplayName(id)}
+              </span>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -67,6 +75,15 @@ export function VoiceCardDetail({ t }: { t: Testimonial }) {
           </p>
         </div>
       </div>
+      {t.targetApps && t.targetApps.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-5">
+          {t.targetApps.map((id) => (
+            <span key={id} className="inline-block text-xs font-medium bg-blue-50 text-blue-700 px-3 py-1 rounded-md">
+              利用中：{getAppDisplayName(id)}
+            </span>
+          ))}
+        </div>
+      )}
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{t.detail.background}</p>
       <ul className="space-y-2 mb-6">
         {t.detail.points.map((point) => (

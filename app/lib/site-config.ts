@@ -52,6 +52,7 @@ export const BUSINESS = {
 export type MainAppMeta = {
   id: "kensa" | "customer" | "meo";
   name: string;
+  category: string;      // アプリ種別（例：検査アプリ / 顧客管理アプリ / MEO・LLM対策アプリ）
   tagline: string;       // 1行コピー
   monthlyPrice: number;
   detailUrl: string;     // 個別LP
@@ -63,6 +64,7 @@ export const MAIN_APPS: MainAppMeta[] = [
   {
     id: "kensa",
     name: "カラダマップ",
+    category: "検査アプリ",
     tagline: "3分で体の\"いま\"を見える化。検査の根拠を自動で残す。",
     monthlyPrice: 5500,
     detailUrl: "/systems/kensa",
@@ -72,6 +74,7 @@ export const MAIN_APPS: MainAppMeta[] = [
   {
     id: "customer",
     name: "Clinic Core",
+    category: "顧客管理アプリ",
     tagline: "LTV・離反・広告ROI、経営に必要な数字が一目でわかる顧客管理。",
     monthlyPrice: 5500,
     detailUrl: "/systems/customer",
@@ -81,13 +84,26 @@ export const MAIN_APPS: MainAppMeta[] = [
   {
     id: "meo",
     name: "MEO勝ち上げくん",
-    tagline: "外注に月5万払うか、自分で月5,500円で内製化するか。",
+    category: "MEO・AI検索対策アプリ",
+    tagline: "Googleマップ・AIで「選ばれる医院」になる。順位アラート＋AI投稿生成。",
     monthlyPrice: 5500,
     detailUrl: "/systems/meo",
     themeColor: "emerald",
     iconEmoji: "📍",
   },
 ];
+
+// アプリID → 表示名（カテゴリ付き）。VoiceCard等で「利用中：」を分かりやすく表示するため
+export function getAppDisplayName(id: string): string {
+  const app = MAIN_APPS.find((a) => a.id === id);
+  if (app) return `${app.name}（${app.category}）`;
+  // 主力3以外の補足
+  const extra: Record<string, string> = {
+    monshin: "WEB問診票",
+    reservation: "予約管理",
+  };
+  return extra[id] ?? id;
+}
 
 // 業種定義（整体・鍼灸・接骨院・サロン）
 // 各個別LPの「業種別ユースケース」セクションで使用

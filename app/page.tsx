@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { getGeneralProductVoices, getCustomVoices } from "./lib/testimonials";
 import { VoiceCardShort, CustomWorkCard } from "./systems/_components/VoiceCard";
+import { LINE_URL } from "./lib/site-config";
 
 // ========== データ定義 ==========
 
@@ -352,7 +353,15 @@ const SET_EXAMPLES = [
 const FAQS = [
   {
     q: "ITに詳しくなくても使えますか？",
-    a: "タブレット・スマホで完結する設計で、現役治療家（大口神経整体院）が自分の院で毎日使っています。導入時はLINEで個別サポート、初期設定もこちらで代行可能です。「使い方マニュアル」より「そのまま使える」を優先しました。",
+    a: "はい。タブレット・スマホで完結する設計で、現役治療家（大口神経整体院）が自分の院で毎日使っています。専属の開発者やITスタッフは必要ありません。導入時はLINEで個別サポート、初期設定もこちらで代行可能です。",
+  },
+  {
+    q: "アカウントを分けるために、人数の追加は必要ですか？",
+    a: "はい。スタッフごとにログインを分けて運用される場合、人数分のアカウント発行が必要になります。1院1アカウントで全員が共有して使う運用にされる場合は、追加なしでお使いいただけます。詳しい料金は導入時にご相談ください。",
+  },
+  {
+    q: "データの移行はできますか？",
+    a: "使用中のアプリの種類によって異なります。CSVエクスポートに対応しているシステム（多くの顧客管理ソフト）からは取り込み可能です。具体的な移行可否は、現在お使いのアプリ名をLINEでお知らせください。個別にお返事いたします。",
   },
   {
     q: "開発者は誰ですか？",
@@ -360,19 +369,7 @@ const FAQS = [
   },
   {
     q: "1院だけでなく複数院で使えますか？",
-    a: "はい。院ごとにアカウントを分けて運用したり、グループ院で同じシステムを使うこともできます。スタッフ数・院数の追加に応じた追加料金は基本ありません。",
-  },
-  {
-    q: "最低契約期間はありますか？",
-    a: "主力アプリ（カラダマップ・Clinic Core・MEO勝ち上げくん）はいずれも最低契約期間6ヶ月です。導入後すぐの解約はできませんが、6ヶ月経過後はいつでも解約可能で、解約月の月末まで利用いただけます。\n初期費用0円・月額5,500円でご利用いただけるため、6ヶ月で総額33,000円から内製化を始められます。",
-  },
-  {
-    q: "6ヶ月以内に解約したくなった場合は？",
-    a: "残り月数分の月額料金を一括精算いただく形になります（例：3ヶ月で解約 → 残り3ヶ月分=16,500円）。最低契約は「投資した時間が無駄にならないように、しっかり使い倒してもらう」ための仕組みとしています。",
-  },
-  {
-    q: "データの移行はできますか？",
-    a: "CSVインポートに対応しています。ExcelやGoogleスプレッドシートからの移行もサポートします。",
+    a: "はい。院ごとにアカウントを分けて運用したり、グループ院で同じシステムを使うこともできます。複数院の運用は導入時に個別にご相談ください。",
   },
   {
     q: "セキュリティは大丈夫？",
@@ -553,44 +550,140 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ===== ヒーロー ===== */}
-      <section className="pt-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent-50 to-cta-50/30"></div>
-        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-accent-100/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cta-100/30 rounded-full blur-3xl"></div>
+      {/* ===== ヒーロー（2カラム＋スクショモックアップ） ===== */}
+      <section className="pt-20 pb-12 md:pb-20 relative overflow-hidden">
+        {/* 背景: メッシュグラデーション＋ぼかしオーブ＋dot pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-sky-50/60 to-indigo-50/40"></div>
+        <div className="absolute top-10 right-[5%] w-[600px] h-[600px] bg-accent-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-[-100px] left-[-100px] w-[500px] h-[500px] bg-cta-100/25 rounded-full blur-3xl"></div>
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #0F172A 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        ></div>
 
-        <div className="relative max-w-5xl mx-auto px-4 py-20 md:py-28">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tight">
-              <span className="text-primary">治療家のための、</span>
-              <br />
-              <span className="text-accent">アプリラボ。</span>
-            </h1>
+        <div className="relative max-w-6xl mx-auto px-4 pt-12 md:pt-20">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            {/* ─── 左：コピー＋CTA＋実績 ─── */}
+            <div className="lg:col-span-7">
+              {/* 信頼バッジ */}
+              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-accent/20 rounded-full px-4 py-1.5 mb-6 shadow-sm">
+                <span className="w-2 h-2 bg-cta rounded-full animate-pulse"></span>
+                <span className="text-xs font-bold text-primary tracking-wide">現役治療家が開発・大口神経整体院で毎日運用中</span>
+              </div>
 
-            <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-              現役治療家が作る、現場で本当に使える業務アプリ。
-              <br className="hidden md:block" />
-              主力3アプリ（カラダマップ・Clinic Core・MEO勝ち上げくん）はすべて月額5,500円・初期費用0円。
-              <br className="hidden md:block" />
-              デモ版で実機を触ってから、必要なものだけ導入できます。
-            </p>
+              {/* メインコピー */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.15] mb-6 tracking-tight">
+                <span className="text-primary">現役の治療家が開発した、</span>
+                <br />
+                <span className="bg-gradient-to-r from-accent via-accent-600 to-indigo-600 bg-clip-text text-transparent">
+                  現場のためのアプリ。
+                </span>
+              </h1>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="#apps"
-                className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg hover:shadow-accent/20 transition-all"
-              >
-                アプリを探す
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </a>
-              <a
-                href="https://lin.ee/8P11rM4"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-base border-2 border-primary/20 hover:border-primary/40 hover:shadow-md transition-all"
-              >
-                LINEで相談する
-              </a>
+              {/* サブコピー */}
+              <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+                検査・顧客管理・MEO/AI検索対策。
+                主力3アプリはすべて<span className="font-bold text-primary">月額5,500円・初期費用0円</span>。
+                デモ版で実機を触ってから、必要なものだけ導入できます。
+              </p>
+
+              {/* CTA */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-10">
+                <a
+                  href="#apps"
+                  className="inline-flex items-center justify-center gap-2 bg-accent text-white px-8 py-4 rounded-xl font-bold text-base hover:bg-accent-600 hover:shadow-lg hover:shadow-accent/30 transition-all"
+                >
+                  アプリを探す
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </a>
+                <a
+                  href={LINE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-base border-2 border-primary/15 hover:border-primary/30 hover:shadow-md transition-all"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+                  LINEで相談する
+                </a>
+              </div>
+
+              {/* 実績ストリップ */}
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">⚡️</span>
+                  <div>
+                    <p className="font-black text-primary leading-none">10<span className="text-xs ml-0.5">年</span></p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">施術歴</p>
+                  </div>
+                </div>
+                <div className="w-px h-8 bg-gray-200"></div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🛠</span>
+                  <div>
+                    <p className="font-black text-primary leading-none">50<span className="text-xs ml-0.5">+</span></p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">開発システム</p>
+                  </div>
+                </div>
+                <div className="w-px h-8 bg-gray-200"></div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">💰</span>
+                  <div>
+                    <p className="font-black text-primary leading-none">429<span className="text-xs ml-0.5">万</span></p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">一人治療院最高月商</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── 右：3アプリのスクショ重ね配置 ─── */}
+            <div className="lg:col-span-5 relative h-[440px] md:h-[520px] hidden lg:block">
+              {/* カラダマップ（メイン・前面・中央） */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white z-20 rotate-[2deg]">
+                <div className="bg-blue-600 text-white text-[10px] font-bold px-3 py-1.5 flex items-center justify-between">
+                  <span>🗺️ カラダマップ</span>
+                  <span className="text-blue-200">検査アプリ</span>
+                </div>
+                <img src="/screens/kensa/result-body-illustration.png" alt="カラダマップ 診断結果" className="w-full h-auto" />
+              </div>
+              {/* Clinic Core（後ろ・左に傾き） */}
+              <div className="absolute left-0 top-4 w-[240px] rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white z-10 -rotate-[6deg]">
+                <div className="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1.5 flex items-center justify-between">
+                  <span>📊 Clinic Core</span>
+                  <span className="text-emerald-200">顧客管理</span>
+                </div>
+                <img src="/screens/clinic-core/home.png" alt="Clinic Core ホーム" className="w-full h-auto" />
+              </div>
+              {/* MEO勝ち上げくん（後ろ・右に傾き） */}
+              <div className="absolute right-0 bottom-4 w-[240px] rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white z-10 rotate-[7deg]">
+                <div className="bg-rose-600 text-white text-[10px] font-bold px-3 py-1.5 flex items-center justify-between">
+                  <span>📍 MEO勝ち上げくん</span>
+                  <span className="text-rose-200">MEO/AI対策</span>
+                </div>
+                <img src="/screens/meo/3-strategy-check.png" alt="MEO勝ち上げくん 施策チェック" className="w-full h-auto" />
+              </div>
+              {/* キラキラエフェクト */}
+              <div className="absolute -top-4 right-12 text-3xl animate-pulse">✨</div>
+              <div className="absolute bottom-6 left-8 text-2xl animate-pulse" style={{animationDelay: "1s"}}>✨</div>
+            </div>
+
+            {/* ─── スマホ：右側スクショの代替（横スクロール） ─── */}
+            <div className="lg:hidden flex gap-3 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory">
+              {[
+                { bg: "bg-blue-600", emoji: "🗺️", name: "カラダマップ", cat: "検査", img: "/screens/kensa/result-body-illustration.png" },
+                { bg: "bg-emerald-600", emoji: "📊", name: "Clinic Core", cat: "顧客管理", img: "/screens/clinic-core/home.png" },
+                { bg: "bg-rose-600", emoji: "📍", name: "MEO勝ち上げくん", cat: "MEO/AI対策", img: "/screens/meo/3-strategy-check.png" },
+              ].map((app) => (
+                <div key={app.name} className="flex-shrink-0 w-[240px] rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white snap-center">
+                  <div className={`${app.bg} text-white text-[10px] font-bold px-3 py-1.5 flex items-center justify-between`}>
+                    <span>{app.emoji} {app.name}</span>
+                    <span className="opacity-70">{app.cat}</span>
+                  </div>
+                  <img src={app.img} alt={app.name} className="w-full h-auto" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -653,10 +746,10 @@ export default function Home() {
             {[
               {
                 id: "kensa",
-                badge: "検査",
+                badge: "検査アプリ",
                 badgeColor: "bg-blue-100 text-blue-700",
                 name: "カラダマップ",
-                tagline: "3分で体の\"いま\"を見える化",
+                tagline: "3分で体の\"いま\"を見える化する検査アプリ",
                 desc: "5段階の検査ウィザードで原因部位を自動特定。患者用・施術者用PDF出力、経過比較、AIセルフケア自動提案まで。",
                 detail: "/systems/kensa",
                 demo: "https://kensa-sheet-app.vercel.app/demo",
@@ -665,10 +758,10 @@ export default function Home() {
               },
               {
                 id: "customer",
-                badge: "経営",
+                badge: "顧客管理アプリ",
                 badgeColor: "bg-emerald-100 text-emerald-700",
                 name: "Clinic Core",
-                tagline: "経営の数字が、全部見える",
+                tagline: "経営の数字が全部見える顧客管理アプリ",
                 desc: "患者情報を一元管理。LTV・ROAS・リピート率・離反アラート・データ分析ダッシュボード搭載。14分析メニュー網羅。",
                 detail: "/systems/customer",
                 demo: "https://clinic-core-demo.vercel.app",
@@ -677,11 +770,11 @@ export default function Home() {
               },
               {
                 id: "meo",
-                badge: "集客",
+                badge: "MEO・AI検索対策アプリ",
                 badgeColor: "bg-rose-100 text-rose-700",
                 name: "MEO勝ち上げくん",
-                tagline: "Googleマップ集客を内製化",
-                desc: "キーワード1つでブログ・FAQ・GBP・noteを同時生成。順位アラート・医療広告ガイドライン自動チェック。",
+                tagline: "Googleマップ・AIで「選ばれる医院」になるアプリ",
+                desc: "Googleマップ × AI検索（ChatGPT/Perplexity等）の両方で選ばれる医院に。キーワード1つでブログ・FAQ・GBP・noteを同時生成。順位アラート・医療広告ガイドライン自動チェック。",
                 detail: "/systems/meo",
                 demo: null,
                 gradient: "from-rose-50 to-rose-100/40",
@@ -859,6 +952,31 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ===== 導入院の声（社会的証明として比較表の前に配置） ===== */}
+      {(() => {
+        const voices = getGeneralProductVoices();
+        return (
+          <section className="py-16 bg-white">
+            <div className="max-w-6xl mx-auto px-4">
+              <p className="text-center text-xs font-bold text-accent tracking-widest mb-2">VOICES</p>
+              <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
+                導入院の声
+              </h2>
+              <p className="text-center text-gray-500 text-sm mb-10">
+                整体院・鍼灸院・接骨院・サロン、あらゆる治療家・施術家にご利用いただいています
+              </p>
+              {voices.length > 0 ? (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {voices.map((t) => <VoiceCardShort key={t.id} t={t} />)}
+                </div>
+              ) : (
+                <p className="text-center text-gray-400 text-sm">導入院の声を掲載準備中です。</p>
+              )}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ===== 大手との比較表 ===== */}
       <section className="py-16 bg-gray-50">
@@ -1454,8 +1572,8 @@ export default function Home() {
 
           <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm text-center mb-10">
             <p className="text-sm text-white/70 mb-2">オリジナルアプリ開発</p>
-            <p className="text-3xl font-black text-accent mb-1">88,000<span className="text-base font-normal text-white/60">円〜</span></p>
-            <p className="text-xs text-white/50">※要件により変動します</p>
+            <p className="text-xl md:text-2xl font-black text-accent mb-1">要件により個別お見積もり</p>
+            <p className="text-xs text-white/50">無料ヒアリングで内容をお聞かせください</p>
           </div>
 
           <div className="text-center">
@@ -1495,30 +1613,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ===== 導入院の声 ===== */}
-      {(() => {
-        const voices = getGeneralProductVoices();
-        return (
-          <section className="py-16 bg-gray-50">
-            <div className="max-w-6xl mx-auto px-4">
-              <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-3">
-                導入院の声
-              </h2>
-              <p className="text-center text-gray-500 text-sm mb-10">
-                整体院・鍼灸院・接骨院・サロン、あらゆる治療家・施術家にご利用いただいています
-              </p>
-              {voices.length > 0 ? (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {voices.map((t) => <VoiceCardShort key={t.id} t={t} />)}
-                </div>
-              ) : (
-                <p className="text-center text-gray-400 text-sm">導入院の声を掲載準備中です。</p>
-              )}
-            </div>
-          </section>
-        );
-      })()}
 
       {/* ===== 開発実績（オーダーメイド受託の声）===== */}
       {(() => {

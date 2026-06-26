@@ -44,14 +44,15 @@ export default function MeoPage() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="text-center lg:text-left">
             <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold px-4 py-1.5 rounded-full mb-4">看板商品</span>
-            <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 MEO対策システム</p>
+            <p className="text-sm font-medium text-blue-600 tracking-widest uppercase mb-3">治療院専用 MEO・AI検索対策システム</p>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-              Googleマップで、<br />
-              <span className="text-blue-600">選ばれる院になる。</span>
+              Googleマップ・AIで、<br />
+              <span className="text-blue-600">選ばれる医院になる。</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               順位チェック・投稿作成・口コミ返信・SEO記事。<br />
-              MEO対策に必要な全てを、AIが自動で実行します。
+              Googleマップ × AI検索（ChatGPT/Perplexity等）の両方で、<br />
+              選ばれる医院になるための施策をAIが自動実行します。
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
               <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-base font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
@@ -182,8 +183,26 @@ export default function MeoPage() {
       {/* 機能紹介（実画面付き4機能 + サブ4機能） */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">搭載機能</h2>
-          <p className="text-center text-gray-500 mb-12">MEO対策に必要な全てをAIが自動化</p>
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Features</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">MEO勝ち上げくんでできること</h2>
+          <p className="text-center text-gray-500 mb-10">MEO40項目 + AI検索（ChatGPT/Perplexity）対策を全自動化</p>
+
+          {/* All-in-One MEO/AI Search バナー */}
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-12">
+            <div className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-200">
+              <p className="text-xs font-bold text-blue-600 tracking-widest uppercase mb-2">All-in-One MEO / AI Search</p>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Googleマップ・AI検索で選ばれるための40項目を、1画面で。</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                GBP最適化 / 写真戦略 / 口コミ戦略 / サイテーション / NAP一貫性 / 競合分析 /
+                AI検索対策（LLMO） / 構造化データ / 医療広告ガイドライン / 順位履歴 —
+                MEO業者が月5万円かけてやる施策をすべて可視化＆AIが自動実行。
+                「どこまでやれば良いか」が、もう迷わない。
+              </p>
+            </div>
+            <div className="border-t border-gray-100 bg-gray-50 p-4 md:p-8">
+              <img src="/screens/meo/3-strategy-check.png" alt="MEO勝ち上げくん 施策チェック40項目" className="w-full h-auto rounded-lg shadow-md" />
+            </div>
+          </div>
 
           {/* メイン4機能（実画面付き・縦並びの説得力カード） */}
           <div className="space-y-10 mb-14">
@@ -252,6 +271,38 @@ export default function MeoPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1.5 text-sm">{f.title}</h3>
                   <p className="text-gray-600 text-xs leading-relaxed">{f.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 管理画面ギャラリー */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-sm font-medium text-blue-600 uppercase tracking-widest mb-3">Screens</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">管理画面を見る</h2>
+          <p className="text-center text-gray-600 mb-10 leading-relaxed">
+            実際に大口神経整体院・モニター10院で稼働中の管理画面です。<br/>
+            シンプルなUIで、開発者やIT担当者は不要。
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              { img: '/screens/meo/1-dashboard.png', title: 'ダッシュボード', desc: 'KW順位・実施項目・進捗を一画面で把握' },
+              { img: '/screens/meo/4-ranking-check.png', title: '順位アラート', desc: 'KW別の順位変動と緊急度を毎日自動チェック' },
+              { img: '/screens/meo/3-strategy-check.png', title: 'MEO40項目チェック', desc: 'GBP最適化・LLMO・口コミ対策の進捗バー' },
+              { img: '/screens/meo/2-content-generation.png', title: 'AIコンテンツ生成', desc: 'KW1つでブログ・FAQ・GBP・noteを連鎖作成' },
+              { img: '/screens/meo/5-history.png', title: '投稿履歴・資産管理', desc: '生成した記事を全件保存・再活用可能' },
+            ].map((g) => (
+              <div key={g.img} className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition">
+                <div className="relative w-full aspect-[16/10] bg-gray-50 border-b border-gray-100">
+                  <img src={g.img} alt={g.title} className="absolute inset-0 w-full h-full object-cover object-top" />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-sm text-gray-900 mb-1">{g.title}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">{g.desc}</p>
                 </div>
               </div>
             ))}
