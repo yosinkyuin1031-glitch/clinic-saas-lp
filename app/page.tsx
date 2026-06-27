@@ -140,36 +140,17 @@ const APPS = [
     ),
   },
   {
-    id: "menu",
-    name: "メニュー管理",
-    shortName: "メニュー管理",
-    categories: ["内製化", "集客"],
-    description: "施術・物販・オプションのメニューマスター＋松竹梅プランを一元管理。提案書ジェネレーターと連携して、A4提案書とスライドにそのまま反映できます。",
-    features: ["メニュー（施術／物販／オプション）一元管理", "松竹梅プラン構成・院ごと自由設計", "提案書ジェネレーターと連携可能"],
+    id: "treatment-planner",
+    name: "施術プランナー",
+    shortName: "施術プランナー",
+    categories: ["治療", "内製化", "集客"],
+    description: "メニュー管理＋松竹梅プラン＋症状別9セクション提案書を1本に統合。患者ごとに3分で『治療提案書』を発行し、リピート率と単価をまとめて引き上げます。",
+    features: ["症状10×重症度3パターンから9セクション提案書を自動生成", "施術／物販／オプションのメニューと松竹梅プランを一元管理", "提案書に松竹梅プランがそのまま自動反映・PDF/印刷対応"],
     monthlyPrice: 3300,
     initialCost: 0,
     maintenancePrice: 0,
-    badge: "準備中",
-    demoUrl: "https://menu-proposal.vercel.app",
-    detailUrl: "",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-      </svg>
-    ),
-  },
-  {
-    id: "proposal",
-    name: "提案書ジェネレーター",
-    shortName: "提案書作成",
-    categories: ["集客", "内製化"],
-    description: "3分で、患者の心を動かす提案書とスライドを。A4提案書＋13枚スライドを自動生成。年齢・症状で4テーマ自動切替・PDF出力対応。",
-    features: ["9症状プリセットからA4提案書を自動生成", "NotebookLM風13枚スライドを同時生成", "年齢・症状で4テーマ自動切替・PDF出力"],
-    monthlyPrice: 1100,
-    initialCost: 0,
-    maintenancePrice: 0,
-    badge: "準備中",
-    demoUrl: "https://proposal-generator-gold.vercel.app",
+    badge: "NEW",
+    demoUrl: "https://smart-treatment-planner.vercel.app",
     detailUrl: "",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
