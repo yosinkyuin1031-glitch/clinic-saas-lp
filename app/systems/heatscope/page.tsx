@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const STRIPE_URL = "https://buy.stripe.com/4gMdR85go2OQeIcelj08g0B";
+
 export const metadata: Metadata = {
   title: "HeatScope ヒートマップ分析 - 治療院HP改善ツール | ClinicApps",
   description:
@@ -390,6 +392,14 @@ export default function HeatscopeDetailPage() {
                 <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>導入サポート付き</li>
                 <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span>最低契約期間なし</li>
               </ul>
+              <a
+                href={STRIPE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 block w-full text-center bg-cta hover:bg-cta-600 text-white font-bold py-3 rounded-xl transition-colors shadow-sm"
+              >
+                今すぐ申し込む（クレジットカード決済）
+              </a>
             </div>
           </div>
           <p className="text-center text-sm text-gray-500 mt-6">
@@ -411,18 +421,20 @@ export default function HeatscopeDetailPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://heatscope.vercel.app/demo"
+              href={STRIPE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 bg-cta text-white rounded-xl text-lg font-bold hover:bg-cta-600 transition-colors shadow-lg"
             >
-              無料デモを見る
+              今すぐ申し込む
             </a>
             <a
-              href="/#contact"
+              href="https://heatscope.vercel.app/demo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-8 py-4 bg-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/20 transition-colors border border-white/20"
             >
-              お問い合わせ
+              無料デモを見る
             </a>
           </div>
         </div>
