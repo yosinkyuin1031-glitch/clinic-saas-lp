@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "HeatScope ヒートマップ分析 - 治療院HP改善ツール | ClinicApps",
   description:
-    "治療院HPのどこが見られ、どこがクリックされているかを可視化。スクロール深度・注目エリア・クリック位置をリアルタイム分析。月額2,980円。",
+    "治療院HPのどこが見られ、どこがクリックされているかを可視化。スクロール深度・注目エリア・クリック位置をリアルタイム分析。月額5,500円。",
 };
 
 const FEATURES = [
@@ -59,7 +59,7 @@ const COMPETITORS = [
   {
     name: "HeatScope",
     highlight: true,
-    values: ["2,980円", "0円", "○", "○", "○", "○", "○", "無制限", "無制限", "1行コピペ", "○", "なし"],
+    values: ["5,500円", "0円", "○", "○", "○", "○", "○", "無制限", "無制限", "1行コピペ", "○", "なし"],
   },
   {
     name: "ミエルカヒートマップ",
@@ -88,7 +88,7 @@ const ADVANTAGES = [
     desc: "HTMLにスクリプトタグを1行追加するだけ。WordPressでもWixでも、どんなHPでも5分で導入完了。面倒な設定は一切不要。",
   },
   {
-    title: "月額2,980円で全機能・サイト数無制限",
+    title: "月額5,500円で全機能・サイト数無制限",
     desc: "他社ツールは月額1万円以上が相場。HeatScopeは複数サイトの分析も追加料金なし。分院があっても1契約でOK。",
   },
 ];
@@ -380,7 +380,7 @@ export default function HeatscopeDetailPage() {
             <div className="bg-white rounded-2xl p-6 shadow-sm border-2 border-accent">
               <div className="text-accent text-sm font-bold mb-2">月額プラン</div>
               <div className="text-3xl font-black text-primary mb-1">
-                2,980<span className="text-lg">円/月</span>
+                5,500<span className="text-lg">円/月</span>
               </div>
               <div className="text-xs text-gray-500 mb-4">初期費用 0円</div>
               <ul className="space-y-2 text-sm text-gray-700">
