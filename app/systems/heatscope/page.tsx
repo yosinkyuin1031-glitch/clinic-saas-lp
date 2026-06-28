@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 const STRIPE_URL = "https://buy.stripe.com/4gMdR85go2OQeIcelj08g0B";
@@ -154,86 +155,58 @@ export default function HeatscopeDetailPage() {
       </section>
 
       {/* 画面イメージ */}
-      <section className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-black text-center text-primary mb-4">
-            実際の画面
+            実際の管理画面
           </h2>
           <p className="text-center text-gray-500 mb-10">
-            実サイト上にヒートマップを重ねて表示
+            HPのページに、訪問者の行動を「色」で重ねて表示します
           </p>
 
-          {/* スクリーンショットモック */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* クリックヒートマップ */}
-            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span className="text-xs text-gray-400 ml-2">クリックヒートマップ</span>
+          {/* デスクトップ画面（メイン） */}
+          <div className="rounded-2xl border border-gray-200 shadow-2xl overflow-hidden bg-gray-900 max-w-5xl mx-auto mb-8">
+            <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div className="w-3 h-3 rounded-full bg-green-400"></div>
               </div>
-              <div className="bg-gray-50 p-6">
-                <div className="text-sm font-bold text-primary mb-3">クリック分布</div>
-                <div className="bg-white rounded-lg p-4 border border-gray-100 relative">
-                  <div className="space-y-3 opacity-50">
-                    <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-100 rounded w-full"></div>
-                    <div className="h-4 bg-gray-100 rounded w-5/6"></div>
-                    <div className="h-10 bg-blue-100 rounded w-1/3"></div>
-                    <div className="h-4 bg-gray-100 rounded w-full"></div>
-                  </div>
-                  {/* ヒートマップドット */}
-                  <div className="absolute top-14 left-20 w-8 h-8 rounded-full bg-red-500/40 blur-sm"></div>
-                  <div className="absolute top-14 left-24 w-6 h-6 rounded-full bg-red-600/50 blur-sm"></div>
-                  <div className="absolute top-[88px] left-12 w-10 h-10 rounded-full bg-orange-500/30 blur-sm"></div>
-                  <div className="absolute top-[120px] left-8 w-12 h-12 rounded-full bg-red-500/50 blur-md"></div>
-                  <div className="absolute bottom-8 right-12 w-6 h-6 rounded-full bg-yellow-500/30 blur-sm"></div>
-                </div>
-                <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
-                  <span>赤 = クリック多い</span>
-                  <span>青 = クリック少ない</span>
-                </div>
-              </div>
+              <span className="text-xs text-gray-400 ml-2">HeatScope デモ画面（PC）</span>
             </div>
-            {/* スクロール深度 */}
-            <div className="rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <span className="text-xs text-gray-400 ml-2">スクロール深度</span>
-              </div>
-              <div className="bg-gray-50 p-6">
-                <div className="text-sm font-bold text-primary mb-3">到達率</div>
-                <div className="space-y-2">
-                  {[
-                    { label: "ファーストビュー", pct: 100, color: "bg-green-500" },
-                    { label: "メニュー紹介", pct: 82, color: "bg-green-400" },
-                    { label: "施術の流れ", pct: 65, color: "bg-yellow-400" },
-                    { label: "お客様の声", pct: 48, color: "bg-orange-400" },
-                    { label: "料金表", pct: 35, color: "bg-orange-500" },
-                    { label: "アクセス・予約", pct: 22, color: "bg-red-500" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <span className="text-xs text-gray-600 w-28 shrink-0">{item.label}</span>
-                      <div className="flex-1 bg-gray-200 rounded-full h-5 overflow-hidden">
-                        <div className={`h-full ${item.color} rounded-full flex items-center justify-end pr-2`} style={{ width: `${item.pct}%` }}>
-                          <span className="text-[10px] text-white font-bold">{item.pct}%</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <Image
+              src="/screens/heatscope/demo-desktop.png"
+              alt="HeatScope デモ画面 - クリックヒートマップ・スクロール分析・AI改善提案"
+              width={1280}
+              height={1800}
+              className="w-full h-auto"
+              priority
+            />
           </div>
-          <p className="text-center text-xs text-gray-400 mt-6">
-            ※画面はイメージです。実際のデモで全機能をお試しいただけます。
+
+          {/* モバイル画面とポイント説明 */}
+          <div className="grid md:grid-cols-[280px_1fr] gap-8 items-center max-w-4xl mx-auto">
+            <div className="rounded-2xl border-4 border-gray-900 shadow-xl overflow-hidden bg-gray-900 mx-auto" style={{ maxWidth: 240 }}>
+              <Image
+                src="/screens/heatscope/demo-mobile.png"
+                alt="HeatScope モバイル画面"
+                width={390}
+                height={1800}
+                className="w-full h-auto"
+              />
+            </div>
+            <ul className="space-y-3 text-sm text-gray-700">
+              <li className="flex gap-3"><span className="text-green-500 font-bold">○</span><span><b className="text-primary">赤色のドット</b>＝予約ボタンや電話番号など、よくタップされている箇所</span></li>
+              <li className="flex gap-3"><span className="text-yellow-500 font-bold">△</span><span><b className="text-primary">右パネルのAI改善提案</b>＝データから自動で改善ポイントを日本語で提示</span></li>
+              <li className="flex gap-3"><span className="text-blue-500 font-bold">→</span><span><b className="text-primary">スマホ・PCを切替表示</b>＝デバイスごとに別レポート（患者の8割はスマホ閲覧）</span></li>
+              <li className="flex gap-3"><span className="text-purple-500 font-bold">◎</span><span><b className="text-primary">サンプルKPI</b>＝PV・予約ボタンCTR・電話タップ数・平均スクロール深度を1画面で</span></li>
+            </ul>
+          </div>
+
+          <p className="text-center text-sm text-gray-500 mt-8">
+            <a href="https://heatscope.vercel.app/demo" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-bold">
+              無料デモで動く画面を触ってみる →
+            </a>
           </p>
         </div>
       </section>
