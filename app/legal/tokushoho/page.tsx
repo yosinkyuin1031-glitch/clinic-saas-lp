@@ -74,6 +74,11 @@ export default function TokushohoPage() {
                       monthly="3,980円/月（初期費用11,000円）"
                       buyout="-"
                     />
+                    <PriceItem
+                      name="ChangeSnap（ビフォーアフター写真管理）"
+                      monthly="3,300円/月（初期費用なし・容量10GB／院）"
+                      buyout="-"
+                    />
                     <p className="text-xs text-gray-500 mt-2">
                       ※モニター枠は人数限定です。定員に達し次第、通常料金（初期費用込み）に切り替わります。
                     </p>

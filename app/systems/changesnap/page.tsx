@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LINE_URL } from "../../lib/site-config";
 
 const STRIPE_LINK = "https://buy.stripe.com/4gMaEWbEMexyeIc7WV08g0z";
-const DEMO_URL = "https://changesnap.vercel.app";
+const DEMO_URL = "https://changesnap-demo.vercel.app";
 
 export const metadata: Metadata = {
   title: "ChangeSnap ビフォーアフター写真管理 - AI背景除去・比較画像・動画 | ClinicMark",
@@ -35,7 +35,7 @@ export default function ChangeSnapPage() {
           <a href={STRIPE_LINK} target="_blank" rel="noopener noreferrer" className="inline-block bg-orange-500 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-orange-600 transition shadow-md">今すぐ始める →</a>
           <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-white border-2 border-orange-500 text-orange-600 text-lg font-bold px-10 py-4 rounded-xl hover:bg-orange-50 transition">デモを試す</a>
         </div>
-        <p className="mt-4 text-sm text-gray-400">月額3,300円（税込）/ 初期費用なし / 10GB／院（写真約25,000枚相当）</p>
+        <p className="mt-4 text-sm text-gray-400">月額3,300円（税込）/ 初期費用なし / 10GB／院 / 最低契約期間6ヶ月</p>
         <p className="mt-2 text-xs text-gray-400">
           購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
         </p>
@@ -57,7 +57,7 @@ export default function ChangeSnapPage() {
               </div>
             ))}
           </div>
-          <p className="text-center mt-10 text-gray-700 font-medium text-lg">ChangeSnapなら、撮影から書き出しまで3分で完了します。</p>
+          <p className="text-center mt-10 text-gray-700 font-medium text-lg">ChangeSnapなら、撮影から書き出しまで最短3分の運用に。<span className="text-xs text-gray-400 align-middle">※運用イメージ</span></p>
         </div>
       </section>
 
@@ -75,7 +75,7 @@ export default function ChangeSnapPage() {
             { icon: "🏷️", title: "院ロゴ透かし", body: "全書き出しに自動でロゴを焼き込み。SNS無断転載対策＋ブランド露出を同時実現。" },
             { icon: "✏️", title: "アノテーション", body: "矢印・丸・矩形・テキストで「ここが変わった」を一目で伝える素材に。" },
             { icon: "🔗", title: "患者へのリンク共有", body: "比較画像を専用URL＋LINEで患者に送信。来院モチベ向上に直結。" },
-            { icon: "💾", title: "10GB／院・容量警告", body: "写真約25,000枚相当の余裕。80%・100%で自動警告、データ整理タイミングを逃しません。" },
+            { icon: "💾", title: "10GB／院・容量警告", body: "写真のみなら約25,000枚相当（WebP圧縮400KB／枚で試算・動画含むと減少）。80%・100%で自動警告、データ整理タイミングを逃しません。" },
           ].map((f) => (
             <div key={f.title} className="flex gap-4 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
               <span className="text-3xl flex-shrink-0">{f.icon}</span>
@@ -109,10 +109,10 @@ export default function ChangeSnapPage() {
                   ["患者ごとフォルダ管理", "−", "▲（手動）", "●", "●"],
                   ["比較画像3パターン", "−", "▲（手作業）", "−", "●（ワンタップ）"],
                   ["SNS3サイズ一括書き出し", "−", "▲（1枚ずつ）", "−", "●"],
-                  ["AI背景除去", "−", "●（有料）", "−", "●（無料・即時）"],
+                  ["AI背景除去", "−", "●（Pro月¥1,500〜）", "−", "●（月額内・追加課金なし）"],
                   ["並列比較動画", "−", "−", "−", "●"],
                   ["院ロゴ透かし自動", "−", "▲（手動）", "−", "●"],
-                  ["1投稿あたりの時間", "30分〜", "15分〜", "20分〜", "3分"],
+                  ["1投稿あたりの目安時間※", "30分〜", "15分〜", "20分〜", "3分〜"],
                   ["月額", "0円", "1,500円〜", "0〜数千円", "3,300円"],
                 ].map(([item, a, b, c, d], i) => (
                   <tr key={String(item)} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
@@ -125,6 +125,7 @@ export default function ChangeSnapPage() {
                 ))}
               </tbody>
             </table>
+            <p className="text-xs text-gray-400 mt-3 text-center">※運用イメージ。実際の所要時間は写真枚数・編集量により変動します。</p>
           </div>
         </div>
       </section>
@@ -136,7 +137,7 @@ export default function ChangeSnapPage() {
           <div className="bg-white rounded-2xl p-10 shadow-md border-2 border-orange-200 max-w-md mx-auto">
             <p className="text-sm text-orange-600 font-bold mb-2">月額プラン（1院）</p>
             <p className="text-5xl font-bold text-gray-900 mb-2">3,300<span className="text-lg font-normal text-gray-500">円/月（税込）</span></p>
-            <p className="text-sm text-gray-500 mb-6">初期費用なし／いつでも解約可</p>
+            <p className="text-sm text-gray-500 mb-6">初期費用なし／最低契約期間6ヶ月（6ヶ月未満解約時は残月数分の早期解約金）</p>
             <ul className="space-y-2 text-sm text-gray-700 text-left max-w-xs mx-auto mb-8">
               {[
                 "✓ 全機能解放（AI背景除去含む）",
@@ -169,7 +170,7 @@ export default function ChangeSnapPage() {
               { q: "10GBを超えたらどうなりますか？", a: "80%で警告バナー、100%で新規アップロードを停止します。古い写真の削除または容量追加プラン（別途お見積り）でご対応いただけます。" },
               { q: "他のスタッフも同じデータを見られますか？", a: "はい。同じ院のスタッフは同じ患者フォルダにアクセスできます。スタッフ数の追加料金はありません。" },
               { q: "サロン業態でも使えますか？", a: "はい。エステ・美容鍼・ダイエット指導など、ビフォーアフターを記録する業種すべてで活用いただけます。" },
-              { q: "解約は途中でできますか？", a: "いつでも可能です。最低契約期間はありません。" },
+              { q: "解約は途中でできますか？", a: "最低契約期間6ヶ月経過後はいつでも解約可能です。6ヶ月未満で解約される場合、残月数分の早期解約金（残月数×月額3,300円）をご請求します。" },
             ].map(({ q, a }) => (
               <div key={q} className="border border-gray-100 rounded-2xl p-6 bg-white shadow-sm">
                 <p className="font-bold text-gray-900 mb-2">Q. {q}</p>
