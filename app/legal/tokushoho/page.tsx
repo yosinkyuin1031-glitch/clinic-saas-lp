@@ -66,17 +66,37 @@ export default function TokushohoPage() {
                     />
                     <PriceItem
                       name="WEB問診"
-                      monthly="2,980円/月（初期費用11,000円）"
+                      monthly="3,300円/月（初期費用11,000円）"
                       buyout="-"
                     />
                     <PriceItem
                       name="MEO勝ち上げくん"
-                      monthly="3,980円/月（初期費用11,000円）"
+                      monthly="5,500円/月（初期費用なし）"
                       buyout="-"
                     />
                     <PriceItem
                       name="ChangeSnap（ビフォーアフター写真管理）"
                       monthly="3,300円/月（初期費用なし・容量10GB／院）"
+                      buyout="-"
+                    />
+                    <PriceItem
+                      name="HeatScope（HPヒートマップ分析）"
+                      monthly="5,500円/月（初期費用なし）"
+                      buyout="-"
+                    />
+                    <PriceItem
+                      name="施術プランナー（メニュー管理＋提案書ジェネレーター統合）"
+                      monthly="3,300円/月（初期費用なし）"
+                      buyout="-"
+                    />
+                    <PriceItem
+                      name="サブスクポイント管理"
+                      monthly="5,500円/月（初期費用なし）"
+                      buyout="-"
+                    />
+                    <PriceItem
+                      name="スマート請求書"
+                      monthly="1,100円/月（初期費用なし）"
                       buyout="-"
                     />
                     <p className="text-xs text-gray-500 mt-2">
