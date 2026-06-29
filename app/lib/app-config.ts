@@ -66,7 +66,8 @@ export const APP_CONFIGS: AppConfig[] = [
     id: "customer",
     label: "Clinic Core",
     monthlyPrice: 5500,
-    initialCost: 33000,
+    // データ移行作業は通常11,000円だが、現在は無料で対応中のため初期費用0円
+    initialCost: 0,
     color: "bg-emerald-500",
     clinicFlag: "app_crm",
     forSale: true,
@@ -92,8 +93,8 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "reservation",
     label: "予約管理",
-    monthlyPrice: 3980,
-    initialCost: 11000,
+    monthlyPrice: 3300,
+    initialCost: 0,
     color: "bg-purple-500",
     clinicFlag: null,
     forSale: false,
@@ -120,8 +121,8 @@ export const APP_CONFIGS: AppConfig[] = [
   {
     id: "monshin",
     label: "WEB問診",
-    monthlyPrice: 2980,
-    initialCost: 11000,
+    monthlyPrice: 3300,
+    initialCost: 0,
     color: "bg-amber-500",
     clinicFlag: null,
     forSale: false,

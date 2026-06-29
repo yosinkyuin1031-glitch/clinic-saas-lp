@@ -17,7 +17,7 @@ export default function ReservationPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">予約の取りこぼしを、<br />仕組みで防ぐ。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">電話対応に追われていませんか？<br />予約管理を自動化して、<br />施術に集中できる環境を作りましょう。</p>
         <a href="https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額3,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月（6ヶ月未満解約時は残存月数分の早期解約金）</p>
+        <p className="mt-4 text-sm text-gray-400">月額3,300円（税込）/ 初期費用なし / 最低契約期間6ヶ月（6ヶ月未満解約時は残存月数分の早期解約金）</p>
         <p className="mt-2 text-xs text-gray-400">
           購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
         </p>
@@ -99,7 +99,7 @@ export default function ReservationPage() {
                 ["リソース（ベッド/スタッフ）管理","－","－","▲","●"],
                 ["メニュー別時間設定","－","－","●","●"],
                 ["顧客管理連携","－","－","－","●"],
-                ["料金","0円","0円","0円〜","3,980円/月"],
+                ["料金","0円","0円","0円〜","3,300円/月"],
               ].map(([item,a,b,c,d],i)=>(
                 <tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}>
                   <td className="p-4 font-medium text-gray-700">{item}</td>
@@ -130,8 +130,8 @@ export default function ReservationPage() {
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">料金プラン</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,980<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
-            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">39,800<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用 11,000円（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 約3,317円 → 年間7,960円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,300<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用なし（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">33,000<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用なし（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 2,750円 → 年間6,600円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全管理機能","✓ スタッフ数無制限","✓ メニュー数無制限","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
           </div>
           <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
         </div>
@@ -154,7 +154,7 @@ export default function ReservationPage() {
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-white text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">予約管理を仕組み化して、施術に集中する。</h2>
-        <p className="text-blue-100 mb-8">月額3,980円で、予約の取りこぼしをゼロにする。</p>
+        <p className="text-blue-100 mb-8">月額3,300円で、予約の取りこぼしをゼロにする。</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="https://buy.stripe.com/aFabJ0gZ62OQ43ygtr08g08" target="_blank" rel="noopener noreferrer" className="bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition shadow">今すぐ始める →</a>
           <a href="https://lin.ee/182seszw" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition">LINEで相談する</a>

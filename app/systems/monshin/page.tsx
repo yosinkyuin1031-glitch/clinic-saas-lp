@@ -41,7 +41,7 @@ export default function MonshinPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">初診の10分を、<br />もっと大切なことに使う。</h1>
         <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">来院前に問診を済ませる。それだけで、<br />初診の質が劇的に変わります。</p>
         <a href={STRIPE_URL} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white text-lg font-bold px-10 py-4 rounded-xl hover:bg-blue-700 transition shadow-md">今すぐ始める →</a>
-        <p className="mt-4 text-sm text-gray-400">月額2,980円（税込）/ 初期費用11,000円 / 最低契約期間6ヶ月</p>
+        <p className="mt-4 text-sm text-gray-400">月額3,300円（税込）/ 初期費用なし / 最低契約期間6ヶ月</p>
         <p className="mt-2 text-xs text-gray-400">
           購入時は <Link href="/legal/terms" className="underline">利用規約</Link>・<Link href="/legal/privacy" className="underline">プライバシーポリシー</Link>・<Link href="/legal/tokushoho" className="underline">特商法表記</Link> への同意が必要です。
         </p>
@@ -127,7 +127,7 @@ export default function MonshinPage() {
                 ["新規患者の自動登録","－","－","▲","●"],
                 ["LINE通知","－","－","▲","●"],
                 ["顧客管理連携","－","－","－","●"],
-                ["料金","0円","0円","10,000円〜/月","2,980円/月"],
+                ["料金","0円","0円","10,000円〜/月","3,300円/月"],
               ].map(([item,a,b,c,d],i)=>(
                 <tr key={item} className={i%2===0?"bg-white":"bg-gray-50"}>
                   <td className="p-4 font-medium text-gray-700">{item}</td>
@@ -170,8 +170,8 @@ export default function MonshinPage() {
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">料金プラン</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">2,980<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用 11,000円（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全問診機能","✓ 問診数無制限","✓ 自動患者登録","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
-            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">29,800<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用 11,000円（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 約2,483円 → 年間5,960円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全問診機能","✓ 問診数無制限","✓ 自動患者登録","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"><p className="text-sm text-gray-500 mb-2">月額プラン</p><p className="text-4xl font-bold text-gray-900 mb-1">3,300<span className="text-lg font-normal">円/月</span></p><p className="text-sm text-gray-500 mb-6">初期費用なし（税込）</p><ul className="space-y-2 text-sm text-gray-600">{["✓ 全問診機能","✓ 問診数無制限","✓ 自動患者登録","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
+            <div className="bg-blue-600 rounded-2xl p-8 shadow-md text-white relative"><span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">2ヶ月お得</span><p className="text-sm text-blue-200 mb-2">年払いプラン</p><p className="text-4xl font-bold mb-1">33,000<span className="text-lg font-normal">円/年</span></p><p className="text-sm text-blue-200 mb-1">初期費用なし（税込）</p><p className="text-sm text-yellow-300 mb-6">月額換算 2,750円 → 年間6,600円お得</p><ul className="space-y-2 text-sm text-blue-100">{["✓ 全問診機能","✓ 問診数無制限","✓ 自動患者登録","✓ 導入サポート付き"].map(t=><li key={t}>{t}</li>)}</ul></div>
           </div>
           <p className="text-center mt-6 text-sm text-gray-400">全て税込表示です。最低契約期間：6ヶ月。</p>
         </div>

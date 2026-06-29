@@ -609,6 +609,10 @@ export default function CustomerPage() {
               <p className="text-sm font-bold text-blue-200 mb-2">通常プラン</p>
               <p className="text-4xl font-bold mb-1">5,500<span className="text-lg font-normal text-blue-200">円/月</span></p>
               <p className="text-sm text-blue-200 mb-6">初期費用 0円（税込）</p>
+              <div className="mb-4 rounded-lg bg-yellow-400/20 border border-yellow-300/40 px-4 py-3">
+                <p className="text-xs font-bold text-yellow-200 mb-0.5">データ移行作業も今は無料</p>
+                <p className="text-xs text-yellow-100">既存カルテ・顧客リストのCSV移行作業は通常¥11,000ですが、現在は無料で対応中。</p>
+              </div>
               <ul className="space-y-3 text-sm text-blue-100">
                 {[
                   "全機能利用可能",

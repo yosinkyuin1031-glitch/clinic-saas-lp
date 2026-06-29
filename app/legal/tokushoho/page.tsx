@@ -56,17 +56,17 @@ export default function TokushohoPage() {
                     />
                     <PriceItem
                       name="Clinic Core（顧客管理）"
-                      monthly="5,500円/月（モニター枠は初期費用0円・通常は初期費用33,000円）"
+                      monthly="5,500円/月（初期費用なし・データ移行作業は通常11,000円ですが、現在は無料で対応中）"
                       buyout="-"
                     />
                     <PriceItem
                       name="予約管理"
-                      monthly="3,980円/月（初期費用11,000円）"
+                      monthly="3,300円/月（初期費用なし）"
                       buyout="-"
                     />
                     <PriceItem
                       name="WEB問診"
-                      monthly="3,300円/月（初期費用11,000円）"
+                      monthly="3,300円/月（初期費用なし）"
                       buyout="-"
                     />
                     <PriceItem
